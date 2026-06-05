@@ -1,11 +1,13 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { ArrowRight, ArrowUpRight, FileText, X } from 'lucide-react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
+
+const BASE = import.meta.env.BASE_URL
 
 function useResponsive() {
   const [w, setW] = useState(typeof window !== 'undefined' ? window.innerWidth : 1440)
   useEffect(() => { const h = () => setW(window.innerWidth); window.addEventListener('resize', h); return () => window.removeEventListener('resize', h) }, [])
-  return { isMobile: w < 768 }
+  return { isMobile: w < 900 }
 }
 
 /* ============================================================
@@ -68,9 +70,13 @@ function getWorkData(type: string) {
 }
 
 function getProjectData(type: string) {
+  if (type === 'pm-os') return {
+    title: 'PM OS — AI 辅助 IPD 研发项目全流程管理工具 · 2026',
+    body: <><ModalH4>项目简介</ModalH4><ModalP>基于 DONNER 真实 PM 经验（IPD 流程、TR/DCP 评审、MIL、BOM），用 Claude Code 独立开发的全功能项目管理工具。覆盖从概念到量产的全生命周期管理。</ModalP><div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '4px' }}><a href="https://pm-os-eight.vercel.app" target="_blank" style={{ color: '#DEDBC8', textDecoration: 'none', border: '0.5px solid rgba(222,219,200,0.2)', padding: '4px 10px', borderRadius: '4px', fontSize: '12px' }}>全功能版 ↗ pm-os-eight.vercel.app</a><a href="https://demo.pm-os.pages.dev" target="_blank" style={{ color: '#DEDBC8', textDecoration: 'none', border: '0.5px solid rgba(222,219,200,0.2)', padding: '4px 10px', borderRadius: '4px', fontSize: '12px' }}>Demo 版 ↗ demo.pm-os.pages.dev</a></div><ModalH4>技术栈</ModalH4><ModalP>Next.js 16 + TypeScript + Tailwind CSS + Dexie.js (IndexedDB) + DeepSeek API + 自绘 SVG 甘特图 + xlsx + JSZip</ModalP><ModalH4>核心功能</ModalH4><ModalP><HL>IPD 全流程</HL> — 13 个里程碑节点（TR1→CDCP→TR2→HMS→TR3→PDCP→EVT→TR4→DVT→TR5→ADCP1→PVT→MP），7 阶段门管理，准入准出标准</ModalP><ModalP><HL>自绘 SVG 甘特图</HL> — 不依赖第三方库，支持缩放、依赖连线、里程碑菱形标记、今日红线、逾期高亮</ModalP><ModalP><HL>9 张数据表</HL> — 项目 / 里程碑 / 任务 / 会议 / 复盘 / 变更 / BOM / 采购 / 认证 / MIL，全部 IndexedDB 本地存储，离线可用</ModalP><ModalP><HL>AI 辅助</HL> — DeepSeek 驱动会议纪要智能分析（行动项提取 + 风险识别）、复盘自动生成（聚合项目数据）</ModalP><ModalP><HL>双部署</HL> — Vercel 全功能可编辑版 + Cloudflare Pages 只读 Demo 版（国内直连）</ModalP><ModalP><HL>Excel 批量导入</HL> — 所有面板支持模板下载 + 批量导入，适配企业级数据迁移</ModalP></>,
+  }
   if (type === 'miyavi') return {
     title: 'MIYAVI 联名款 3-in-1 吉他效果器 · 2025.8 – 2026.1',
-    body: <><div style={{ marginBottom: '20px', borderRadius: '4px', overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.08)' }}><video src="/89c9d818ea6471aca23e1b766927b458.mp4" controls playsInline preload="metadata" style={{ width: '100%', display: 'block' }} /></div><ModalH4>项目背景</ModalH4><ModalP>主导与日本艺人 MIYAVI 联名开发 Double Swords 3-in-1 吉他效果器，复刻其经典音色并确保交付落地。</ModalP><ModalH4>核心职责</ModalH4><ModalP><HL>跨职能协同</HL> — 协调品牌、产研与艺人团队，解决音色复刻与硬件实现之间的技术偏离。</ModalP><ModalP><HL>流程优化</HL> — 运用 IPD 管理逻辑并行与裁切流程节点，前置识别供应链风险。</ModalP><ModalP><HL>AI 赋能</HL> — 0→1 搭建 AI 工作流，借助 Claude Code 自动化编排甘特图。</ModalP><ModalH4>核心成果</ModalH4><ModalP><HL>21%</HL> — 项目周期缩短</ModalP><ModalP><HL>1.93%–2.41%</HL> — 整机成本偏差</ModalP><ModalP><HL>92%+</HL> — PVT / MP 良率</ModalP></>,
+    body: <><div style={{ marginBottom: '20px', borderRadius: '4px', overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.08)' }}><video src={BASE + '89c9d818ea6471aca23e1b766927b458.mp4'} controls playsInline preload="metadata" style={{ width: '100%', display: 'block' }} /></div><ModalH4>项目背景</ModalH4><ModalP>主导与日本艺人 MIYAVI 联名开发 Double Swords 3-in-1 吉他效果器，复刻其经典音色并确保交付落地。</ModalP><ModalH4>核心职责</ModalH4><ModalP><HL>跨职能协同</HL> — 协调品牌、产研与艺人团队，解决音色复刻与硬件实现之间的技术偏离。</ModalP><ModalP><HL>流程优化</HL> — 运用 IPD 管理逻辑并行与裁切流程节点，前置识别供应链风险。</ModalP><ModalP><HL>AI 赋能</HL> — 0→1 搭建 AI 工作流，借助 Claude Code 自动化编排甘特图。</ModalP><ModalH4>核心成果</ModalH4><ModalP><HL>21%</HL> — 项目周期缩短</ModalP><ModalP><HL>1.93%–2.41%</HL> — 整机成本偏差</ModalP><ModalP><HL>92%+</HL> — PVT / MP 良率</ModalP></>,
   }
   if (type === 'mro') return {
     title: 'MRO 2.0 数字化流程迭代 · 2022.11 – 2023.3',
@@ -82,7 +88,7 @@ function getProjectData(type: string) {
   }
   return {
     title: '竞品分析 Agent Skill · 2026',
-    body: <><ModalH4>项目简介</ModalH4><ModalP>基于 Claude Code Skill 框架搭建的自动化竞品分析工具。输入产品名即可自动完成：竞品信息收集 → 多维度对比分析 → 数据可视化 → Excel 深度报告导出。</ModalP><ModalH4>技术架构</ModalH4><ModalP><HL>Skill 框架</HL> — 遵循 Claude Code skill-creator 规范，定义触发条件、工作流与输出格式。</ModalP><ModalP><HL>Web Search 集成</HL> — 自动搜索并抓取竞品公开信息。</ModalP><ModalP><HL>Excel 自动生成</HL> — 结构化数据导出为专业分析报告。</ModalP><ModalH4>核心能力</ModalH4><ModalP><HL>全品类覆盖</HL> — 实体商品、SaaS、消费电子、线下服务等。</ModalP><ModalP><HL>自动化流程</HL> — 从搜索到报告生成，无人值守。</ModalP></>,
+    body: <><ModalH4>项目简介</ModalH4><ModalP>基于 Claude Code Skill 框架搭建的自动化竞品分析工具。输入产品名即可自动完成：竞品信息收集 → 多维度对比分析 → 数据可视化 → Excel 深度报告导出。支持两种分析模式：</ModalP><ModalH4>具体竞品分析</ModalH4><ModalP>针对已上市实体产品，搜索同品类竞品进行横向对比。覆盖基础信息、评分口碑、销量排名、产品规格、价格分布、SWOT、用户评价、市场空白与战略建议等维度。适用于产品立项前的市场竞争格局扫描。</ModalP><div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.4)', margin: '2px 0 4px' }}>案例：绿联67W充电宝 vs 小米/倍思/安克/罗马仕/酷态科 6 款同规格产品全维度分析</div><ModalH4>概念竞品分析</ModalH4><ModalP>针对创新概念或未上市方案，搜索专利、众筹项目、学术文献及替代方案，评估概念新颖性和专利侵权风险。覆盖相似产品清单、功能对比矩阵、冲突等级判定、差异化路径建议。</ModalP><div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.4)', margin: '2px 0 4px' }}>案例：无拉链行李箱闭合方案 — 10 个竞品/专利的功能矩阵对比 + 风险判定 + 差异化建议</div><div style={{ marginTop: '16px' }}><a href={BASE + 'competitive-analysis-portfolio.pdf'} target="_blank" style={{ color: '#DEDBC8', textDecoration: 'none', border: '0.5px solid rgba(222,219,200,0.3)', padding: '6px 14px', borderRadius: '4px', fontSize: '12px' }}>查看案例报告 PDF ↗</a></div></>,
   }
 }
 
@@ -433,7 +439,7 @@ function WordCloud({ onTagClick }: { onTagClick: (text: string) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const [tags, setTags] = useState<{ text: string; x: number; y: number; fs: number; w: number; c: string; v: boolean }[]>([])
   const built = useRef(false)
-  const tRef = useRef<ReturnType<typeof setTimeout>>()
+  const tRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     const build = async () => {
@@ -579,13 +585,10 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
 
   if (phase === 'done') return null
 
-  // Keep white bg during sector + shrink + expand so the black circle burst is visible
-  const blackBg = false
-
   return (
     <div style={{
-      position: 'fixed', inset: 0, zIndex: 9999,
-      background: '#fff',
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999,
+      background: '#fff', width: '100vw',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       <div style={{
@@ -627,20 +630,6 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
         }
       `}</style>
     </div>
-  )
-}
-
-/* ============================================================
-   Water drop button wrapper
-   ============================================================ */
-function WaterDrop({ children, delay = 0, style }: { children: React.ReactNode; delay?: number; style?: React.CSSProperties }) {
-  return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: [0, 1.3, 0.9, 1], opacity: [0, 0.7, 0.9, 1] }}
-      transition={{ duration: 0.7, delay, times: [0, 0.5, 0.75, 1], ease: 'easeOut' }}
-      style={style}
-    >{children}</motion.div>
   )
 }
 
@@ -693,12 +682,14 @@ export default function App() {
       {/* ============================================================
           NAV BAR (Prisma-style pill)
           ============================================================ */}
-      <nav style={{ position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)', zIndex: 50, background: '#000', borderRadius: '0 0 12px 12px', padding: '6px 14px', whiteSpace: 'nowrap' }} className="md:rounded-b-3xl md:px-8 md:py-2">
+      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, display: 'flex', justifyContent: 'center' }}>
+        <div style={{ background: '#000', borderRadius: '0 0 12px 12px', padding: '6px 14px', whiteSpace: 'nowrap' }} className="md:rounded-b-3xl md:px-8 md:py-2">
         <div style={{ display: 'flex', gap: 'clamp(10px,3vw,40px)', fontSize: '9px', letterSpacing: '0.08em', color: 'rgba(225,224,204,0.7)' }} className="sm:text-xs md:text-sm">
           <a href="#about" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>About</a>
           <a href="#skills" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>Skills</a>
           <a href="#work" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>Work</a>
           <a href="#ai" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>AI</a>
+        </div>
         </div>
       </nav>
 
@@ -710,9 +701,9 @@ export default function App() {
           {/* Video: poster fallback for WeChat mobile only */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: loading ? 0 : 1 }} transition={{ duration: 0.6 }} style={{ position: 'absolute', inset: 0 }}>
             {isMobile && /MicroMessenger/i.test(navigator.userAgent) ? (
-              <img src="/hero-poster.jpg" alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={BASE + 'hero-poster.jpg'} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <video src="/b048d1974e26508d52a4b1d58732e729.mp4" autoPlay loop muted playsInline webkit-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <video src={BASE + 'b048d1974e26508d52a4b1d58732e729.mp4'} autoPlay loop muted playsInline webkit-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             )}
           </motion.div>
           <div className="noise-overlay" style={{ position: 'absolute', inset: 0, opacity: 0.55, mixBlendMode: 'overlay', pointerEvents: 'none' }} />
@@ -721,13 +712,9 @@ export default function App() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: loading ? 0 : 1 }} transition={{ duration: 0.8, delay: 0.3 }} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: isMobile ? '0 16px 16px' : '0 0 20px 10px', zIndex: 2 }}>
             {isMobile ? (
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '48px', fontWeight: 700, color: '#DEDBC8', letterSpacing: '-0.03em', lineHeight: 0.9 }}>Zachary Pan</div>
-                <div style={{ fontSize: '18px', fontWeight: 700, color: '#E1E0CC', marginTop: '8px' }}>白天管交付。</div>
-                <div style={{ fontSize: '18px', fontWeight: 700, color: 'rgba(225,224,204,0.45)', marginTop: '2px' }}>晚上造工具。</div>
-                <div style={{ fontSize: '13px', fontWeight: 400, color: 'rgba(222,219,200,0.6)', letterSpacing: '0.06em', marginTop: '12px' }}>Project Management & AI Builder</div>
-                <div style={{ fontSize: '13px', color: 'rgba(222,219,200,0.55)', lineHeight: 1.7, marginTop: '8px' }}>从 IPD 流程到 Claude Code。<br />从供应链到 AI 工作流。<br />一直在找更高效的方式，把复杂变成结果。</div>
-                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '12px' }}>
-                  <a href="/resume.pdf" target="_blank" style={{ border: '0.5px solid rgba(222,219,200,0.35)', color: 'rgba(222,219,200,0.8)', padding: '8px 16px', borderRadius: '999px', fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none' }}><FileText size={12} strokeWidth={1.2} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />Resume</a>
+                <div style={{ fontSize: '48px', fontWeight: 700, color: '#DEDBC8', letterSpacing: '-0.03em', lineHeight: 0.9, marginBottom: '16px' }}>Zachary Pan</div>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                  <a href={BASE + 'resume.pdf'} target="_blank" style={{ border: '0.5px solid rgba(222,219,200,0.35)', color: 'rgba(222,219,200,0.8)', padding: '8px 16px', borderRadius: '999px', fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none' }}><FileText size={12} strokeWidth={1.2} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />Resume</a>
                   <button onClick={openContact} style={{ border: '0.5px solid rgba(222,219,200,0.35)', color: '#000', background: '#DEDBC8', padding: '8px 16px', borderRadius: '999px', fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}><ArrowUpRight size={12} strokeWidth={1.5} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />Get in Touch</button>
                 </div>
                 <JDMatchSlider onActivate={openJdModal} resetSignal={jdReset} />
@@ -737,7 +724,7 @@ export default function App() {
                 <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 'clamp(100px,12vw,160px)', fontWeight: 700, color: '#DEDBC8', letterSpacing: '-0.03em', lineHeight: 0.92, flexShrink: 0, transform: 'scaleX(0.88)', transformOrigin: 'left bottom', paddingBottom: '4px' }}>Zachary Pan</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1, paddingBottom: '6px', marginRight: '10px', alignItems: 'flex-end' }}>
                   <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '400px' }}>
-                    <a href="/resume.pdf" target="_blank" className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-medium tracking-[0.08em] uppercase transition-all duration-300 no-underline"
+                    <a href={BASE + 'resume.pdf'} target="_blank" className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-medium tracking-[0.08em] uppercase transition-all duration-300 no-underline"
                       style={{ border: '0.5px solid rgba(222,219,200,0.3)', color: 'rgba(222,219,200,0.75)' }}
                       onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(222,219,200,0.55)'; e.currentTarget.style.color = '#DEDBC8' }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(222,219,200,0.3)'; e.currentTarget.style.color = 'rgba(222,219,200,0.75)' }}><FileText size={13} strokeWidth={1.2} />Resume</a>
@@ -784,10 +771,13 @@ export default function App() {
             { id: 'miyavi', company: 'MIYAVI 联名款 3-in-1 吉他效果器', role: 'Project Lead', period: '2025.8 – 2026.1', highlights: ['项目周期缩短 21%', '整机成本偏差 1.93%', 'MP 良率 92%+', 'AI 甘特图 0→1'] },
             { id: 'mro', company: 'MRO 2.0 数字化流程迭代', role: 'Process Owner', period: '2022.11 – 2023.3', highlights: ['售后耗时 −2 人天', '绿通准时率 97.6%', '返单 −3单/月'] },
           ]} />
-          <SectionCard index={2} title="AI Projects" onItemClick={openProject} items={[
+          <div id="ai" style={{ display: 'contents' }}>
+            <SectionCard index={2} title="AI Projects" onItemClick={openProject} items={[
+            { id: 'pm-os', company: 'PM OS — IPD 研发项目管理工具', role: '独立开发', period: '2026', highlights: ['13 里程碑 / 7 阶段 IPD 流程', '自绘 SVG 甘特图 + 9 张数据表', 'Vercel + CF Pages 双部署'] },
             { id: 'ai-meeting', company: 'AI 会议纪要智能管理工具', role: '独立开发', period: '2025', highlights: ['30min → 5min 纪要整理', '风险识别 + 待办追踪', 'Claude Code Vibe Coding'] },
-            { id: 'competitor', company: '竞品分析 Agent Skill', role: '独立开发', period: '2026', highlights: ['Claude Code Skill 框架', '自动化搜索 + Excel 报告', '全品类覆盖'] },
+            { id: 'competitor', company: '竞品分析 Agent Skill', role: '独立开发', period: '2026', highlights: ['具体竞品 / 概念竞品双模式', '自动化搜索 + Excel 报告', '附带 PDF 案例报告'] },
           ]} />
+          </div>
         </div>
       </section>
 
