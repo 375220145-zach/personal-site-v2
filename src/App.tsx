@@ -696,7 +696,7 @@ export default function App() {
       {/* ============================================================
           HERO
           ============================================================ */}
-      <section className="h-screen relative p-4 md:p-6" id="about">
+      <section className="min-h-[85vh] relative p-4 md:p-6" id="about">
         <div className="relative w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden">
           {/* Video: poster fallback for WeChat mobile only */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: loading ? 0 : 1 }} transition={{ duration: 0.6 }} style={{ position: 'absolute', inset: 0 }}>
