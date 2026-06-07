@@ -1,6 +1,9 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { ArrowRight, ArrowUpRight, FileText, X } from 'lucide-react'
 import { motion, useInView } from 'framer-motion'
+import AiCardWall from './components/AiCardWall'
+import AiLabModal from './components/AiLabModal'
+import { aiProjects } from './data/ai-projects'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -639,6 +642,9 @@ export default function App() {
   const [jdModalOpen, setJdModalOpen] = useState(false)
   const [jdReset, setJdReset] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [aiLab, setAiLab] = useState<{ open: boolean; slug: string }>({ open: false, slug: '' })
+  const openAiLab = (slug: string) => setAiLab({ open: true, slug })
+  const closeAiLab = () => setAiLab({ open: false, slug: '' })
   const openJdModal = () => setJdModalOpen(true)
   const closeJdModal = () => { setJdModalOpen(false); setJdReset(r => r + 1) }
   const handleLoadingDone = useCallback(() => setLoading(false), [])
@@ -696,7 +702,7 @@ export default function App() {
       {/* ============================================================
           HERO
           ============================================================ */}
-      <section className="min-h-[85vh] relative p-4 md:p-6" id="about">
+      <section className="h-screen relative p-4 md:p-6" id="about">
         <div className="relative w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden">
           {/* Video: poster fallback for WeChat mobile only */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: loading ? 0 : 1 }} transition={{ duration: 0.6 }} style={{ position: 'absolute', inset: 0 }}>
@@ -771,12 +777,12 @@ export default function App() {
             { id: 'miyavi', company: 'MIYAVI 联名款 3-in-1 吉他效果器', role: 'Project Lead', period: '2025.8 – 2026.1', highlights: ['项目周期缩短 21%', '整机成本偏差 1.93%', 'MP 良率 92%+', 'AI 甘特图 0→1'] },
             { id: 'mro', company: 'MRO 2.0 数字化流程迭代', role: 'Process Owner', period: '2022.11 – 2023.3', highlights: ['售后耗时 −2 人天', '绿通准时率 97.6%', '返单 −3单/月'] },
           ]} />
-          <div id="ai" style={{ display: 'contents' }}>
-            <SectionCard index={2} title="AI Projects" onItemClick={openProject} items={[
-            { id: 'pm-os', company: 'PM OS — IPD 研发项目管理工具', role: '独立开发', period: '2026', highlights: ['13 里程碑 / 7 阶段 IPD 流程', '自绘 SVG 甘特图 + 9 张数据表', 'Vercel + CF Pages 双部署'] },
-            { id: 'ai-meeting', company: 'AI 会议纪要智能管理工具', role: '独立开发', period: '2025', highlights: ['30min → 5min 纪要整理', '风险识别 + 待办追踪', 'Claude Code Vibe Coding'] },
-            { id: 'competitor', company: '竞品分析 Agent Skill', role: '独立开发', period: '2026', highlights: ['具体竞品 / 概念竞品双模式', '自动化搜索 + Excel 报告', '附带 PDF 案例报告'] },
-          ]} />
+          <div id="ai" style={{ gridColumn: '1 / -1', marginTop: 'clamp(40px,6vh,80px)' }}>
+            <div style={{ textAlign: 'center', marginBottom: 'clamp(20px,4vh,32px)' }}>
+              <div style={{ fontSize: '12px', letterSpacing: '0.3em', color: 'rgba(222,219,200,0.5)', textTransform: 'uppercase', marginBottom: '8px' }}>AI Builds</div>
+              <div style={{ fontSize: '14px', color: 'rgba(222,219,200,0.4)', lineHeight: 1.6 }}>按需造工具，对话即交付。</div>
+            </div>
+            <AiCardWall projects={aiProjects} onCardClick={openAiLab} />
           </div>
         </div>
       </section>
@@ -796,6 +802,8 @@ export default function App() {
       <Modal open={modal.open} title={modal.title} onClose={closeModal}>{modal.body}</Modal>
       {/* JD Match Modal */}
       <JDMatchModal open={jdModalOpen} onClose={closeJdModal} />
+      {/* AI Lab Modal */}
+      <AiLabModal projects={aiProjects} initialSlug={aiLab.slug} open={aiLab.open} onClose={closeAiLab} />
     </div>
   )
 }
