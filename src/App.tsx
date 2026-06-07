@@ -1,8 +1,139 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { ArrowRight, ArrowUpRight, FileText, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, FileText, X, Briefcase, FolderKanban, Sparkles, User, Wrench } from 'lucide-react'
 import { motion, useInView } from 'framer-motion'
 
 const BASE = import.meta.env.BASE_URL
+
+type SidebarSection = 'about' | 'skills'
+
+function Sidebar({ activeSection, onNav, onItemClick, isMobile }: {
+  activeSection: SidebarSection
+  onNav: (s: SidebarSection) => void
+  onItemClick: (type: string) => void
+  isMobile: boolean
+}) {
+  const [collapsed, setCollapsed] = useState(true)
+  if (isMobile) {
+    return (
+      <>
+        <button onClick={() => setCollapsed(!collapsed)} style={{
+          position: 'fixed', top: '12px', left: '12px', zIndex: 60,
+          width: '36px', height: '36px', borderRadius: '8px',
+          background: 'rgba(0,0,0,0.85)', border: '0.5px solid rgba(255,255,255,0.12)',
+          color: '#DEDBC8', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', backdropFilter: 'blur(20px)',
+        }}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2">
+            <path d="M2 4h12M2 8h12M2 12h12" />
+          </svg>
+        </button>
+        {!collapsed && (
+          <div onClick={() => setCollapsed(true)} style={{ position: 'fixed', inset: 0, zIndex: 55, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }} />
+        )}
+        <div style={{
+          position: 'fixed', top: 0, left: 0, bottom: 0, zIndex: 58,
+          width: '260px', background: '#080808', borderRight: '0.5px solid rgba(255,255,255,0.06)',
+          transform: collapsed ? 'translateX(-100%)' : 'translateX(0)',
+          transition: 'transform 0.3s cubic-bezier(0.22,1,0.36,1)',
+          display: 'flex', flexDirection: 'column', padding: '20px 18px',
+          overflowY: 'auto',
+        }}>
+          <SidebarContent activeSection={activeSection} onNav={(s) => { onNav(s); setCollapsed(true) }} onItemClick={onItemClick} />
+        </div>
+      </>
+    )
+  }
+  return (
+    <aside style={{
+      position: 'fixed', top: 0, left: 0, bottom: 0, zIndex: 50,
+      width: '230px', background: '#080808', borderRight: '0.5px solid rgba(255,255,255,0.06)',
+      display: 'flex', flexDirection: 'column', padding: '28px 20px 20px',
+      overflowY: 'auto',
+    }}>
+      <SidebarContent activeSection={activeSection} onNav={onNav} onItemClick={onItemClick} />
+    </aside>
+  )
+}
+
+function SidebarContent({ activeSection, onNav, onItemClick }: {
+  activeSection: SidebarSection
+  onNav: (s: SidebarSection) => void
+  onItemClick: (type: string) => void
+}) {
+  const linkStyle = (active: boolean): React.CSSProperties => ({
+    display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none',
+    color: active ? '#DEDBC8' : 'rgba(222,219,200,0.55)', fontSize: '12px', fontWeight: active ? 500 : 400,
+    cursor: 'pointer', padding: '5px 0', letterSpacing: '0.03em', transition: 'color 0.3s',
+  })
+  const itemStyle: React.CSSProperties = {
+    display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none',
+    color: 'rgba(222,219,200,0.6)', fontSize: '11px', cursor: 'pointer',
+    padding: '3px 0 3px 8px', transition: 'color 0.3s', lineHeight: 1.4,
+  }
+  const labelStyle: React.CSSProperties = {
+    fontSize: '9px', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase' as const,
+    color: 'rgba(222,219,200,0.3)', marginTop: '22px', marginBottom: '6px',
+  }
+  const dividerStyle: React.CSSProperties = {
+    height: '0.5px', background: 'rgba(255,255,255,0.06)', margin: '16px 0 14px',
+  }
+  return (
+    <>
+      <div style={{ fontSize: '18px', fontWeight: 600, color: '#DEDBC8', letterSpacing: '-0.02em', marginBottom: '2px' }}>Zachary Pan</div>
+      <div style={{ fontSize: '9px', color: 'rgba(222,219,200,0.35)', letterSpacing: '0.08em', marginBottom: '10px' }}>Project Management & AI Builder</div>
+
+      <div style={dividerStyle} />
+
+      {/* Nav */}
+      <button style={linkStyle(activeSection === 'about')} onClick={() => onNav('about')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = activeSection === 'about' ? '#DEDBC8' : 'rgba(222,219,200,0.55)' }}>
+        <User size={11} strokeWidth={1.2} style={{ display: 'inline', marginRight: '7px', verticalAlign: 'middle', position: 'relative', top: '-1px' }} />About
+      </button>
+      <button style={linkStyle(activeSection === 'skills')} onClick={() => onNav('skills')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = activeSection === 'skills' ? '#DEDBC8' : 'rgba(222,219,200,0.55)' }}>
+        <Wrench size={11} strokeWidth={1.2} style={{ display: 'inline', marginRight: '7px', verticalAlign: 'middle', position: 'relative', top: '-1px' }} />Skills
+      </button>
+
+      <div style={dividerStyle} />
+
+      {/* Work */}
+      <div style={labelStyle}><Briefcase size={10} strokeWidth={1.2} style={{ display: 'inline', marginRight: '5px', verticalAlign: 'middle' }} />Work</div>
+      <button style={itemStyle} onClick={() => onItemClick('donner')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.6)' }}>
+        DONNER · PM 管培生</button>
+      <button style={itemStyle} onClick={() => onItemClick('ur')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.6)' }}>
+        URBAN REVIVO · 采购PMO</button>
+
+      {/* Projects */}
+      <div style={labelStyle}><FolderKanban size={10} strokeWidth={1.2} style={{ display: 'inline', marginRight: '5px', verticalAlign: 'middle' }} />Projects</div>
+      <button style={itemStyle} onClick={() => onItemClick('miyavi')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.6)' }}>
+        MIYAVI 联名款效果器</button>
+      <button style={itemStyle} onClick={() => onItemClick('mro')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.6)' }}>
+        MRO 2.0 数字化迭代</button>
+
+      {/* AI Projects */}
+      <div style={labelStyle}><Sparkles size={10} strokeWidth={1.2} style={{ display: 'inline', marginRight: '5px', verticalAlign: 'middle' }} />AI Projects</div>
+      <button style={itemStyle} onClick={() => onItemClick('pm-os')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.6)' }}>
+        PM OS · IPD 管理工具</button>
+      <button style={itemStyle} onClick={() => onItemClick('ai-meeting')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.6)' }}>
+        AI 会议纪要工具</button>
+      <button style={itemStyle} onClick={() => onItemClick('competitor')}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.6)' }}>
+        竞品分析 Agent Skill</button>
+
+      <div style={dividerStyle} />
+
+      <a href={BASE + 'resume.pdf'} target="_blank" style={{ ...itemStyle, textDecoration: 'none', color: 'rgba(222,219,200,0.5)' }}
+        onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(222,219,200,0.5)' }}>
+        <FileText size={10} strokeWidth={1.2} style={{ display: 'inline', marginRight: '5px', verticalAlign: 'middle' }} />Resume PDF</a>
+    </>
+  )
+}
 
 function useResponsive() {
   const [w, setW] = useState(typeof window !== 'undefined' ? window.innerWidth : 1440)
@@ -511,35 +642,6 @@ function WordCloud({ onTagClick }: { onTagClick: (text: string) => void }) {
 }
 
 /* ============================================================
-   Section Card
-   ============================================================ */
-function SectionCard({ title, items, onItemClick, index = 0 }: { title: string; items: { id: string; company: string; role: string; period: string; highlights: string[] }[]; onItemClick: (id: string) => void; index?: number }) {
-  const [hover, setHover] = useState(false)
-  // Fly in from different directions: 0=left, 1=bottom, 2=right
-  const dirs = [{ x: -80, y: 0 }, { x: 0, y: 60 }, { x: 80, y: 0 }]
-  const d = dirs[index % 3]
-  return (
-    <motion.div initial={{ opacity: 0, x: d.x, y: d.y }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
-      style={{ background: '#101010', border: '0.5px solid rgba(255,255,255,0.06)', padding: 'clamp(20px,3vw,32px)', display: 'flex', flexDirection: 'column', gap: '20px', cursor: 'default', transition: 'border-color 0.4s, background 0.4s', position: 'relative' }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'; e.currentTarget.style.background = '#141414'; setHover(true) }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.background = '#101010'; setHover(false) }}
-    >
-      <div style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#DEDBC8', textTransform: 'uppercase', fontWeight: 400 }}>{title}</div>
-      {/* Hint */}
-      <div style={{ position: 'absolute', top: '20px', right: '22px', fontSize: '10px', letterSpacing: '0.12em', color: hover ? 'rgba(222,219,200,0.4)' : 'rgba(222,219,200,0.18)', transition: 'color 0.4s', pointerEvents: 'none' }}>点击查看详情</div>
-      {items.map((item, i) => (
-        <div key={i} style={{ borderTop: i > 0 ? '0.5px solid rgba(255,255,255,0.06)' : 'none', paddingTop: i > 0 ? '16px' : 0, cursor: 'pointer', position: 'relative' }} onClick={(e) => { e.stopPropagation(); onItemClick(item.id) }}>
-          <div style={{ fontSize: '16px', fontWeight: 300, color: '#E1E0CC', marginBottom: '2px', transition: 'color 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.color = '#DEDBC8' }} onMouseLeave={e => { e.currentTarget.style.color = '#E1E0CC' }}>{item.company}</div>
-          <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.45)', letterSpacing: '0.05em', marginBottom: '8px' }}>{item.role} · {item.period}</div>
-          {item.highlights.map((h, j) => (<div key={j} style={{ fontSize: '12px', color: 'rgba(222,219,200,0.6)', lineHeight: 1.6 }}>— {h}</div>))}
-        </div>
-      ))}
-    </motion.div>
-  )
-}
-
-/* ============================================================
    Fade-in wrapper
    ============================================================ */
 /* Character-by-character scroll reveal */
@@ -639,9 +741,23 @@ export default function App() {
   const [jdModalOpen, setJdModalOpen] = useState(false)
   const [jdReset, setJdReset] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [activeSection, setActiveSection] = useState<SidebarSection>('about')
   const openJdModal = () => setJdModalOpen(true)
   const closeJdModal = () => { setJdModalOpen(false); setJdReset(r => r + 1) }
   const handleLoadingDone = useCallback(() => setLoading(false), [])
+
+  // Scroll spy for sidebar
+  useEffect(() => {
+    const onScroll = () => {
+      const skillsEl = document.getElementById('skills')
+      if (skillsEl) {
+        const rect = skillsEl.getBoundingClientRect()
+        setActiveSection(rect.top < 200 ? 'skills' : 'about')
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   // Galaxy scroll parallax
   useEffect(() => {
@@ -663,6 +779,14 @@ export default function App() {
   const openProject = (type: string) => { const d = getProjectData(type); openModal(d.title, d.body) }
   const openTag = (text: string) => { const d = tagData[text]; if (d) openModal(d.title, d.body) }
 
+  const handleSidebarClick = (type: string) => {
+    if (type === 'donner' || type === 'ur') openWork(type)
+    else openProject(type)
+  }
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <div style={{ background: '#000' }}>
       {/* Loading screen */}
@@ -679,24 +803,13 @@ export default function App() {
         transition: 'background-position 0.8s ease-out',
       }} id="galaxy-bg" />
 
-      {/* ============================================================
-          NAV BAR (Prisma-style pill)
-          ============================================================ */}
-      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, display: 'flex', justifyContent: 'center' }}>
-        <div style={{ background: '#000', borderRadius: '0 0 12px 12px', padding: '6px 14px', whiteSpace: 'nowrap' }} className="md:rounded-b-3xl md:px-8 md:py-2">
-        <div style={{ display: 'flex', gap: 'clamp(10px,3vw,40px)', fontSize: '9px', letterSpacing: '0.08em', color: 'rgba(225,224,204,0.7)' }} className="sm:text-xs md:text-sm">
-          <a href="#about" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>About</a>
-          <a href="#skills" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>Skills</a>
-          <a href="#work" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>Work</a>
-          <a href="#ai" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => { e.currentTarget.style.color = '#E1E0CC' }} onMouseLeave={e => { e.currentTarget.style.color = 'rgba(225,224,204,0.7)' }}>AI</a>
-        </div>
-        </div>
-      </nav>
+      <Sidebar activeSection={activeSection} onNav={(s) => scrollToSection(s)} onItemClick={handleSidebarClick} isMobile={isMobile} />
 
-      {/* ============================================================
-          HERO
-          ============================================================ */}
-      <section className="min-h-[85vh] relative p-4 md:p-6" id="about">
+      <div style={{ marginLeft: isMobile ? 0 : '230px' }}>
+        {/* ============================================================
+            HERO
+            ============================================================ */}
+        <section className="h-screen relative p-4 md:p-6" id="about">
         <div className="relative w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden">
           {/* Video: poster fallback for WeChat mobile only */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: loading ? 0 : 1 }} transition={{ duration: 0.6 }} style={{ position: 'absolute', inset: 0 }}>
@@ -759,29 +872,6 @@ export default function App() {
       </section>
 
       {/* ============================================================
-          THREE SECTION CARDS
-          ============================================================ */}
-      <section id="work" style={{ background: '#000', padding: 'clamp(60px,10vh,100px) 24px 80px', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 'clamp(12px,1.5vw,20px)' }}>
-          <SectionCard index={0} title="Working Experience" onItemClick={openWork} items={[
-            { id: 'donner', company: 'DONNER', role: 'PM 管培生', period: '2025.6 – 2026.2', highlights: ['里程碑 100% 准时达成', 'TR 一次通过率 85.7%', '整机成本偏差 ≤3%'] },
-            { id: 'ur', company: 'URBAN REVIVO', role: '采购 PMO', period: '2022.2 – 2023.3', highlights: ['采购成本降幅 −5.7%', '打样合格率 93.7%', '绿通周期缩短 −7d'] },
-          ]} />
-          <SectionCard index={1} title="Projects Experience" onItemClick={openProject} items={[
-            { id: 'miyavi', company: 'MIYAVI 联名款 3-in-1 吉他效果器', role: 'Project Lead', period: '2025.8 – 2026.1', highlights: ['项目周期缩短 21%', '整机成本偏差 1.93%', 'MP 良率 92%+', 'AI 甘特图 0→1'] },
-            { id: 'mro', company: 'MRO 2.0 数字化流程迭代', role: 'Process Owner', period: '2022.11 – 2023.3', highlights: ['售后耗时 −2 人天', '绿通准时率 97.6%', '返单 −3单/月'] },
-          ]} />
-          <div id="ai" style={{ display: 'contents' }}>
-            <SectionCard index={2} title="AI Projects" onItemClick={openProject} items={[
-            { id: 'pm-os', company: 'PM OS — IPD 研发项目管理工具', role: '独立开发', period: '2026', highlights: ['13 里程碑 / 7 阶段 IPD 流程', '自绘 SVG 甘特图 + 9 张数据表', 'Vercel + CF Pages 双部署'] },
-            { id: 'ai-meeting', company: 'AI 会议纪要智能管理工具', role: '独立开发', period: '2025', highlights: ['30min → 5min 纪要整理', '风险识别 + 待办追踪', 'Claude Code Vibe Coding'] },
-            { id: 'competitor', company: '竞品分析 Agent Skill', role: '独立开发', period: '2026', highlights: ['具体竞品 / 概念竞品双模式', '自动化搜索 + Excel 报告', '附带 PDF 案例报告'] },
-          ]} />
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
           FOOTER
           ============================================================ */}
       <section id="match" style={{ background: '#000', padding: '0 24px 60px', textAlign: 'center' }}>
@@ -791,6 +881,7 @@ export default function App() {
           </div>
         </FadeIn>
       </section>
+      </div>
 
       {/* Modal */}
       <Modal open={modal.open} title={modal.title} onClose={closeModal}>{modal.body}</Modal>
