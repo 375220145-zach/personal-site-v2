@@ -9,14 +9,11 @@ Cloudflare Worker：JD 匹配分析 API（DeepSeek）
 # 构建前端
 npm run build
 
-# 部署前端到 Cloudflare Pages
-npx wrangler pages deploy dist --project-name=<project-name> --commit-dirty=true --branch=main
-
 # 部署 Worker（JD 匹配 API）
 cd worker && npx wrangler deploy
 ```
 
-- 输出目录：`dist/`
+- 输出目录：`docs/` → 自动提交到 main 分支 → GitHub Pages 自动发布
 - Worker 配置：`worker/wrangler.toml`
 - 环境变量：`DEEPSEEK_API_KEY`（Worker 使用）
 
@@ -24,7 +21,7 @@ cd worker && npx wrangler deploy
 - `src/` — React 前端源码
 - `worker/` — Cloudflare Worker（JD 匹配 API，调用 DeepSeek 分析 JD vs 简历匹配度）
 - `public/` — 静态资源（视频等）
-- `dist/` — 构建输出
+- `docs/` — 构建输出（GitHub Pages 部署源）
 
 ### 功能
 - 个人主页（React SPA）
