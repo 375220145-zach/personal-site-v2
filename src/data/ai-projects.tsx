@@ -108,8 +108,12 @@ function CompetitorDetail() {
     <H3>项目简介</H3>
     <P>基于 Claude Code Skill 框架搭建的自动化竞品分析工具。输入产品名即可自动完成：竞品信息收集 → 多维度对比分析 → 数据可视化 → Excel 深度报告导出。</P>
 
+    <H3>智能分类</H3>
+    <P>根据输入自动识别产品类型，匹配对应的分析框架。LLM / SaaS / 消费电子 / 家居用品 / 概念方案，每类有独立的搜索策略和对比维度。</P>
+    <P style={{ color: 'rgba(222,219,200,0.35)', fontSize: '11px' }}>示例：输入「智能笔记 LLM」→ 自动识别为 SaaS 品类，聚焦模型能力、API 定价、多模态支持、上下文窗口等维度，而非硬件参数</P>
+
     <H3>具体竞品分析</H3>
-    <P>针对已上市实体产品，搜索同品类竞品进行横向对比。覆盖基础信息、评分口碑、销量排名、产品规格、价格分布、SWOT、用户评价、市场空白与战略建议。</P>
+    <P>针对已上市产品，搜索同品类竞品进行横向对比。覆盖基础信息、评分口碑、销量排名、产品规格、价格分布、SWOT、用户评价、市场空白与战略建议。</P>
     <P style={{ color: 'rgba(222,219,200,0.4)', fontSize: '11px' }}>案例：绿联67W充电宝 vs 小米/倍思/安克/罗马仕/酷态科 6 款同规格产品全维度分析</P>
 
     <H3>概念竞品分析</H3>
@@ -119,6 +123,10 @@ function CompetitorDetail() {
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
       <Tag>Claude Code Skill</Tag><Tag>Web 搜索</Tag><Tag>Excel 导出</Tag><Tag>SWOT 分析</Tag><Tag>专利检索</Tag>
+    </div>
+
+    <div style={{ marginTop: '14px' }}>
+      <Link href={import.meta.env.BASE_URL + 'competitive-analysis-portfolio.pdf'}>查看案例报告 PDF ↗</Link>
     </div>
   </>
 }

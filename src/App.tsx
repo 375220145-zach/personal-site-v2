@@ -768,7 +768,7 @@ export default function App() {
           THREE SECTION CARDS
           ============================================================ */}
       <section id="work" style={{ background: '#000', padding: 'clamp(60px,10vh,100px) 24px 80px', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 'clamp(12px,1.5vw,20px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: 'clamp(12px,1.5vw,20px)' }}>
           <SectionCard index={0} title="Working Experience" onItemClick={openWork} items={[
             { id: 'donner', company: 'DONNER', role: 'PM 管培生', period: '2025.6 – 2026.2', highlights: ['里程碑 100% 准时达成', 'TR 一次通过率 85.7%', '整机成本偏差 ≤3%'] },
             { id: 'ur', company: 'URBAN REVIVO', role: '采购 PMO', period: '2022.2 – 2023.3', highlights: ['采购成本降幅 −5.7%', '打样合格率 93.7%', '绿通周期缩短 −7d'] },
@@ -780,9 +780,12 @@ export default function App() {
           <div id="ai" style={{ gridColumn: '1 / -1', marginTop: 'clamp(40px,6vh,80px)' }}>
             <div style={{ textAlign: 'center', marginBottom: 'clamp(20px,4vh,32px)' }}>
               <div style={{ fontSize: '12px', letterSpacing: '0.3em', color: 'rgba(222,219,200,0.5)', textTransform: 'uppercase', marginBottom: '8px' }}>AI Builds</div>
-              <div style={{ fontSize: '14px', color: 'rgba(222,219,200,0.4)', lineHeight: 1.6 }}>按需造工具，对话即交付。</div>
+              <div style={{ fontSize: '14px', color: 'rgba(222,219,200,0.4)', lineHeight: 1.6 }}>非技术背景，独立交付。每个项目解决一个真实问题。</div>
             </div>
             <AiCardWall projects={aiProjects} onCardClick={openAiLab} />
+            <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '11px', color: 'rgba(222,219,200,0.18)', letterSpacing: '0.08em' }}>
+              持续创造中 · More coming
+            </div>
           </div>
         </div>
       </section>
