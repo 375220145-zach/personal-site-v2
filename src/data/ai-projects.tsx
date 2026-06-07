@@ -42,11 +42,11 @@ function Tag({ children }: { children: string }) {
 function PmOsDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>基于 DONNER 真实 PM 经验（IPD 流程、TR/DCP 评审、MIL、BOM），用 Claude Code 独立开发的全功能项目管理工具。覆盖从概念到量产的全生命周期管理。</P>
+    <P>源自 DONNER 实战经验（IPD 流程、TR/DCP 评审、MIL、BOM），用 Claude Code 独立开发。覆盖概念到量产全过程。</P>
     <div style={{ marginTop: '8px' }}><Link href="https://demo.pm-os.pages.dev">Live Demo ↗ demo.pm-os.pages.dev</Link></div>
 
     <H3>解决的问题</H3>
-    <P>传统项目管理依赖 Excel + 多工具切换，信息散落在邮件/IM/文档里。需要一个<HL>按 IPD 流程设计的集成工具</HL>，把里程碑、任务、BOM、会议、复盘全部串起来。</P>
+    <P>同时管理多个项目时，里程碑、任务、BOM、会议纪要散落在不同工具里，互相割裂。把这套东西整合进一个<HL>按 IPD 流程设计的工具</HL>。</P>
 
     <H3>核心功能</H3>
     <P><HL>IPD 全流程</HL> — 13 个里程碑节点（TR1→CDCP→TR2→HMS→TR3→PDCP→EVT→TR4→DVT→TR5→ADCP1→PVT→MP），7 阶段门管理，准入准出标准</P>
@@ -73,7 +73,7 @@ function PmOsDetail() {
 function AiMeetingDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>基于 Claude Code 采用 Vibe Coding 独立开发，实现内容导入 → AI 分析 → 风险识别 → 待办追踪 → 多格式导出的完整闭环。30 分钟的手工整理压缩到 5 分钟。</P>
+    <P>独立开发（Claude Code）。导入会议内容后，AI 自动提取行动项、识别风险、生成待办清单，支持 Markdown / PDF / Excel 导出。30 分钟的手工整理压缩到 5 分钟。</P>
     <div style={{ marginTop: '8px' }}><Link href="https://ai-execution-pocket.vercel.app/">Live Demo ↗ ai-execution-pocket.vercel.app</Link></div>
 
     <H3>解决的问题</H3>
@@ -106,7 +106,7 @@ function AiMeetingDetail() {
 function CompetitorDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>基于 Claude Code Skill 框架搭建的自动化竞品分析工具。输入产品名即可自动完成：竞品信息收集 → 多维度对比分析 → 数据可视化 → Excel 深度报告导出。</P>
+    <P>用 Claude Code Skill 框架搭建。输入产品名，自动完成竞品搜索、多维度对比、可视化分析，输出 Excel 报告。</P>
 
     <H3>智能分类</H3>
     <P>根据输入自动识别产品类型，匹配对应的分析框架。LLM / SaaS / 消费电子 / 家居用品 / 概念方案，每类有独立的搜索策略和对比维度。</P>
@@ -139,9 +139,8 @@ function ObsidianMemoryDetail() {
     <H3>一句话</H3>
     <P>用 Obsidian + Claude Code 搭了一套 AI Agent 共享记忆系统。新 session 自动加载全部偏好和项目上下文。每次踩坑自动沉淀为可复用的经验。</P>
 
-    <H3>背景：AI Agent 的健忘症</H3>
-    <P>Claude Code 这类 AI Agent 有一个致命问题：<HL>每次新对话从零开始。</HL>上回告诉它的偏好、规则、教训，换一个对话框就全忘了。</P>
-    <P>传统方案是 RAG（检索增强生成），但小而美的个人场景不需要向量数据库。我需要的是一套 <HL>Markdown 文件夹，Agent 能读也能写，人也能随时改。</HL></P>
+    <H3>为什么做这个</H3>
+    <P>Claude Code 有一个问题：<HL>每次新对话从零开始。</HL>上回告诉它的偏好、规则、教训，换一个对话框就全忘了。我的解法是一套 <HL>Markdown 文件夹——Agent 能读也能写，人也能随时改。</HL></P>
 
     <H3>架构：5 个文件夹</H3>
     <Flow>{`Vault/
@@ -201,7 +200,7 @@ function FortuneDetail() {
     <P>八字 + 紫微斗数 + 塔罗三板块融合的命理应用。国内用户友好，Cloudflare Pages 直连部署。</P>
 
     <H3>解决的问题</H3>
-    <P>市面上的命理工具要么是单一体系，要么界面陈旧。做一个<HL>三板块融合 + 现代 UI</HL>的命理应用。</P>
+    <P>八字、紫微、塔罗三套体系分散在不同平台。身边多位好友有实际使用需求，整合到一个应用里。</P>
 
     <H3>已实现功能</H3>
     <P>• 八字排盘 + 解读</P>
@@ -228,7 +227,7 @@ function FortuneDetail() {
 function SkillsDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>基于 Claude Code Skill 框架搭建的 11 个可复用自动化能力模块。每个 Skill 是一个独立的功能单元，AI Agent 遇到特定任务时自动加载。</P>
+    <P>为 Claude Code 搭建了 11 个能力模块，覆盖效率工具、分析研究、部署发布、文档创作四类场景。AI 遇到对应任务时自动加载。</P>
 
     <H3>Skills 清单</H3>
 
