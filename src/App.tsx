@@ -711,7 +711,7 @@ export default function App() {
             {isMobile && /MicroMessenger/i.test(navigator.userAgent) ? (
               <img src={BASE + 'hero-poster.jpg'} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <video src={BASE + 'b048d1974e26508d52a4b1d58732e729.mp4'} autoPlay loop muted playsInline webkit-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <video src={BASE + 'a0c102effbbde38923b32f318aba4a8c.mp4'} autoPlay loop muted playsInline webkit-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             )}
           </motion.div>
           <div className="noise-overlay" style={{ position: 'absolute', inset: 0, opacity: 0.55, mixBlendMode: 'overlay', pointerEvents: 'none' }} />
