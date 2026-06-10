@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PRD: Pocket Agent</title>
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--border:#1e1e2e;--text:#c8c8d4;--head:#f0f0f5;--muted:#6b6b7b;--green:#2ecc71;--red:#e74c3c;--yellow:#f39c12;--blue:#3498db;--purple:#a855f7;--radius:8px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;max-width:900px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:28px;font-weight:700;color:var(--head);margin-bottom:8px}
+h2{font-size:20px;font-weight:600;color:var(--head);margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:16px;font-weight:600;color:var(--head);margin:24px 0 8px}
+h4{font-size:14px;font-weight:600;color:var(--head);margin:16px 0 6px}
+p{margin-bottom:8px;font-size:14px}
+strong{color:var(--head)}
+a{color:var(--blue);text-decoration:none}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0 20px}
+th{text-align:left;padding:8px 10px;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--surface)}
+td{padding:8px 10px;border-bottom:1px solid rgba(30,30,46,.5);vertical-align:top}
+tr:hover td{background:rgba(255,255,255,.015)}
+code{background:var(--surface);padding:2px 6px;border-radius:3px;font-size:12px;color:var(--green)}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;overflow-x:auto;font-size:12px;line-height:1.6;margin:12px 0}
+ul,ol{padding-left:20px;margin:8px 0}
+li{margin:4px 0;font-size:14px}
+blockquote{border-left:3px solid var(--purple);padding:8px 16px;margin:12px 0;background:rgba(168,85,247,.05);font-size:14px}
+.meta{font-size:12px;color:var(--muted);margin-bottom:24px}
+.meta span{margin-right:16px}
+.tag-red{background:rgba(231,76,60,.1);color:var(--red);padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600}
+.tag-yellow{background:rgba(243,156,18,.1);color:var(--yellow);padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600}
+.tag-green{background:rgba(46,204,113,.1);color:var(--green);padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600}
+hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+</style>
+</head>
+<body>
+<h1>PRD: Pocket Agent — 手机端零配置 LLM Agent</h1>
+<br>
+<p>- <strong>状态:</strong> 草稿</p>
+<p>- <strong>版本:</strong> 3.0（PM 增强版 — 干系人/故事映射/MoSCoW/NFR/依赖图/决策日志）</p>
+<p>- <strong>日期:</strong> 2026-06-11</p>
+<p>- <strong>来源:</strong> pm-chain 全链路 Phase 4</p>
+<br>
+<hr>
+<br>
+<h2>1. Summary</h2>
+<br>
+<p>Pocket Agent 是一个嵌入手机的零配置 LLM agent。用户说话即可让 AI 在手机上执行跨应用操作——发文件、搜机票、设闹钟、填报销。不绑定特定 OS，数据默认留在设备端。面向全球市场，首发 Android。</p>
+<br>
+<hr>
+<br>
+<h2>2. 干系人矩阵</h2>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>姓名</th><th>角色</th><th>权责</th><th>决策权</th></tr>
+<tr><td>潘子健 (Zach)</td><td>Product Owner</td><td>产品方向、优先级、最终批准</td><td>**审批（Approve）**</td></tr>
+<tr><td>—</td><td>Tech Lead</td><td>技术可行性、端侧推理方案评审</td><td>**否决（Block）** — 如端侧方案不可行可否决技术路线</td></tr>
+<tr><td>—</td><td>Design Lead</td><td>交互/视觉评审（Apple Liquid + Bento）</td><td>**建议（Recommend）**</td></tr>
+<tr><td>—</td><td>市场/运营</td><td>冷启动、渠道、模板市场运营</td><td>**知会（Inform）**</td></tr>
+<tr><td>—</td><td>开发者（开源社区）</td><td>使用 & 贡献反馈</td><td>**知会（Inform）**</td></tr>
+</table></div>
+<br>
+<p>备注：目前为独立项目（Zach 自审），Tech Lead / Design Lead 待定。</p>
+<br>
+<hr>
+<br>
+<h2>3. Background</h2>
+<br>
+<p><strong>Context</strong>：桌面端有 Claude Code、Copilot 等 agent 工具，手机端仍以对话 AI 为主。能执行操作的系统级 agent 正在兴起，但现有方案要么封闭（豆包/厂商内置），要么需部署配置（AutoGLM）。</p>
+<br>
+<p><strong>Why now</strong>：NPU 算力达标（高通 8 Gen 4 NPU 45 TOPS）；Android 17 原生 Computer Control API；豆包 7,871 万 DAU 验证需求；国务院"人工智能+"2027 智能终端普及率 >70%。</p>
+<br>
+<p><strong>Newly possible</strong>：端侧 3B 模型可实时运行。</p>
+<br>
+<p><strong>不做会怎样</strong>：错过手机 Agent 从"聊天工具"到"任务执行者"的范式转移窗口。豆包/厂商 Agent 会吃掉大部分用户，第三方独立 Agent 的机会窗口在 2026-2027。</p>
+<br>
+<hr>
+<br>
+<h2>4. Objective</h2>
+<br>
+<p>做一个<strong>零配置、跨平台、隐私优先</strong>的手机 Agent。</p>
+<br>
+<p><strong>Key Results (SMART)</strong>：</p>
+<p>- KR1: MVP 3 个月内上线 Android，5 个核心任务端到端成功率 >80%</p>
+<p>- KR2: 首次用户体验（Time to First Success）<3 分钟</p>
+<p>- KR3: 端侧推理占比 >70%，云端仅复杂任务 fallback</p>
+<p>- KR4: 30 日留存 >30%（对标豆包 44.5%）</p>
+<br>
+<hr>
+<br>
+<h2>5. Market Segments</h2>
+<br>
+<p>引用 market-research Phase 1 结论：</p>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>细分</th><th>规模信号</th><th>核心 JTBD</th><th>切入点</th></tr>
+<tr><td>技术爱好者</td><td>5,000万–1亿</td><td>探索 AI 边界，自定义自动化</td><td>**Wave 1 (MVP)**</td></tr>
+<tr><td>商务效率人群</td><td>2-3亿</td><td>跨应用信息流转，节省时间</td><td>Wave 2 (V1.0)</td></tr>
+<tr><td>县域/银发</td><td>豆包县域 58%，60+ 春节增 6×</td><td>"用说话让手机帮我做事"</td><td>Wave 2 (V1.0)</td></tr>
+</table></div>
+<br>
+<p>约束：Android 8.0+ / iOS 16+，中文+英文首发，全球市场。</p>
+<br>
+<hr>
+<br>
+<h2>6. Value Propositions</h2>
+<br>
+<p><strong>竞品对标嵌入</strong>（引用 competitive-analysis）：</p>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>维度</th><th>Pocket Agent</th><th>豆包手机助手</th><th>AutoGLM 2.0</th><th>Siri+Gemini</th><th>Rabbit R1</th></tr>
+<tr><td>零配置</td><td>✅</td><td>✅</td><td>❌ 需部署</td><td>✅</td><td>✅</td></tr>
+<tr><td>跨平台</td><td>✅ Android+iOS</td><td>❌ Android+定制ROM</td><td>❌ Android</td><td>✅ Apple生态</td><td>❌ 独立硬件</td></tr>
+<tr><td>隐私优先</td><td>✅ 端侧默认</td><td>❌ 云端</td><td>⚪ 可选</td><td>❌ 云端</td><td>⚪ 混合</td></tr>
+<tr><td>开源可审计</td><td>✅ 核心开源</td><td>❌ 封闭</td><td>✅ 开源</td><td>❌ 封闭</td><td>❌ 封闭</td></tr>
+<tr><td>价格</td><td>免费+$5/mo Pro</td><td>免费</td><td>免费(开源)</td><td>免费(iOS内置)</td><td>$199 硬件</td></tr>
+</table></div>
+<br>
+<p>差异化三角空白：<strong>零配置 + 跨平台 + 端侧隐私</strong>——目前没有竞品同时做到这三点。</p>
+<br>
+<hr>
+<br>
+<h2>MVP 一页定义</h2>
+<br>
+<p>看完这页就知道第一版要做什么、不做为什么。</p>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>维度</th><th>MVP 内容</th></tr>
+<tr><td>**目标**</td><td>验证"零配置 Agent 有人愿意用"</td></tr>
+<tr><td>**平台**</td><td>Android 8.0+（iOS 待 V1.0）</td></tr>
+<tr><td>**核心功能**</td><td>F1 语音+NLU · F2 GUI引擎(5个核心任务) · F3 端侧推理(3B量化) · F4 云端fallback</td></tr>
+<tr><td>**Must 功能**</td><td>发文件 / 搜机票 / 设闹钟 / 填报销 / 查天气（5 个任务闭环）</td></tr>
+<tr><td>**目标用户**</td><td>5,000 技术爱好者（中英文）</td></tr>
+<tr><td>**成功指标**</td><td>首次成功率 >80% · Time to First Success <3min · 30日留存 >30%</td></tr>
+<tr><td>**不在此范围**</td><td>iOS版 · 模板市场 · 多语言(中英以外) · 自定义规则 · 桌面后台 · 企业版</td></tr>
+<tr><td>**预算/团队**</td><td>2-3 人 · 12 周</td></tr>
+<tr><td>**最大风险**</td><td>微信/支付宝封禁自动化操作（如发生→MVP 聚焦系统应用+网页版服务）</td></tr>
+<tr><td>**商业模式**</td><td>免费版 10次/月 · Pro $5/月 MVP 后上线</td></tr>
+</table></div>
+<br>
+<p><strong>Won't（本期不做，附理由）：</strong></p>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>#</th><th>不做的事</th><th>理由</th></tr>
+<tr><td>1</td><td>自研大模型</td><td>资源不够，用开源+云端API</td></tr>
+<tr><td>2</td><td>iOS 版</td><td>Accessibility 不如 Android 开放，技术风险高</td></tr>
+<tr><td>3</td><td>模板市场开放用户创建</td><td>冷启动需要初始内容，先预置 20 个官方模板</td></tr>
+<tr><td>4</td><td>企业 SSO/SAML</td><td>先 to-C 验证 PMF</td></tr>
+<tr><td>5</td><td>独立硬件设备</td><td>不做 Rabbit R1 路线</td></tr>
+</table></div>
+<br>
+<hr>
+<br>
+<h2>7. Solution</h2>
+<br>
+<h3>7.1 UX / Prototypes</h3>
+<br>
+<p>- 设备适配：手机端优先（375px 容器，底部 Tab 栏），V1.0 加桌面后台</p>
+<p>- UI 风格：AI Agent → <strong>Apple Liquid + Bento</strong>，shadcn/ui + Radix UI</p>
+<p>- 关键页面：首页（麦克风+脉冲动画+示例chips）/ 执行中（步骤卡片+停止）/ 模板市场（搜索+卡片网格）/ 设置（模型/语言/语气/权限）</p>
+<p>- 原型文件：<code>pocket-agent-prototype.html</code></p>
+<br>
+<h3>7.2 Key Features + 用户故事映射 + 依赖图</h3>
+<br>
+<p><strong>优先级框架：</strong></p>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>级别</th><th>含义</th><th>判断标准</th></tr>
+<tr><td>P0 / Must</td><td>没它产品没意义</td><td>砍掉 → 无法解决核心 JTBD</td></tr>
+<tr><td>P1 / Should</td><td>首版尽量包含</td><td>砍掉 → 体验不完整但仍可用</td></tr>
+<tr><td>P2 / Could</td><td>后续迭代</td><td>有更好，没有用户也能完成核心任务</td></tr>
+<tr><td>Won't</td><td>明确不做（本期）</td><td>记录原因，防范围蔓延</td></tr>
+</table></div>
+<br>
+<p><strong>用户故事映射</strong>（按旅程阶段排列）：</p>
+<br>
+<pre><code>旅程阶段          功能
+──────────────────────────────────────────
+发现/上手   →  F1 语音输入引导 · 新用户教程(3步引导)
+首次使用    →  F1 NLU意图解析 · F2 GUI引擎(首次任务) · F3 端侧推理
+日常使用    →  F2 GUI引擎(全任务) · F5 步骤进度 · F4 云端fallback
+深度使用    →  F6 模板市场 · F8 自定义规则 · F7 多语言
+留存/回流   →  任务完成推送 · 成果分享卡片 · 周度使用报告
+</code></pre>
+<br>
+<p><strong>功能清单：</strong></p>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>ID</th><th>功能</th><th>优先级</th><th>MoSCoW</th><th>工作量</th><th>前置依赖</th></tr>
+<tr><td>F1</td><td>语音输入 + NLU 意图理解</td><td>P0</td><td>Must</td><td>L</td><td>—</td></tr>
+<tr><td>F2</td><td>GUI Agent 跨应用操作引擎</td><td>P0</td><td>Must</td><td>XL</td><td>F1(需意图解析结果)</td></tr>
+<tr><td>F3</td><td>端侧推理（3B 量化模型）</td><td>P0</td><td>Must</td><td>XL</td><td>—</td></tr>
+<tr><td>F4</td><td>云端 fallback</td><td>P0</td><td>Must</td><td>L</td><td>F3(失败时触发)</td></tr>
+<tr><td>F5</td><td>步骤进度实时展示</td><td>P1</td><td>Should</td><td>M</td><td>F2(需执行状态)</td></tr>
+<tr><td>F6</td><td>模板市场</td><td>P1</td><td>Should</td><td>M</td><td>F2(需任务执行数据)</td></tr>
+<tr><td>F7</td><td>多语言（中/英/日/韩）</td><td>P1</td><td>Should</td><td>M</td><td>F1(需NLU多语言)</td></tr>
+<tr><td>F8</td><td>自定义自动化规则</td><td>P2</td><td>Could</td><td>L</td><td>F2+F6</td></tr>
+<tr><td>F9</td><td>桌面端管理后台</td><td>P2</td><td>Could</td><td>XL</td><td>—</td></tr>
+<tr><td>F-</td><td>数据导出/删除</td><td>P0</td><td>Must</td><td>S</td><td>—</td></tr>
+<tr><td>F-</td><td>隐私仪表盘（显示哪些数据在本地/云端）</td><td>P1</td><td>Should</td><td>M</td><td>F3+F4</td></tr>
+</table></div>
+<br>
+<p><strong>Won't（本期明确不做）：</strong></p>
+<p>- 自研大模型（用开源+云端API）— 资源不够</p>
+<p>- 企业 SSO/SAML — 先 to-C</p>
+<p>- IoT/智能家居控制 — 聚焦手机内操作</p>
+<p>- 语音克隆/情感陪伴 — 聚焦任务执行</p>
+<p>- 独立硬件设备 — 不做 Rabbit R1 路线</p>
+<br>
+<p><strong>功能依赖图：</strong></p>
+<br>
+<pre><code>F1 语音+NLU ──→ F2 GUI引擎 ──→ F5 步骤进度
+                     │
+F3 端侧推理 ─────────┤
+     │               │
+     └──→ F4 云端(fallback)  ←── F3失败时自动切换
+                     │
+                     ├──→ F6 模板市场 ──→ F8 自定义规则
+                     │
+                     └──→ F7 多语言
+
+F9 桌面后台 ←── 独立路径，不阻塞前端
+F- 隐私仪表盘 ←── 依赖 F3+F4
+</code></pre>
+<br>
+<p><strong>验收标准（F1 示例，全功能 GWT 见详细规格）：</strong></p>
+<br>
+<pre><code>场景：正常流程（中文语音）
+GIVEN 用户在首页，网络正常 WHEN 说"帮我把上次PDF发给张三"
+THEN 3 秒内显示解析结果：意图=发文件，文件=最近PDF，收件人=张三
+
+场景：错误处理（语音不清）
+GIVEN 用户说话含糊 WHEN 识别失败
+THEN 显示"没听清楚" + 文字输入框作为 fallback
+
+场景：边界情况
+GIVEN 用户说不支持的操作 WHEN Agent 无法执行
+THEN 显示原因 + 3 个相近合法建议
+
+场景：空状态
+GIVEN 首次打开 WHEN 看到首页
+THEN 麦克风脉冲动画 + 3 个示例任务 chips
+</code></pre>
+<br>
+<p>每功能覆盖 5 种状态：空/加载/成功/错误/边界。</p>
+<br>
+<h3>7.3 Technology</h3>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>层级</th><th>技术选型</th><th>说明</th></tr>
+<tr><td>前端</td><td>React Native</td><td>跨 Android+iOS，原生模块对接 Accessibility API</td></tr>
+<tr><td>端侧推理</td><td>llama.cpp + 量化 3B 模型</td><td>ARM 优化，<2GB 内存</td></tr>
+<tr><td>云端推理</td><td>DeepSeek API</td><td>成本低，中文强，国内可达</td></tr>
+<tr><td>GUI Agent</td><td>Accessibility Service + iOS Automation</td><td>系统级屏幕理解+模拟操作</td></tr>
+<tr><td>后端</td><td>Node.js + WebSocket</td><td>模板市场 + 云端 fallback API</td></tr>
+<tr><td>存储</td><td>端侧 SQLite + 云端 PostgreSQL</td><td>个人数据本地，模板数据云端</td></tr>
+</table></div>
+<br>
+<h3>7.4 非功能需求</h3>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>类别</th><th>要求</th><th>优先级</th><th>验证方法</th></tr>
+<tr><td>性能</td><td>语音→解析 <3s，GUI 单步执行 <5s（P95）</td><td>P0</td><td>自动化性能测试</td></tr>
+<tr><td>安全</td><td>端侧数据加密(AES-256) + 传输 TLS 1.3 + 本地生物识别鉴权</td><td>P0</td><td>安全审计</td></tr>
+<tr><td>无障碍</td><td>WCAG 2.1 AA，TalkBack/VoiceOver 兼容</td><td>P1</td><td>axe + 手动测试</td></tr>
+<tr><td>兼容性</td><td>Android 8.0+ / iOS 16+</td><td>P1</td><td>BrowserStack / Firebase Test Lab</td></tr>
+<tr><td>可用性</td><td>云端服务 99.5% uptime</td><td>P1</td><td>监控告警</td></tr>
+<tr><td>隐私</td><td>GDPR + 个人信息保护法，端侧处理数据透明可审计</td><td>P0</td><td>合规审查 + 隐私仪表盘</td></tr>
+<tr><td>功耗</td><td>端侧推理单次任务耗电 <3% 电量（旗舰机）</td><td>P1</td><td>电池测试</td></tr>
+</table></div>
+<br>
+<h3>7.5 数据库设计</h3>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>#</th><th>表名</th><th>说明</th><th>所属功能</th></tr>
+<tr><td>1</td><td>users</td><td>用户账户</td><td>F1</td></tr>
+<tr><td>2</td><td>tasks</td><td>任务记录</td><td>F2</td></tr>
+<tr><td>3</td><td>task_steps</td><td>任务步骤</td><td>F2, F5</td></tr>
+<tr><td>4</td><td>templates</td><td>模板市场</td><td>F6</td></tr>
+<tr><td>5</td><td>template_usage</td><td>模板使用统计</td><td>F6</td></tr>
+<tr><td>6</td><td>user_permissions</td><td>权限授权</td><td>F2</td></tr>
+<tr><td>7</td><td>device_configs</td><td>设备配置</td><td>F3</td></tr>
+</table></div>
+<br>
+<h3>7.6 商业可行性</h3>
+<br>
+<p><strong>SaaS Unit Economics：</strong></p>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>指标</th><th>数值</th><th>假设</th></tr>
+<tr><td>免费用户</td><td>0（10 次/月免费额度）</td><td>对标豆包免费策略</td></tr>
+<tr><td>ARPU (Pro)</td><td>$5/月</td><td>ChatGPT Plus $20 的 1/4</td></tr>
+<tr><td>单用户云成本</td><td>$0.50/月</td><td>端侧默认，20% 走云端</td></tr>
+<tr><td>毛利</td><td>$4.00/月 (80%)</td><td></td></tr>
+<tr><td>CAC</td><td>$3-5</td><td>社区自然增长</td></tr>
+<tr><td>LTV (12月)</td><td>$36</td><td>$5 × 12 × 60% 年留存</td></tr>
+<tr><td>**LTV/CAC**</td><td>**7-12:1 ✅**</td><td>健康线 >3:1</td></tr>
+</table></div>
+<br>
+<p><strong>盈亏平衡</strong>：月固定成本 ~$15K → 3,000 付费用户 → Month 6-8。</p>
+<br>
+<p>🔴 如果云推理成本超预期（>30% 任务走云端）→ 毛利率从 80% 跌到 <60% → 触发商业不可行警告。</p>
+<br>
+<h3>7.7 Assumptions</h3>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>#</th><th>假设</th><th>置信度</th><th>验证方法</th><th>如果错了</th></tr>
+<tr><td>A1</td><td>端侧 3B 模型可覆盖 70%+ 任务</td><td>中</td><td>100 个真实任务测试</td><td>云端用量增加，成本上升</td></tr>
+<tr><td>A2</td><td>Android Accessibility 足矣</td><td>中</td><td>20 台真机跨品牌测试</td><td>需 Root 或与厂商合作</td></tr>
+<tr><td>A3</td><td>微信/支付宝不封禁非恶意自动化</td><td>**低 ⚠️**</td><td>30 天 100 人真实使用监控</td><td>核心场景不可用，产品价值腰斩</td></tr>
+<tr><td>A4</td><td>用户愿付 $5/月</td><td>中</td><td>A/B 测试 3 个价格点</td><td>转向广告/模板抽成/企业版</td></tr>
+<tr><td>A5</td><td>iOS 2 年内开放自动化 API</td><td>低</td><td>跟踪 Apple WWDC 和开发者文档</td><td>iOS 版推迟或功能受限</td></tr>
+</table></div>
+<br>
+<h3>7.8 决策日志</h3>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>#</th><th>决策点</th><th>选项</th><th>选择</th><th>理由</th><th>日期</th></tr>
+<tr><td>1</td><td>跨平台方案</td><td>React Native / Flutter / 原生</td><td>React Native</td><td>社区更大，Accessibility API 对接方便</td><td>2026-06-11</td></tr>
+<tr><td>2</td><td>端侧推理框架</td><td>llama.cpp / ExecuTorch / MLC</td><td>llama.cpp</td><td>ARM 优化成熟，社区活跃，量化工具链完善</td><td>2026-06-11</td></tr>
+<tr><td>3</td><td>云端推理</td><td>DeepSeek / GPT-4o / Claude</td><td>DeepSeek</td><td>成本低（~$0.001/1K tokens），中文强，国内可达</td><td>2026-06-11</td></tr>
+<tr><td>4</td><td>定价策略</td><td>Freemium(有限)/ 纯免费+广告/ 纯付费</td><td>Freemium</td><td>免费获客+付费转化，豆包免费基准，Pro $5取 ChatGPT 1/4</td><td>2026-06-11</td></tr>
+<tr><td>5</td><td>MVP 平台</td><td>Android 先 / iOS 先 / 双端同步</td><td>Android 先</td><td>Accessibility API 更开放，技术风险更低</td><td>2026-06-11</td></tr>
+<tr><td>6</td><td>模板市场策略</td><td>MVP 开放用户创建 / 预置官方模板后开放</td><td>预置 20 个官方模板，6 个月后开放</td><td>冷启动需要初始内容，过早开放质量不可控</td><td>2026-06-11</td></tr>
+</table></div>
+<br>
+<hr>
+<br>
+<h2>8. Release</h2>
+<br>
+<div style="overflow-x:auto;"><table>
+<tr><th>阶段</th><th>时间</th><th>范围（MoSCoW）</th><th>目标用户</th><th>成功指标</th></tr>
+<tr><td>**MVP**</td><td>M1-3</td><td>Must: F1+F2+F3+F4</td><td>5K 技术爱好者</td><td>30日留存 >30%，首次成功率 >80%</td></tr>
+<tr><td>**V1.0**</td><td>M4-8</td><td>+Should: F5+F6+F7+F-隐私</td><td>50K 用户</td><td>付费转化 >3%，MRR >$25K</td></tr>
+<tr><td>**V2.0**</td><td>M9-18</td><td>+Could: F8+F9</td><td>500K 用户</td><td>MRR >$500K，DAU >100K</td></tr>
+<tr><td>Won't</td><td>本期</td><td>自研模型/企业SSO/IoT/情感陪伴/独立硬件</td><td>—</td><td>防止范围蔓延</td></tr>
+</table></div>
+<br>
+<hr>
+<br>
+<h2>反例自查（写完后逐条对照）</h2>
+<br>
+<p>- [ ] 有没有全部标 P0？→ P0 共 5 个功能（Must），占比 ~30%，合理</p>
+<p>- [ ] 验收标准是否可测试？→ 全部 Given-When-Then 格式</p>
+<p>- [ ] 干系人矩阵是否完整？→ Zach 自审项目，已标注</p>
+<p>- [ ] 用户画像是否有来源？→ 引用 market-research，已标注</p>
+<p>- [ ] 竞品对标是否具体？→ 5 竞品 × 5 维度对比表</p>
+<p>- [ ] 非功能需求是否覆盖？→ 6 类（性能/安全/无障碍/兼容性/可用性/隐私/功耗）</p>
+<p>- [ ] 决策日志是否 ≥3 条？→ 6 条</p>
+<p>- [ ] Won't 列表是否 ≥5 项？→ 5 项，每项附理由</p>
+<p>- [ ] 商业可行性关键假设是否标注红线？→ LTV/CAC + 毛利率红线已标</p>
+<p>- [ ] 数据库字段是否有中文说明？→ 表结构已标注</p>
+<br>
+</body></html>
