@@ -199,100 +199,120 @@
 </section></div>
 
 <!-- ====== 4. PRD ====== -->
-<div class="tab" id="prd"><section><h2>4. PRD: Pocket Agent v1.0</h2>
+<!-- ====== 4. PRD ====== -->
+<div class="tab" id="prd"><section><h2>4. PRD: Pocket Agent v1.0 <span class="confidence-badge conf-verified">增强版</span></h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:16px;">完整 PRD 已保存至 <code>prd.md</code>。含 UI 风格匹配、状态覆盖、Given-When-Then 验收标准、数据库设计、商业可行性。</p>
 
-<h3>Key Results</h3>
+<h3>Key Results (SMART)</h3>
 <div class="table-wrap"><table><tr><th>指标</th><th>目标</th><th>时限</th></tr>
-<tr><td>Android MVP 可运行</td><td>5 个核心操作（消息/提醒/搜索/比价/文件）</td><td>12 周</td></tr>
-<tr><td>端侧推理成功率</td><td>≥60% 在 10 个常用英文 app</td><td>12 周</td></tr>
-<tr><td>预注册用户</td><td>≥5000 人 Landing page 注册</td><td>8 周</td></tr>
-<tr><td>付费验证</td><td>≥50 人预购 Pro（$5/月）</td><td>12 周</td></tr></table></div>
+<tr><td>Android MVP 可运行</td><td>5 个核心跨应用任务端到端成功率 >80%</td><td>Month 1-3</td></tr>
+<tr><td>首次用户体验</td><td>Time to First Success <3 分钟</td><td>每个版本</td></tr>
+<tr><td>端侧推理占比</td><td>>70%（云端仅复杂任务 fallback）</td><td>上线后持续监控</td></tr>
+<tr><td>30 日留存</td><td>>30%</td><td>MVP 后 1 个月</td></tr></table></div>
 
-<h3>Feature Spec</h3>
-<h4>P0 — MVP 必须有</h4>
-<div class="table-wrap"><table><tr><th>ID</th><th>功能</th><th>用户故事</th><th>验收标准</th></tr>
-<tr><td><span class="prd-badge prd-p0">F1</span></td><td><strong>零配置启动</strong></td><td>下载 app 30 秒内发出第一个指令</td><td>安装→2权限→输入框→&lt;60s</td></tr>
-<tr><td><span class="prd-badge prd-p0">F2</span></td><td><strong>自然语言→操作执行</strong></td><td>"把 PDF 发给张三"</td><td>延迟&lt;2s，成功率≥60%</td></tr>
-<tr><td><span class="prd-badge prd-p0">F3</span></td><td><strong>消息类操作</strong></td><td>WhatsApp/微信/短信/Telegram</td><td>4 个 app 支持</td></tr>
-<tr><td><span class="prd-badge prd-p0">F4</span></td><td><strong>搜索/提醒/文件操作</strong></td><td>搜机票、设闹钟、找文件</td><td>3 类操作完成率 ≥50%</td></tr>
-<tr><td><span class="prd-badge prd-p0">F5</span></td><td><strong>操作可视化+可打断</strong></td><td>看到每步，随时停止</td><td>卡片展示步骤，Stop 按钮 &lt;200ms 响应</td></tr></table></div>
+<h3>P0/P1/P2 功能</h3>
+<div class="table-wrap"><table><tr><th>功能</th><th>优先级</th><th>工作量</th><th>状态覆盖</th></tr>
+<tr><td><strong>F1 语音输入 + NLU 意图理解</strong></td><td><span class="tag tag-green">P0</span></td><td>L</td><td>空/加载/成功/错误/边界 ✅</td></tr>
+<tr><td><strong>F2 GUI Agent 跨应用操作引擎</strong></td><td><span class="tag tag-green">P0</span></td><td>XL</td><td>含权限引导 + 支付确认暂停</td></tr>
+<tr><td><strong>F3 端侧推理（3B 量化模型）</strong></td><td><span class="tag tag-green">P0</span></td><td>XL</td><td>端侧/云端/hybrid 三模切换</td></tr>
+<tr><td><strong>F4 云端 fallback</strong></td><td><span class="tag tag-green">P0</span></td><td>L</td><td>超时/失败自动切换</td></tr>
+<tr><td><strong>F5 步骤进度实时展示</strong></td><td><span class="tag tag-yellow">P1</span></td><td>M</td><td>完成✓/进行中💠/等待○/失败✗</td></tr>
+<tr><td><strong>F6 模板市场</strong></td><td><span class="tag tag-yellow">P1</span></td><td>M</td><td>搜索/使用/评分/创建</td></tr>
+<tr><td><strong>F7 多语言（中/英/日/韩）</strong></td><td><span class="tag tag-yellow">P1</span></td><td>M</td><td>语言自动检测 + 手动切换</td></tr>
+<tr><td><strong>F8 自定义自动化规则</strong></td><td><span class="tag tag-blue">P2</span></td><td>L</td><td>触发条件/时间/操作链</td></tr>
+<tr><td><strong>F9 桌面端管理后台</strong></td><td><span class="tag tag-blue">P2</span></td><td>XL</td><td>配置管理/日志查看</td></tr></table></div>
 
-<h4>P1 — V1.0</h4>
-<div class="table-wrap"><table><tr><th>ID</th><th>功能</th></tr>
-<tr><td><span class="prd-badge prd-p1">F6</span></td><td><strong>模板市场</strong> — 社区分享模板，1-click 使用。需 WP2（商务用户）支撑网络效应</td></tr>
-<tr><td><span class="prd-badge prd-p1">F7</span></td><td><strong>跨 app 多步任务链</strong> — 3+ 步任务成功率 ≥40%</td></tr>
-<tr><td><span class="prd-badge prd-p1">F8</span></td><td><strong>iOS 版本</strong> — App Intents + Shortcuts</td></tr>
-<tr><td><span class="prd-badge prd-p1">F9</span></td><td><strong>个性化语气</strong> — 专业/幽默/极简</td></tr></table></div>
+<h3>验收标准示例（F1 语音输入）</h3>
+<div class="table-wrap"><table><tr><th>场景</th><th>Given-When-Then</th></tr>
+<tr><td><strong>正常流程</strong></td><td>GIVEN 用户在首页，网络正常 WHEN 说"帮我把上次PDF发给张三" THEN 3 秒内显示解析结果</td></tr>
+<tr><td><strong>错误处理</strong></td><td>GIVEN 用户说话含糊 WHEN 无法识别 THEN 显示"没听清楚" + 文字输入 fallback</td></tr>
+<tr><td><strong>边界情况</strong></td><td>GIVEN 用户说不支持的操作 WHEN Agent 无法执行 THEN 显示具体原因 + 3 个相近合法建议</td></tr>
+<tr><td><strong>空状态</strong></td><td>GIVEN 首次打开 WHEN 看到首页 THEN 麦克风脉冲动画 + 3 个示例任务 chips</td></tr></table></div>
 
-<h4>P2 — 后续</h4>
-<div class="table-wrap"><table><tr><th>ID</th><th>功能</th></tr>
-<tr><td><span class="prd-badge prd-p2">F10</span></td><td>云端增强模式</td></tr>
-<tr><td><span class="prd-badge prd-p2">F11</span></td><td>多语言（中英日韩）</td></tr>
-<tr><td><span class="prd-badge prd-p2">F12</span></td><td>端侧知识库 + 语音唤醒</td></tr></table></div>
+<h3>UI 风格</h3>
+<div class="table-wrap"><table><tr><th>维度</th><th>选择</th></tr>
+<tr><td>产品类型</td><td>AI Agent</td></tr>
+<tr><td>推荐风格</td><td><strong>Apple Liquid + Bento</strong></td></tr>
+<tr><td>组件体系</td><td>shadcn/ui + Radix UI</td></tr>
+<tr><td>设备适配</td><td>手机端优先（375px 容器 + 底部 Tab 栏），V1.0 加桌面后台</td></tr>
+<tr><td>设计语言</td><td>中性色调、系统字体、毛玻璃质感、冷静动效、无硬边框</td></tr></table></div>
+
+<h3>数据库设计（SaaS 启用）</h3>
+<div class="table-wrap"><table><tr><th>表名</th><th>说明</th><th>核心字段</th></tr>
+<tr><td><strong>users</strong></td><td>用户账户</td><td>id, language, model_pref(local/cloud), tone, device_os</td></tr>
+<tr><td><strong>tasks</strong></td><td>任务记录</td><td>id, user_id, intent, intent_type, status, inference_mode, duration_ms</td></tr>
+<tr><td><strong>task_steps</strong></td><td>任务步骤</td><td>id, task_id, step_order, action, status, result</td></tr>
+<tr><td><strong>templates</strong></td><td>模板市场</td><td>id, title, description, intent_pattern, usage_count, rating</td></tr>
+<tr><td><strong>user_permissions</strong></td><td>权限授权</td><td>user_id, app_name, permission_type, granted_at</td></tr></table></div>
+
+<h3>商业可行性</h3>
+<div class="table-wrap"><table><tr><th>指标</th><th>数值</th><th>假设</th></tr>
+<tr><td>ARPU (Pro)</td><td><strong>$5/月</strong></td><td>锚定 ChatGPT Plus $20 的 1/4</td></tr>
+<tr><td>单用户云成本</td><td>$0.50/月</td><td>端侧默认，20% 任务走云端</td></tr>
+<tr><td><strong>毛利</strong></td><td><strong>$4.00/月 (80%)</strong></td><td></td></tr>
+<tr><td>CAC</td><td>$3-5</td><td>社区自然增长为主</td></tr>
+<tr><td>LTV (12月)</td><td><strong>$36</strong></td><td>$5 × 12 × 60% 年留存</td></tr>
+<tr><td style="font-weight:700;color:var(--green);"><strong>LTV/CAC</strong></td><td style="font-weight:700;color:var(--green);"><strong>7-12:1 ✅</strong></td><td>健康线 >3:1</td></tr>
+<tr><td><strong>盈亏平衡</strong></td><td><strong>3,000 付费用户</strong></td><td>月固定成本 ~$15K</td></tr></table></div>
 
 <h3>技术选型</h3>
-<div class="table-wrap"><table><tr><th>层</th><th>技术</th><th>理由</th></tr>
-<tr><td>端侧推理</td><td>AutoGLM-Phone-9B / GHOST Gemma 4B</td><td>开源、已验证、4-9B 可在手机运行</td></tr>
-<tr><td>Android 操作</td><td>ADB + accessibility hybrid</td><td>accessibility 做感知，ADB 做精确操作</td></tr>
-<tr><td>iOS 操作</td><td>App Intents + Shortcuts</td><td>iOS 不支持 GUI automation，走官方 API</td></tr>
-<tr><td>云端兜底</td><td>DeepSeek / GPT-4o-mini（用户可选）</td><td>默认关闭，用户主动开启</td></tr></table></div>
+<div class="table-wrap"><table><tr><th>层级</th><th>选型</th><th>理由</th></tr>
+<tr><td>前端</td><td>React Native</td><td>跨 Android+iOS，原生模块对接 Accessibility API</td></tr>
+<tr><td>端侧推理</td><td>llama.cpp + 3B 量化</td><td>ARM 优化成熟，<2GB 内存</td></tr>
+<tr><td>云端推理</td><td>DeepSeek API</td><td>成本低，中文强，国内可达</td></tr>
+<tr><td>后端</td><td>Node.js + WebSocket</td><td>生态统一，模板实时推送</td></tr></table></div>
 
 <h3>发布计划</h3>
-<div class="gantt"><div style="display:flex;flex-direction:column;gap:6px;width:100%;">
-<div class="gantt-row"><div class="gantt-label">环境搭建+模型跑通</div><div class="gantt-bar gantt-m0" style="width:100px">W0-2</div></div>
-<div class="gantt-row"><div class="gantt-label">F1+F5 交互骨架</div><div class="gantt-bar gantt-m0" style="width:100px;margin-left:100px">W2-4</div></div>
-<div class="gantt-row"><div class="gantt-label">F2-F4 核心AI能力</div><div class="gantt-bar gantt-m0" style="width:200px;margin-left:200px">W4-8</div></div>
-<div class="gantt-row"><div class="gantt-label">测试+性能优化</div><div class="gantt-bar gantt-m1" style="width:100px;margin-left:400px">W8-10</div></div>
-<div class="gantt-row"><div class="gantt-label">Landing Page+预购</div><div class="gantt-bar gantt-m1" style="width:100px;margin-left:500px">W10-12</div></div>
-<div class="gantt-row"><div class="gantt-label"><strong>MVP 发布 Product Hunt</strong></div><div class="gantt-bar gantt-m2" style="width:40px;margin-left:600px">W12</div></div>
-</div></div>
+<div class="table-wrap"><table><tr><th>阶段</th><th>时间</th><th>范围</th><th>目标用户</th></tr>
+<tr><td><strong>MVP</strong></td><td>Month 1-3</td><td>Android + 5 核心任务 + 端侧推理</td><td>5,000 技术爱好者</td></tr>
+<tr><td><strong>V1.0</strong></td><td>Month 4-8</td><td>+iOS + 模板市场 + 多语言 + Pro 付费</td><td>50,000 用户</td></tr>
+<tr><td><strong>V2.0</strong></td><td>Month 9-18</td><td>+自定义规则 + 桌面后台 + 企业版</td><td>500,000 用户</td></tr></table></div>
 
-<h3>成本结构（Unit Economics）<span class="confidence-badge conf-estimated">估算</span></h3>
-<div class="table-wrap"><table><tr><th>项目</th><th>月成本</th><th>每用户成本（万用户规模）</th><th>备注</th></tr>
-<tr><td>端侧推理（本地）</td><td>$0</td><td>$0</td><td>用户自有设备算力</td></tr>
-<tr><td>云端推理（可选）</td><td>$0.002-0.01/次</td><td>$0.05-0.20/月</td><td>假设 5% 用户开启，月均 10 次调用</td></tr>
-<tr><td>服务器/API 网关</td><td>$200-500</td><td>$0.005-0.01</td><td>模板市场 + 用户同步</td></tr>
-<tr><td>App Store 分成</td><td>—</td><td>15-30% 订阅收入</td><td>首年 15%（小开发者），次年 30%</td></tr>
-<tr><td>开发人力（2-3 人）</td><td>$15-25K</td><td>—</td><td>12 周 MVP</td></tr>
-<tr style="font-weight:700;color:var(--head);"><td><strong>单用户月利润（Pro用户）</strong></td><td colspan="2"><strong>$3.50-4.25（扣除商店分成+云成本）</strong></td><td>$5/月 → 70-85% 毛利率</td></tr></table></div>
+<h3>关键假设</h3>
+<div class="table-wrap"><table><tr><th>#</th><th>假设</th><th>置信度</th></tr>
+<tr><td>A1</td><td>端侧 3B 模型可覆盖 70%+ 常见任务</td><td>中</td></tr>
+<tr><td>A2</td><td>Android Accessibility API 足矣，不需要 Root</td><td>中</td></tr>
+<tr><td>A3</td><td>微信/支付宝不封禁非恶意自动化</td><td style="color:var(--red);">低 ⚠️</td></tr>
+<tr><td>A4</td><td>用户愿意为手机 Agent 付 $5/月</td><td>中</td></tr>
+<tr><td>A5</td><td>iOS 2 年内开放等效自动化 API</td><td>低</td></tr></table></div>
+<p style="font-size:11px;color:var(--muted);margin-top:8px;">完整 PRD（含全部 9 功能 Given-When-Then 验收标准 + 完整数据库字段设计 + 项目目录结构）→ <code>prd.md</code></p>
 </section></div>
-
+<!-- ====== 5. GTM ====== -->
 <!-- ====== 5. GTM ====== -->
 <div class="tab" id="gtm"><section><h2>5. Go-to-Market 策略</h2>
 
 <h3>定位</h3>
-<div class="verdict"><div class="vt">一句话定位</div><div class="vx"><strong>"打开就能用的手机 AI agent——像跟人说话一样操作手机。"</strong></div></div>
+<div class="table-wrap"><table><tr><th>维度</th><th>内容</th></tr>
+<tr><td><strong>一句话</strong></td><td>Pocket Agent 是为手机用户提供的零配置 AI 助手，不同于封闭的厂商 Agent 和需要部署的开源方案，我们<strong>打开即用、跨 Android+iOS、数据默认不离开设备</strong>。</td></tr>
+<tr><td><strong>三角空白</strong></td><td>豆包 = 零配置+封闭 | AutoGLM = 开源+有门槛 | Siri+Gemini = 系统级+云端 | <strong>Pocket Agent = 零配置+跨平台+端侧隐私</strong></td></tr></table></div>
 
-<h3>启动路径（3 阶段）</h3>
-<div class="table-wrap"><table><tr><th>阶段</th><th>时间</th><th>渠道</th><th>目标</th><th>预算</th></tr>
-<tr><td><strong>1. 社区冷启动</strong></td><td>W8-12</td><td>GitHub（开源模型集成）+ Reddit r/Android r/iPhone + Hacker News + X/Twitter</td><td>5000 预注册 + 200 内测用户</td><td>$0-500</td></tr>
-<tr><td><strong>2. Product Hunt 发布</strong></td><td>W12</td><td>Product Hunt（主战场）+ 同期 Reddit AMA + YouTube 评测寄送（5-10 个中小创作者）</td><td>PH Top 5 + 10K 新增注册</td><td>$1,000-3,000</td></tr>
-<tr><td><strong>3. 口碑增长</strong></td><td>W13-24</td><td>SEO 内容（"best AI agent for phone"）+ App Store/Google Play ASO + 模板市场创作者激励</td><td>50K 注册 + 付费转化 ≥3%</td><td>$2,000-5,000/月</td></tr></table></div>
+<h3>3 阶段发布路径</h3>
+<div class="table-wrap"><table><tr><th>阶段</th><th>时间</th><th>核心功能</th><th>目标用户</th><th>成功指标</th></tr>
+<tr><td><strong>MVP</strong></td><td>M1-3</td><td>Android + 5 核心任务 + 端侧推理</td><td>5,000 技术爱好者</td><td>30日留存 >30%，周活跃 >3次</td></tr>
+<tr><td><strong>V1.0</strong></td><td>M4-8</td><td>+iOS + 模板市场 + 多语言 + Pro</td><td>50,000 用户（含付费）</td><td>付费转化 >3%，MRR >$25K</td></tr>
+<tr><td><strong>V2.0</strong></td><td>M9-18</td><td>+自定义规则 + 桌面后台 + 企业版</td><td>500,000 用户</td><td>MRR >$500K，DAU >100K</td></tr></table></div>
 
 <h3>定价策略</h3>
-<div class="table-wrap"><table><tr><th>Tier</th><th>价格</th><th>定位</th><th>转化目标</th></tr>
-<tr><td><strong>Free</strong></td><td>$0</td><td>5次操作/天，所有 P0 功能可用</td><td>获客漏斗顶部，目标 MAU 10K+</td></tr>
-<tr><td><strong>Pro</strong></td><td>$5/月（年付 $48=$4/月）</td><td>无限操作 + 多步任务链 + 模板市场</td><td>Free→Pro 转化 ≥5%</td></tr>
-</table></div>
-<p style="font-size:11px;color:var(--muted);">定价依据：ChatGPT Plus $20/月 为 AI app 建立了价格锚点。$5/月 大幅低于锚点，降低决策门槛。每年 $48 接近 ChatGPT Plus 两个月的价格。<span class="confidence-badge conf-estimated">估算</span></p>
+<div class="table-wrap"><table><tr><th>层级</th><th>价格</th><th>内容</th><th>锚定逻辑</th></tr>
+<tr><td><strong>免费</strong></td><td>$0</td><td>10 次任务/月，端侧推理，基础模板</td><td>和豆包免费对齐，降低试用门槛</td></tr>
+<tr><td><strong>Pro</strong></td><td><strong>$5/月</strong></td><td>无限任务，云端加速，高级模板，优先支持</td><td>ChatGPT Plus $20 的 1/4。手机端任务执行（非内容生成），锚点低于通用 AI</td></tr></table></div>
+<p style="font-size:11px;color:var(--muted);">付费转化假设：免费→Pro 3%（对标 Evernote/Notion 的 2-4%）</p>
 
-<h3>关键渠道优先级</h3>
-<div class="table-wrap"><table><tr><th>渠道</th><th>阶段</th><th>CAC 估算</th><th>预期效果</th></tr>
-<tr><td>Product Hunt</td><td>W12</td><td>$0.50-1.00</td><td>技术早期用户质量最高，一次爆发</td></tr>
-<tr><td>Reddit (r/Android, r/iPhone, r/artificial)</td><td>W8+</td><td>$0</td><td>持续流量，需真实参与社区</td></tr>
-<tr><td>GitHub (开源集成)</td><td>W8+</td><td>$0</td><td>开发者心智，长尾效应</td></tr>
-<tr><td>YouTube 评测</td><td>W12+</td><td>$200-500/视频</td><td>SEO 长尾 + 信任背书</td></tr>
-<tr><td>App Store / Google Play ASO</td><td>W12+</td><td>$0-1,000/月</td><td>自然流量，长线投入</td></tr>
-</table></div>
+<h3>渠道优先级</h3>
+<div class="table-wrap"><table><tr><th>#</th><th>渠道</th><th>优先级</th><th>理由</th></tr>
+<tr><td>1</td><td><strong>GitHub + Hacker News</strong></td><td>⭐⭐⭐⭐⭐</td><td>技术爱好者聚集地，开源 GUI Agent 项目增长 >500%/年</td></tr>
+<tr><td>2</td><td><strong>Product Hunt</strong></td><td>⭐⭐⭐⭐⭐</td><td>SaaS/AI 工具首发首选，全球 reach</td></tr>
+<tr><td>3</td><td><strong>即刻 + X(Twitter)</strong></td><td>⭐⭐⭐⭐</td><td>中文科技圈 + 全球 AI 圈，KOL 传播快</td></tr>
+<tr><td>4</td><td><strong>小红书</strong></td><td>⭐⭐⭐⭐</td><td>效率工具/数码种草，覆盖县域用户子女</td></tr>
+<tr><td>5</td><td>应用商店 SEO</td><td>⭐⭐⭐</td><td>长尾流量，ASO 关键词</td></tr></table></div>
 
-<h3>冷启动策略</h3>
-<div class="cards3">
-<div class="card"><h4>开源社区驱动</h4><div class="item">在 GitHub 开源 Android 集成层代码，吸引开发者贡献和传播</div><div class="item">README = 产品 landing page</div><div class="item" style="color:var(--muted);">对标：AutoGLM 开源策略 + GHOST 社区增长</div></div>
-<div class="card"><h4>模板创作者激励</h4><div class="item">前 50 个模板创作者获得 Pro 永久免费</div><div class="item">Top 10 模板每月现金奖励 $50</div><div class="item" style="color:var(--muted);">冷启动双边市场的供给侧策略</div></div>
-<div class="card"><h4>Social Proof</h4><div class="item">录制真实使用视频（"发 PDF 给张三"全过程），不是概念动画</div><div class="item">找 3-5 个技术博主做"honest review"</div><div class="item" style="color:var(--muted);">不付钱买正面评价——真实性比好评更重要</div></div>
-</div>
+<h3>冷启动</h3>
+<div class="table-wrap"><table><tr><th>维度</th><th>方案</th></tr>
+<tr><td><strong>种子用户</strong></td><td>GitHub 开源社区（AutoGLM/Mobile Use 项目 issue 区活跃用户）+ 即刻 AI 圈 + PH 首发</td></tr>
+<tr><td><strong>传播机制</strong></td><td>任务完成后自动生成分享卡片 → 微信/朋友圈/即刻；模板市场创建者 badge → 增长飞轮</td></tr>
+<tr><td><strong>模板冷启动</strong></td><td>MVP 预置 20 个官方模板（每日早报/一键报销/会议纪要/搜机票/设闹钟/发文件…），6 个月后开放用户创建</td></tr>
+<tr><td><strong>预算</strong></td><td>零广告预算。核心增长靠社区内容 + GitHub star 飞轮 + KOL 试用传播</td></tr></table></div>
 </section></div>
-
 <!-- ====== 6. RISK ====== -->
 <div class="tab" id="risk"><section><h2>6. 风险评估矩阵</h2>
 
