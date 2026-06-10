@@ -135,12 +135,7 @@ function ObsidianMemoryDetail() {
     <H3>读取链</H3>
     <Flow>{`新 session 启动 → who-i-am → 协作规则 → 工程纪律
 → 跨项目教训 → 当前项目 _feedback/ → _memory/`}</Flow>
-    <P>13 个大类、130+ 个问题的个人档案在 00-Rules/ 里，从性格到审美偏好。Agent 读了就知道怎么协作。</P>
-
-    <H3>近期迭代</H3>
-    <P><HL>AI 速读关键信号</HL> — who-i-am 新增 13 维度结构化摘要，Agent 30 秒内理解人格模式，无需读完 400 行全文</P>
-    <P><HL>graduation-queue 读顺序提升</HL> — 从可选变成必读（AGENTS.md 第 3 步），确保跨项目原则每个 session 都加载</P>
-    <P><HL>Obsidian Git 自动备份</HL> — 60 分钟自动 commit + push 到 GitHub，防丢失</P>
+    <P>13 个大类、130+ 个问题的个人档案在 00-Rules/ 里，从性格到审美偏好。新增 <HL>AI 速读关键信号</HL>摘要，Agent 30 秒内理解人格模式，无需读完 400 行全文。</P>
 
     <H3>关键决策</H3>
     <div style={{ padding: '8px 0' }}>

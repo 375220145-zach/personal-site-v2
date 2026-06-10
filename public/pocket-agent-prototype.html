@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pocket Agent — Prototype</title>
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #14141c; --border: #1e1e2e;
+    --text: #b0b0bc; --head: #e8e8f0; --muted: #5c5c6e;
+    --accent: #6c5ce7; --accent-glow: rgba(108,92,231,0.3);
+    --green: #2ecc71; --red: #e74c3c; --blue: #5b9cf5;
+    --phone-w: 375px; --phone-h: 720px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+  }
+  .wrap { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; justify-content: center; }
+
+  /* Phone frame */
+  .phone {
+    width: var(--phone-w); height: var(--phone-h);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 32px;
+    overflow: hidden; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column;
+  }
+  .phone-header {
+    padding: 20px 20px 12px; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .phone-header .time { font-size: 13px; color: var(--muted); }
+  .phone-header .dots { display: flex; gap: 4px; }
+  .phone-header .dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+  .phone-body { flex:1; overflow-y:auto; padding: 16px 20px; }
+  .phone-body::-webkit-scrollbar { width: 0; }
+  .phone-nav {
+    display: flex; border-top: 1px solid var(--border); padding: 8px 16px 16px;
+    justify-content: space-around;
+  }
+  .phone-nav .nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    font-size: 10px; color: var(--muted); cursor: pointer; padding: 6px 12px;
+    border-radius: 8px; transition: all 0.2s;
+  }
+  .phone-nav .nav-item.active { color: var(--accent); background: rgba(108,92,231,0.1); }
+  .phone-nav .nav-item .nav-icon { font-size: 18px; }
+  .phone-label {
+    text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Home Screen */
+  .hero-area { display: flex; flex-direction: column; align-items: center; padding-top: 40px; }
+  .mic-btn {
+    width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--accent);
+    background: rgba(108,92,231,0.15); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative; transition: all 0.3s;
+  }
+  .mic-btn:active { transform: scale(0.95); background: rgba(108,92,231,0.3); }
+  .mic-btn .mic-icon { font-size: 32px; }
+  .mic-btn::after {
+    content: ''; position: absolute; inset: -6px; border-radius: 50%;
+    border: 2px solid rgba(108,92,231,0.2); animation: pulse 2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.3); opacity: 0; }
+  }
+  .hero-label { margin-top: 16px; font-size: 14px; color: var(--head); font-weight: 600; }
+  .chip-list { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; width: 100%; }
+  .chip {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; font-size: 13px; color: var(--text); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip:hover { border-color: var(--accent); background: rgba(108,92,231,0.05); }
+  .chip .chip-icon { margin-right: 8px; }
+  .home-footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--muted); }
+
+  /* Operation Cards */
+  .task-title {
+    font-size: 14px; color: var(--head); font-weight: 600; padding: 4px 0 16px;
+    border-bottom: 1px solid var(--border); margin-bottom: 16px;
+  }
+  .step-list { display: flex; flex-direction: column; gap: 10px; }
+  .step {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border-radius: 12px; background: var(--surface); border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .step.done { border-color: rgba(46,204,113,0.3); background: rgba(46,204,113,0.05); }
+  .step.done .step-icon { color: var(--green); }
+  .step.active { border-color: var(--accent); animation: stepPulse 2s ease-in-out infinite; }
+  .step.active .step-icon { color: var(--blue); }
+  .step.pending { opacity: 0.4; }
+  @keyframes stepPulse {
+    0%,100% { border-color: rgba(108,92,231,0.5); }
+    50% { border-color: rgba(108,92,231,1); }
+  }
+  .step .step-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .step .step-body { flex: 1; }
+  .step .step-title { font-size: 13px; font-weight: 600; color: var(--head); }
+  .step .step-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .step .step-check { font-size: 16px; flex-shrink: 0; color: var(--green); margin-top: 2px; }
+  .stop-btn {
+    width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(231,76,60,0.3);
+    background: rgba(231,76,60,0.1); color: var(--red); font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 20px; text-align: center; transition: all 0.2s;
+  }
+  .stop-btn:hover { background: rgba(231,76,60,0.2); }
+
+  /* Template Grid */
+  .search-bar {
+    width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); font-size: 13px; margin-bottom: 16px;
+    outline: none;
+  }
+  .search-bar:focus { border-color: var(--accent); }
+  .template-grid { display: grid; gap: 12px; }
+  .tpl-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .tpl-card:hover { border-color: var(--accent); }
+  .tpl-card .tpl-name { font-size: 14px; font-weight: 600; color: var(--head); }
+  .tpl-card .tpl-desc { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+  .tpl-card .tpl-meta { display: flex; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--muted); align-items: center; }
+  .tpl-card .tpl-stars { color: #f1c40f; }
+
+  /* Settings */
+  .setting-group { margin-bottom: 24px; }
+  .setting-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .setting-row .s-name { font-size: 13px; color: var(--head); }
+  .setting-row .s-value { font-size: 13px; color: var(--muted); }
+  .toggle { width: 44px; height: 24px; border-radius: 12px; background: var(--border); position: relative; cursor: pointer; transition: all 0.2s; }
+  .toggle.on { background: var(--accent); }
+  .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: all 0.2s; }
+  .toggle.on::after { left: 22px; }
+  .radio-group { display: flex; gap: 8px; }
+  .radio {
+    padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border);
+    font-size: 12px; cursor: pointer; transition: all 0.2s; color: var(--muted);
+  }
+  .radio.sel { border-color: var(--accent); color: var(--accent); background: rgba(108,92,231,0.1); }
+  .perm-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 12px; }
+  .perm-row .p-status { font-size: 11px; }
+  .p-ok { color: var(--green); }
+  .version { text-align: center; font-size: 11px; color: var(--muted); margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ HOME SCREEN ============ -->
+<div>
+<div class="phone" id="phone-home">
+  <div class="phone-header"><span class="time">9:41</span><div class="dots"><span></span><span></span><span></span></div></div>
+  <div class="phone-body">
+    <div class="hero-area">
+      <div class="mic-btn" onclick="showExecuting()"><span class="mic-icon">🎙️</span></div>
+      <div class="hero-label">轻触说话</div>
+    </div>
+    <div class="chip-list">
+      <div class="chip" onclick="showExecuting()"><span class="chip-icon">📎</span>帮我把上次的PDF发给张三</div>
+      <div class="chip" onclick="showExecuting()"><span class="chip-icon">✈️</span>搜一下飞巴厘岛最便宜的机票</div>
+      <div class="chip" onclick="showExecuting()"><span class="chip-icon">⏰</span>设一个明天早上8点的闹钟</div>
+    </div>
+    <div class="home-footer">说话就能操作手机 · 数据不离开设备</div>
+  </div>
+</div>
+<div class="phone-label">Home — 零配置启动</div>
+</div>
+
+<!-- ============ EXECUTING SCREEN ============ -->
+<div>
+<div class="phone" id="phone-exec">
+  <div class="phone-header"><span class="time">9:42</span><div class="dots"><span></span><span></span><span></span></div></div>
+  <div class="phone-body">
+    <div class="task-title">📎 "帮我把上次的PDF发给张三"</div>
+    <div class="step-list">
+      <div class="step done">
+        <span class="step-icon">🧠</span>
+        <div class="step-body"><div class="step-title">理解指令</div><div class="step-desc">识别意图：发送文件 · 对象：张三 · 文件：最近PDF</div></div>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="step active">
+        <span class="step-icon">🔍</span>
+        <div class="step-body"><div class="step-title">正在微信中搜索 "张三"</div><div class="step-desc">打开微信 → 搜索联系人 → 进入对话</div></div>
+      </div>
+      <div class="step pending">
+        <span class="step-icon">📁</span>
+        <div class="step-body"><div class="step-title">查找最近的PDF文件</div><div class="step-desc">扫描下载文件夹 → 按时间排序 → 选择最新</div></div>
+      </div>
+      <div class="step pending">
+        <span class="step-icon">📤</span>
+        <div class="step-body"><div class="step-title">发送文件</div><div class="step-desc">附加PDF到对话 → 发送</div></div>
+      </div>
+    </div>
+    <div class="stop-btn">■ 停止</div>
+  </div>
+</div>
+<div class="phone-label">Executing — 操作可视化 + 可打断</div>
+</div>
+
+<!-- ============ TEMPLATE MARKETPLACE ============ -->
+<div>
+<div class="phone" id="phone-templates">
+  <div class="phone-header"><span class="time">9:43</span><div class="dots"><span></span><span></span><span></span></div></div>
+  <div class="phone-body">
+    <input class="search-bar" type="text" placeholder="搜索模板...">
+    <div class="template-grid">
+      <div class="tpl-card">
+        <div class="tpl-name">📰 每日早报</div>
+        <div class="tpl-desc">每天早上汇总天气、日程、新闻 → 发到微信</div>
+        <div class="tpl-meta"><span>1.2k 使用</span><span class="tpl-stars">★★★★★</span><span>4.8</span></div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-name">🧾 一键报销</div>
+        <div class="tpl-desc">从相册找发票 → 识别金额 → 填报销表</div>
+        <div class="tpl-meta"><span>856 使用</span><span class="tpl-stars">★★★★☆</span><span>4.5</span></div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-name">📝 会议纪要</div>
+        <div class="tpl-desc">录音 → 转文字 → 提取行动项 → 发邮件</div>
+        <div class="tpl-meta"><span>2.3k 使用</span><span class="tpl-stars">★★★★★</span><span>4.9</span></div>
+      </div>
+      <div class="tpl-card">
+        <div class="tpl-name">🔔 智能提醒</div>
+        <div class="tpl-desc">扫描聊天记录 → 提取承诺/截止日 → 自动设提醒</div>
+        <div class="tpl-meta"><span>3.1k 使用</span><span class="tpl-stars">★★★★★</span><span>4.7</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="phone-nav">
+    <div class="nav-item active"><span class="nav-icon">🏠</span>首页</div>
+    <div class="nav-item"><span class="nav-icon">📋</span>模板</div>
+    <div class="nav-item"><span class="nav-icon">⚙️</span>设置</div>
+  </div>
+</div>
+<div class="phone-label">Template Marketplace — 社区模板</div>
+</div>
+
+<!-- ============ SETTINGS ============ -->
+<div>
+<div class="phone" id="phone-settings">
+  <div class="phone-header"><span class="time">9:44</span><div class="dots"><span></span><span></span><span></span></div></div>
+  <div class="phone-body">
+    <div class="setting-group">
+      <div class="setting-label">模型</div>
+      <div class="setting-row"><span class="s-name">推理引擎</span><span class="s-value" style="color:var(--green);">本地 (端侧)</span></div>
+      <div class="setting-row"><span class="s-name">云端增强</span><div class="toggle"></div></div>
+      <div class="setting-row"><span class="s-name">当前模型</span><span class="s-value">AutoGLM-Phone-9B</span></div>
+    </div>
+    <div class="setting-group">
+      <div class="setting-label">语言</div>
+      <div class="radio-group">
+        <span class="radio sel">中文</span><span class="radio">English</span><span class="radio">日本語</span><span class="radio">한국어</span>
+      </div>
+    </div>
+    <div class="setting-group">
+      <div class="setting-label">语气</div>
+      <div class="radio-group">
+        <span class="radio sel">专业</span><span class="radio">幽默</span><span class="radio">极简</span>
+      </div>
+    </div>
+    <div class="setting-group">
+      <div class="setting-label">权限</div>
+      <div class="perm-row"><span>通知</span><span class="p-status p-ok">✓ 已授权</span></div>
+      <div class="perm-row"><span>无障碍服务</span><span class="p-status p-ok">✓ 已授权</span></div>
+      <div class="perm-row"><span>通讯录</span><span class="p-status" style="color:var(--muted);">○ 未授权</span></div>
+    </div>
+    <div class="version">Pocket Agent v0.1 MVP</div>
+  </div>
+  <div class="phone-nav">
+    <div class="nav-item"><span class="nav-icon">🏠</span>首页</div>
+    <div class="nav-item"><span class="nav-icon">📋</span>模板</div>
+    <div class="nav-item active"><span class="nav-icon">⚙️</span>设置</div>
+  </div>
+</div>
+<div class="phone-label">Settings — 端侧优先 · 隐私可控</div>
+</div>
+
+</div>
+
+<script>
+function showExecuting() {
+  document.getElementById('phone-exec').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>

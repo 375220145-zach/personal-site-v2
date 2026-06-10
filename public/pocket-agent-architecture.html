@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pocket Agent — System Architecture</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f8f9fa; padding: 40px; display: flex; justify-content: center; }
+  .diagram { width: 1000px; }
+  h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; text-align: center; }
+  .sub { font-size: 13px; color: #888; margin-bottom: 32px; text-align: center; }
+
+  .layer { border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; position: relative; }
+  .layer-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+
+  .layer-user { background: #fff5f5; border: 2px solid #fecaca; }
+  .layer-user .layer-title { color: #dc2626; }
+  .layer-router { background: #fffbeb; border: 2px solid #fde68a; }
+  .layer-router .layer-title { color: #d97706; }
+  .layer-exec { background: #eff6ff; border: 2px solid #bfdbfe; }
+  .layer-exec .layer-title { color: #2563eb; }
+  .layer-output { background: #f0fdf4; border: 2px solid #bbf7d0; }
+  .layer-output .layer-title { color: #16a34a; }
+
+  .row { display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .box {
+    background: #fff; border-radius: 8px; padding: 14px 18px; text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06); min-width: 100px;
+  }
+  .box-label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 4px; white-space: nowrap; }
+  .box-desc { font-size: 10px; color: #777; line-height: 1.4; }
+  .box-icon { font-size: 20px; margin-bottom: 4px; }
+
+  .box-start { border: 2px solid #f97316; background: #fff7ed; }
+  .box-diamond { border: 2px solid #eab308; background: #fefce8; transform: rotate(0); }
+  .box-local { border: 2px solid #22c55e; background: #f0fdf4; }
+  .box-cloud { border: 2px solid #a855f7; background: #faf5ff; }
+  .box-end { border: 2px solid #22c55e; background: #f0fdf4; border-radius: 50px; }
+  .box-privacy { border: 2px solid #16a34a; background: #f0fdf4; }
+  .box-template { border: 2px solid #a855f7; background: #faf5ff; }
+
+  .arrow-down { display: flex; justify-content: center; padding: 4px 0; }
+  .arrow-down span { font-size: 18px; color: #94a3b8; }
+  .arrow-right { display: flex; align-items: center; }
+  .arrow-right span { font-size: 16px; color: #94a3b8; margin: 0 4px; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .branch { border-radius: 8px; padding: 14px; }
+  .branch-android { background: #eff6ff; border: 1px dashed #93c5fd; }
+  .branch-ios { background: #f8fafc; border: 1px dashed #cbd5e1; }
+  .branch h4 { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+  .branch-android h4 { color: #2563eb; }
+  .branch-ios h4 { color: #64748b; }
+
+  .flow-box { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+  .fbox {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 6px;
+    padding: 8px 12px; font-size: 10px; text-align: center; font-weight: 600; color: #334155;
+  }
+  .fbox.highlight { background: #ddd6fe; border-color: #a78bfa; color: #5b21b6; }
+
+  .note { font-size: 10px; color: #94a3b8; margin-top: 8px; text-align: center; }
+
+  @media print { body { background: #fff; } }
+</style>
+</head>
+<body>
+<div class="diagram">
+  <h1>Pocket Agent — System Architecture</h1>
+  <div class="sub">On-Device First · Zero Configuration · Cross-Platform</div>
+
+  <!-- User Layer -->
+  <div class="layer layer-user">
+    <div class="layer-title">User Layer</div>
+    <div class="row">
+      <div class="box box-start">
+        <div class="box-icon">🎙️</div>
+        <div class="box-label">Voice Input</div>
+        <div class="box-desc">"把PDF发给张三"</div>
+      </div>
+      <div class="box box-start">
+        <div class="box-icon">⌨️</div>
+        <div class="box-label">Text Input</div>
+        <div class="box-desc">"Search flights"</div>
+      </div>
+      <div class="arrow-right"><span>→</span></div>
+      <div class="box" style="border:2px solid #8b5cf6;background:#f5f3ff;min-width:200px;">
+        <div class="box-icon">📋</div>
+        <div class="box-label">Operation Cards</div>
+        <div class="box-desc">Step 1: 理解指令 ✓<br>Step 2: 搜索张三...<br>Step 3: 发送文件...</div>
+      </div>
+      <div class="box" style="border:2px solid #ef4444;background:#fef2f2;">
+        <div class="box-label" style="color:#dc2626;">■ STOP</div>
+        <div class="box-desc">随时打断</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-down"><span>▼</span></div>
+
+  <!-- Router Layer -->
+  <div class="layer layer-router">
+    <div class="layer-title">Agent Router Layer</div>
+    <div class="row">
+      <div class="box" style="border:2px solid #3b82f6;min-width:180px;">
+        <div class="box-icon">🧠</div>
+        <div class="box-label">NL Understanding</div>
+        <div class="box-desc">Intent: send_file<br>Entity: 张三, PDF</div>
+      </div>
+      <div class="arrow-right"><span>→</span></div>
+      <div class="box box-diamond" style="border-radius:12px;">
+        <div class="box-label">Task Complexity</div>
+        <div class="box-desc">Simple or Complex?</div>
+      </div>
+      <div class="arrow-right"><span>⇢</span></div>
+      <div class="box box-local">
+        <div class="box-icon">📱</div>
+        <div class="box-label">Simple → Local</div>
+        <div class="box-desc">AutoGLM-Phone-9B<br>GHOST Gemma 4B</div>
+      </div>
+      <div style="font-size:11px;color:#94a3b8;">(default)</div>
+      <div class="box box-cloud">
+        <div class="box-icon">☁️</div>
+        <div class="box-label">Complex → Cloud</div>
+        <div class="box-desc">DeepSeek / GPT-4o-mini</div>
+      </div>
+      <div style="font-size:11px;color:#94a3b8;">(opt-in)</div>
+    </div>
+    <div class="note">User-controlled toggle · Default: Local · Privacy first</div>
+  </div>
+
+  <div class="arrow-down"><span>▼</span></div>
+
+  <!-- Execution Layer -->
+  <div class="layer layer-exec">
+    <div class="layer-title">Execution Layer</div>
+    <div class="split">
+      <div class="branch branch-android">
+        <h4>🤖 Android</h4>
+        <div class="flow-box">
+          <div class="fbox">ADB</div>
+          <span style="font-size:12px;color:#94a3b8;">+</span>
+          <div class="fbox">Accessibility Service</div>
+          <span style="font-size:14px;color:#94a3b8;">→</span>
+          <div class="fbox highlight">GUI Agent</div>
+        </div>
+        <div class="note">WhatsApp · WeChat · SMS · Telegram · Browser · Files</div>
+      </div>
+      <div class="branch branch-ios">
+        <h4>🍎 iOS</h4>
+        <div class="flow-box">
+          <div class="fbox">App Intents</div>
+          <span style="font-size:12px;color:#94a3b8;">+</span>
+          <div class="fbox">Shortcuts</div>
+          <span style="font-size:14px;color:#94a3b8;">→</span>
+          <div class="fbox">Notification Extension</div>
+        </div>
+        <div class="note">Messages · Mail · Calendar · Reminders · Files</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-down"><span>▼</span></div>
+
+  <!-- Output Layer -->
+  <div class="layer layer-output">
+    <div class="layer-title">Output & Data Layer</div>
+    <div class="row">
+      <div class="box box-end">
+        <div class="box-icon">✅</div>
+        <div class="box-label">App Operations</div>
+        <div class="box-desc">Message · Search · Reminder · File</div>
+      </div>
+      <div class="box box-privacy" style="min-width:200px;">
+        <div class="box-icon">🔒</div>
+        <div class="box-label">Privacy</div>
+        <div class="box-desc">On-Device: data stays local<br>Cloud: opt-in, user-controlled</div>
+      </div>
+      <div class="box box-template" style="min-width:200px;">
+        <div class="box-icon">📋</div>
+        <div class="box-label">Template Marketplace</div>
+        <div class="box-desc">Community shared · 1-click use<br>Rating & sharing system</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
