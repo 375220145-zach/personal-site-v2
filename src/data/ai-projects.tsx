@@ -42,7 +42,7 @@ function Tag({ children }: { children: string }) {
 function PmOsDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>源自 DONNER 实战经验（IPD 流程、TR/DCP 评审、MIL、BOM），用 Claude Code 独立开发。覆盖概念到量产全过程。</P>
+    <P>源自 DONNER 实战经验（IPD 流程、TR/DCP 评审、MIL、BOM），用 Claude Code 独立开发。覆盖概念到量产全过程，集成了 AI 会议纪要智能分析能力。</P>
     <div style={{ marginTop: '8px' }}><Link href="https://demo.pm-os.pages.dev">Live Demo ↗ demo.pm-os.pages.dev</Link></div>
 
     <H3>解决的问题</H3>
@@ -52,81 +52,49 @@ function PmOsDetail() {
     <P><HL>IPD 全流程</HL> — 13 个里程碑节点（TR1→CDCP→TR2→HMS→TR3→PDCP→EVT→TR4→DVT→TR5→ADCP1→PVT→MP），7 阶段门管理，准入准出标准</P>
     <P><HL>自绘 SVG 甘特图</HL> — 不依赖第三方库，支持缩放、依赖连线、里程碑菱形标记、今日红线、逾期高亮</P>
     <P><HL>9 张数据表</HL> — 项目 / 里程碑 / 任务 / 会议 / 复盘 / 变更 / BOM / 采购 / 认证，全部 IndexedDB 本地存储，离线可用</P>
-    <P><HL>AI 辅助</HL> — DeepSeek 驱动会议纪要智能分析（行动项提取 + 风险识别）、复盘自动生成</P>
+    <P><HL>AI 会议纪要</HL> — 导入会议内容，AI 自动提取行动项、识别风险、生成待办清单。支持 Markdown / PDF / Excel 多格式导出。30min → 5min</P>
+    <P><HL>AI 复盘</HL> — DeepSeek 驱动，聚合项目数据自动生成复盘报告</P>
     <P><HL>双部署</HL> — Vercel 全功能可编辑版 + Cloudflare Pages 只读 Demo 版（国内直连）</P>
+    <P><HL>Excel 批量导入</HL> — 所有面板支持模板下载 + 批量导入，适配企业级数据迁移</P>
+
+    <H3>效率提升</H3>
+    <div style={{ padding: '10px 0' }}>
+      <THead><span>指标</span><span>变化</span></THead>
+      <TRow left="会议纪要整理时间" right="30min → 5min" />
+      <TRow left="行动项遗漏率" right="显著降低" />
+      <TRow left="项目里程碑准时率" right="100%" />
+      <TRow left="TR 评审一次通过率" right="85.7%" />
+    </div>
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
       <Tag>Next.js 15</Tag><Tag>React</Tag><Tag>TypeScript</Tag><Tag>IndexedDB (Dexie)</Tag><Tag>SVG 自绘</Tag><Tag>DeepSeek API</Tag><Tag>Vercel</Tag><Tag>Cloudflare Pages</Tag>
     </div>
-
-    <H3>项目教训</H3>
-    <P>1. <HL>部署平台先验证</HL> — CF Pages 免费版 Next.js SSR 单 Worker 3MB 限制，22 路由远超上限，最终走静态导出</P>
-    <P>2. <HL>版本锁定</HL> — Next.js 16 strict mode 导致 ESLint 大量报错，next-on-pages 只支持 15.x，中途回滚浪费数小时</P>
-    <P>3. <HL>Demo 模式从 Day 1 规划</HL> — 后期给 20+ 文件加只读包裹，如果一开始设计 readonly prop 就简单了</P>
   </>
 }
 
 /* ============================================================
-   AI 会议纪要工具
+   产品全链路 Skill System
    ============================================================ */
-function AiMeetingDetail() {
+function PmChainDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>独立开发（Claude Code）。导入会议内容后，AI 自动提取行动项、识别风险、生成待办清单，支持 Markdown / PDF / Excel 导出。30 分钟的手工整理压缩到 5 分钟。</P>
-    <div style={{ marginTop: '8px' }}><Link href="https://ai-execution-pocket.vercel.app/">Live Demo ↗ ai-execution-pocket.vercel.app</Link></div>
+    <P>基于 Claude Code Skill 框架搭建的 PM 全链路自动化体系。覆盖市场调研 → 竞品分析 → 头脑风暴 → PRD → GTM 策略 → 风险评估 → 架构图 → 交互原型，输入产品 idea，输出 8 tab 完整 HTML 报告。每个 skill 也支持独立触发。</P>
+    <div style={{ marginTop: '8px' }}><Link href={import.meta.env.BASE_URL + 'mobile-llm-agent-report.html'}>Showcase: Pocket Agent 全链路报告 ↗</Link></div>
 
-    <H3>解决的问题</H3>
-    <P>PM 每天参加大量会议，纪要整理耗时耗力。关键决策和行动项容易被遗漏。需要一个<HL>从录音到待办全自动</HL>的工具。</P>
-
-    <H3>核心功能</H3>
-    <P><HL>智能分析</HL> — AI 自动提取关键议题、决策事项及行动项</P>
-    <P><HL>风险识别</HL> — 自动标记潜在风险项，按严重程度分级</P>
-    <P><HL>待办追踪</HL> — 自动生成待办清单，状态流转与截止提醒</P>
-    <P><HL>灵活导出</HL> — 支持 Markdown / PDF / Excel 多格式导出</P>
+    <H3>链路能力</H3>
+    <P><HL>市场调研</HL> — 6 模块报告（赛道概况 / 趋势 / 市场规模 / 用户画像 / 竞品格局 / 机会评估），3 模式（完整报告 / 快速扫描 / TAM-SAM-SOM），5 品类自动适配</P>
+    <P><HL>深度竞品分析</HL> — 4 模式智能分流（深度 Excel / 快速扫描 / 竞争简报 / 概念验证），6–10 竞品 × 9 sheet Excel 输出。每个数据字段标注可信度，无公开来源不填</P>
+    <P><HL>头脑风暴</HL> — PM / Designer / Engineer 三视角 × 各 5 个 idea，加权评分优先，强制"毙掉清单"</P>
+    <P><HL>PRD 撰写</HL> — 8 段式标准模板（Summary / Contacts / Background / Objective / Market / Value / Solution / Release），硬件产品自动追加 4 段（工业设计 / 技术规格 / 制造供应链 / 包装上市）</P>
+    <P><HL>GTM 策略</HL> — 定位 → 分阶段发布路径 → 定价策略 → 渠道优先级 → 冷启动方案</P>
+    <P><HL>风险评估</HL> — 概率 × 影响矩阵，逐项缓解策略 + 触发指标</P>
+    <P><HL>架构图</HL> — HTML+CSS 直出，CJK 无渲染问题</P>
+    <P><HL>交互原型</HL> — 嵌入式 HTML/CSS 可交互原型，自适应产品形态（Web / 移动端 / 硬件面板）</P>
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-      <Tag>Vite</Tag><Tag>React</Tag><Tag>TypeScript</Tag><Tag>Cloudflare Pages</Tag><Tag>DeepSeek API</Tag><Tag>Tailwind CSS</Tag>
-    </div>
-
-    <H3>效果</H3>
-    <div style={{ padding: '16px 0' }}>
-      <THead><span>指标</span><span>变化</span></THead>
-      <TRow left="纪要整理时间" right="30min → 5min" />
-      <TRow left="行动项遗漏率" right="显著降低" />
-      <TRow left="部署平台" right="Vercel → CF Pages（国内直连）" />
-    </div>
-  </>
-}
-
-/* ============================================================
-   竞品分析 Agent Skill
-   ============================================================ */
-function CompetitorDetail() {
-  return <>
-    <H3>项目简介</H3>
-    <P>用 Claude Code Skill 框架搭建。输入产品名，自动完成竞品搜索、多维度对比、可视化分析，输出 Excel 报告。</P>
-
-    <H3>智能分类</H3>
-    <P>根据输入自动识别产品类型，匹配对应的分析框架。LLM / SaaS / 消费电子 / 家居用品 / 概念方案，每类有独立的搜索策略和对比维度。</P>
-    <P style={{ color: 'rgba(222,219,200,0.35)', fontSize: '11px' }}>示例：输入「智能笔记 LLM」→ 自动识别为 SaaS 品类，聚焦模型能力、API 定价、多模态支持、上下文窗口等维度，而非硬件参数</P>
-
-    <H3>具体竞品分析</H3>
-    <P>针对已上市产品，搜索同品类竞品进行横向对比。覆盖基础信息、评分口碑、销量排名、产品规格、价格分布、SWOT、用户评价、市场空白与战略建议。</P>
-    <P style={{ color: 'rgba(222,219,200,0.4)', fontSize: '11px' }}>案例：绿联67W充电宝 vs 小米/倍思/安克/罗马仕/酷态科 6 款同规格产品全维度分析</P>
-
-    <H3>概念竞品分析</H3>
-    <P>针对创新概念或未上市方案，搜索专利、众筹项目、学术文献及替代方案，评估概念新颖性和专利侵权风险。</P>
-    <P style={{ color: 'rgba(222,219,200,0.4)', fontSize: '11px' }}>案例：无拉链行李箱闭合方案 — 10 个竞品/专利的功能矩阵对比 + 风险判定 + 差异化建议</P>
-
-    <H3>技术栈</H3>
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-      <Tag>Claude Code Skill</Tag><Tag>Web 搜索</Tag><Tag>Excel 导出</Tag><Tag>SWOT 分析</Tag><Tag>专利检索</Tag>
-    </div>
-
-    <div style={{ marginTop: '14px' }}>
-      <Link href={import.meta.env.BASE_URL + 'competitive-analysis-portfolio.pdf'}>查看案例报告 PDF ↗</Link>
+      <Tag>Claude Code Skill</Tag><Tag>Web Search</Tag><Tag>Excel (exceljs)</Tag><Tag>DeepSeek API</Tag><Tag>HTML+CSS</Tag><Tag>SWOT</Tag>
     </div>
   </>
 }
@@ -169,6 +137,11 @@ function ObsidianMemoryDetail() {
 → 跨项目教训 → 当前项目 _feedback/ → _memory/`}</Flow>
     <P>13 个大类、130+ 个问题的个人档案在 00-Rules/ 里，从性格到审美偏好。Agent 读了就知道怎么协作。</P>
 
+    <H3>近期迭代</H3>
+    <P><HL>AI 速读关键信号</HL> — who-i-am 新增 13 维度结构化摘要，Agent 30 秒内理解人格模式，无需读完 400 行全文</P>
+    <P><HL>graduation-queue 读顺序提升</HL> — 从可选变成必读（AGENTS.md 第 3 步），确保跨项目原则每个 session 都加载</P>
+    <P><HL>Obsidian Git 自动备份</HL> — 60 分钟自动 commit + push 到 GitHub，防丢失</P>
+
     <H3>关键决策</H3>
     <div style={{ padding: '8px 0' }}>
       <THead><span>决策</span><span>原因</span></THead>
@@ -182,12 +155,6 @@ function ObsidianMemoryDetail() {
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
       <Tag>Obsidian</Tag><Tag>Claude Code Agent SDK</Tag><Tag>AGENTS.md</Tag><Tag>GitHub</Tag><Tag>Obsidian Git</Tag><Tag>Templater</Tag><Tag>Vault Starter Pack</Tag>
     </div>
-
-    <H3>效果</H3>
-    <P>• 新 session 自动加载全部规则 + 偏好 + 项目上下文 + 历史反馈</P>
-    <P>• 反馈 → 规则提炼 → 全局原则，全自动流转</P>
-    <P>• 覆盖 6 个并行项目，各自独立互不污染</P>
-    <P>• 灵感来源：Karpathy "llm-wiki" + PEEK 论文 (MIT/Stanford)</P>
   </>
 }
 
@@ -198,6 +165,7 @@ function FortuneDetail() {
   return <>
     <H3>项目简介</H3>
     <P>八字 + 紫微斗数 + 塔罗三板块融合的命理应用。国内用户友好，Cloudflare Pages 直连部署。</P>
+    <div style={{ marginTop: '8px' }}><Link href="https://fortune-telling-84p.pages.dev">Live Demo ↗ fortune-telling-84p.pages.dev</Link></div>
 
     <H3>解决的问题</H3>
     <P>八字、紫微、塔罗三套体系分散在不同平台。身边多位好友有实际使用需求，整合到一个应用里。</P>
@@ -227,11 +195,20 @@ function FortuneDetail() {
 function SkillsDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>为 Claude Code 搭建了 11 个能力模块，覆盖效率工具、分析研究、部署发布、文档创作四类场景。AI 遇到对应任务时自动加载。</P>
+    <P>为 Claude Code 搭建的能力模块，覆盖 PM 全链路、效率工具、分析研究、部署发布四类场景。AI 遇到对应任务时自动加载。</P>
 
     <H3>Skills 清单</H3>
 
     <div style={{ marginTop: '12px' }}>
+      <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>PM 全链路</div>
+      <TRow left="market-research" right="市场调研：6 模块报告，3 模式，5 品类适配" />
+      <TRow left="competitive-analysis" right="竞品分析：4 模式分流，6-10 竞品 × 9 sheet Excel" />
+      <TRow left="brainstorming" right="头脑风暴：PM/Designer/Engineer 三视角，强制毙掉清单" />
+      <TRow left="prd-writer" right="PRD 撰写：8 段式模板，硬件自动追加 4 段" />
+      <TRow left="pm-chain" right="全链路串联：一条指令输出 8 tab HTML 完整报告" />
+    </div>
+
+    <div style={{ marginTop: '16px' }}>
       <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>效率工具</div>
       <TRow left="weekly-review" right="周度 AI 使用深度复盘，自动提炼可复用教训" />
       <TRow left="prompt-optimizer" right="分析原始指令，匹配最佳实践，输出优化后的提示词" />
@@ -241,7 +218,6 @@ function SkillsDetail() {
 
     <div style={{ marginTop: '16px' }}>
       <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>分析与研究</div>
-      <TRow left="competitive-analysis" right="自动竞品搜索 + 多维度对比 + Excel 报告导出" />
       <TRow left="diagnose" right="受控诊断循环：复现 → 缩小 → 假设 → 插桩 → 修复" />
       <TRow left="triag" right="Issue 状态机管理，按角色路由" />
     </div>
@@ -272,23 +248,16 @@ export const aiProjects: AIProject[] = [
   {
     slug: 'pm-os',
     title: 'PM OS',
-    tagline: 'IPD 全流程项目管理工具，自绘 SVG 甘特图',
+    tagline: 'IPD 全流程项目管理工具，内置 AI 会议纪要',
     tags: ['Next.js', 'IndexedDB', 'SVG', 'DeepSeek'],
     detail: <PmOsDetail />,
   },
   {
-    slug: 'ai-meeting',
-    title: 'AI 会议纪要',
-    tagline: '30min → 5min，风险识别 + 待办追踪全自动',
-    tags: ['Vite', 'React', 'CF Pages', 'DeepSeek'],
-    detail: <AiMeetingDetail />,
-  },
-  {
-    slug: 'competitor-analysis',
-    title: '竞品分析 Skill',
-    tagline: '输入产品名，自动生成深度竞品报告',
-    tags: ['Skill Design', 'Web Search', 'Excel', 'SWOT'],
-    detail: <CompetitorDetail />,
+    slug: 'pm-chain',
+    title: '产品全链路 Skill System',
+    tagline: '从 idea 到 8 tab 完整报告，一条指令跑通全流程',
+    tags: ['Skill Design', 'Web Search', 'Excel', 'DeepSeek'],
+    detail: <PmChainDetail />,
   },
   {
     slug: 'obsidian-memory',
@@ -307,7 +276,7 @@ export const aiProjects: AIProject[] = [
   {
     slug: 'claude-code-skills',
     title: 'Claude Code Skills',
-    tagline: '11 个可复用自动化能力模块',
+    tagline: 'PM 全链路 + 效率工具 + 部署发布，15+ 能力模块',
     tags: ['Skill Framework', 'Node.js', 'CDP', 'Automation'],
     detail: <SkillsDetail />,
   },
