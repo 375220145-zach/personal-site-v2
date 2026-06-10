@@ -201,7 +201,27 @@
 <!-- ====== 4. PRD ====== -->
 <!-- ====== 4. PRD ====== -->
 <div class="tab" id="prd"><section><h2>4. PRD: Pocket Agent v3.0 <span class="confidence-badge conf-verified">PM增强版</span></h2>
-<p style="font-size:12px;color:var(--muted);margin-bottom:16px;">10 段完整 PRD。含干系人矩阵、用户故事映射、MoSCoW、非功能需求、功能依赖图、决策日志、反例自查。完整版 → <code>prd.md</code></p>
+<p style="font-size:12px;color:var(--muted);margin-bottom:8px;">10 段完整 PRD。完整版含全部 GWT 验收标准 + 数据库字段设计 → <code>prd.md</code></p>
+
+<h3>🎯 MVP 一页定义</h3>
+<div style="background:var(--surface);border:1px solid var(--purple);border-radius:8px;padding:16px;margin:10px 0 16px;">
+<div class="table-wrap"><table><tr><th style="width:100px;">维度</th><th>MVP 内容</th></tr>
+<tr><td><strong>目标</strong></td><td>验证"零配置 Agent 有人愿意用"</td></tr>
+<tr><td><strong>平台</strong></td><td>Android 8.0+（iOS 待 V1.0）</td></tr>
+<tr><td><strong>核心功能</strong></td><td>F1 语音+NLU · F2 GUI引擎(5个核心任务) · F3 端侧推理(3B量化) · F4 云端fallback</td></tr>
+<tr><td><strong>5 个任务</strong></td><td>发文件 / 搜机票 / 设闹钟 / 填报销 / 查天气</td></tr>
+<tr><td><strong>目标用户</strong></td><td>5,000 技术爱好者（中英文）</td></tr>
+<tr><td><strong>成功指标</strong></td><td>首次成功率 >80% · Time to First Success <3min · 30日留存 >30%</td></tr>
+<tr><td><strong>不在此范围</strong></td><td>iOS版 · 模板市场 · 多语言(中英以外) · 自定义规则 · 桌面后台 · 企业版</td></tr>
+<tr><td><strong>最大风险</strong></td><td>微信/支付宝封禁（如发生→聚焦系统应用+网页版）</td></tr>
+<tr><td><strong>商业模式</strong></td><td>免费版 10次/月 · Pro $5/月（MVP 后上线）</td></tr></table></div>
+
+<div class="table-wrap" style="margin-top:10px;"><table><tr><th>#</th><th>不做的事</th><th>理由</th></tr>
+<tr><td>1</td><td>自研大模型</td><td>资源不够，用开源+云端API</td></tr>
+<tr><td>2</td><td>iOS 版</td><td>Automation API 不如 Android 开放</td></tr>
+<tr><td>3</td><td>模板市场 UGC</td><td>冷启动需初始内容，预置 20 个官方模板</td></tr>
+<tr><td>4</td><td>企业 SSO</td><td>先 to-C 验证 PMF</td></tr>
+<tr><td>5</td><td>独立硬件</td><td>不做 Rabbit R1 路线</td></tr></table></div></div>
 
 <h3>干系人矩阵</h3>
 <div class="table-wrap"><table><tr><th>角色</th><th>权责</th><th>决策权</th></tr>
