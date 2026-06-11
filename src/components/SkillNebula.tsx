@@ -39,8 +39,10 @@ export default function SkillNebula({
     if (W < 60 || H < 60) return;
     let lastW = W;
 
-    // Sphere radius scales with container width (ref: 2.7 at 700px)
-    const SPHERE_R = (W / 700) * 2.7;
+    // Sphere radius: 3.5 on PC, minimum 2.2 on mobile
+    const SPHERE_R = Math.max(2.2, (W / 700) * 3.2);
+    // Font size: 16px PC, 14px mobile
+    const FONT_SIZE = W < 500 ? 14 : 16;
 
     /* ---- Scene ---- */
     const scene = new THREE.Scene();
@@ -72,7 +74,7 @@ export default function SkillNebula({
       el.textContent = tag.text;
       el.style.cssText = `
         color:#E1E0CC;
-        font-size:16px;
+        font-size:${FONT_SIZE}px;
         font-weight:400;
         letter-spacing:0.01em;
         text-shadow:0 0 10px rgba(180,190,255,0.4);
@@ -103,6 +105,7 @@ export default function SkillNebula({
     let isDragging = false;
 
     const onPointerDown = (e: PointerEvent) => {
+      e.preventDefault();
       pointerDown = true;
       isDragging = false;
       dragDistance = 0;
@@ -221,6 +224,7 @@ export default function SkillNebula({
         height: 'clamp(420px,58vh,560px)',
         margin: '0 auto',
         cursor: 'grab',
+        touchAction: 'none',
       }}
     />
   );
