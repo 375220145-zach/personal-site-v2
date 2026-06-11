@@ -139,7 +139,14 @@ export default function SkillNebula({
       }
     };
 
+    const onPointerCancel = () => {
+      pointerDown = false;
+    };
+
     container.addEventListener('pointerdown', onPointerDown);
+    container.addEventListener('pointerup', onPointerUp);
+    container.addEventListener('pointercancel', onPointerCancel);
+    container.addEventListener('pointerleave', onPointerCancel);
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
 
@@ -209,6 +216,9 @@ export default function SkillNebula({
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('resize', onResize);
       container.removeEventListener('pointerdown', onPointerDown);
+      container.removeEventListener('pointerup', onPointerUp);
+      container.removeEventListener('pointercancel', onPointerCancel);
+      container.removeEventListener('pointerleave', onPointerCancel);
       container.removeChild(labelRenderer.domElement);
       scene.clear();
     };
