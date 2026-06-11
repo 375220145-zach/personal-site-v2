@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight, FileText, X } from 'lucide-react'
 import { motion, useInView } from 'framer-motion'
 import AiCardWall from './components/AiCardWall'
 import AiLabModal from './components/AiLabModal'
+import SkillNebula from './components/SkillNebula'
 import { aiProjects } from './data/ai-projects'
 
 const BASE = import.meta.env.BASE_URL
@@ -418,102 +419,21 @@ function JDMatchSlider({ onActivate, resetSignal }: { onActivate: () => void; re
 }
 
 /* ============================================================
-   Word Cloud
+   Skill Nebula
    ============================================================ */
-interface TagItem { text: string; cls: string; v: boolean }
-const tagItems: TagItem[] = [
-  { text: 'Project Management', cls: 'xl', v: false }, { text: 'Vibe Coding', cls: 'lg', v: true },
-  { text: 'IPD', cls: 'md', v: false }, { text: 'Supply Chain', cls: 'md', v: false },
-  { text: 'Agile', cls: 'sm', v: true }, { text: 'Claude Code', cls: 'sm', v: false },
-  { text: 'Risk Control', cls: 'sm', v: false }, { text: 'Cost Management', cls: 'sm', v: false },
-  { text: 'Prompt Engineering', cls: 'sm', v: false }, { text: 'Workflow Optimization', cls: 'sm', v: true },
-  { text: 'MRO Sourcing', cls: 'xs', v: true }, { text: 'AIGC', cls: 'xs', v: false },
-  { text: 'ODM/OEM', cls: 'xs', v: true }, { text: 'AutoCAD', cls: 'xs', v: false },
-  { text: 'No-code Agent', cls: 'xs', v: false }, { text: 'Skill Design', cls: 'xs', v: false },
-  { text: 'Cross-functional', cls: 'xs', v: true }, { text: 'Gantt Chart', cls: 'xs', v: false },
-  { text: 'SPSS', cls: 'xs', v: false }, { text: 'MS Office', cls: 'xs', v: false },
-  { text: 'Music Tech', cls: 'xs', v: false }, { text: 'Solo Travel', cls: 'xs', v: true },
+const tagItems = [
+  { text: 'Project Management', cls: 'xl' }, { text: 'Vibe Coding', cls: 'lg' },
+  { text: 'IPD', cls: 'md' }, { text: 'Supply Chain', cls: 'md' },
+  { text: 'Agile', cls: 'sm' }, { text: 'Claude Code', cls: 'sm' },
+  { text: 'Risk Control', cls: 'sm' }, { text: 'Cost Management', cls: 'sm' },
+  { text: 'Prompt Engineering', cls: 'sm' }, { text: 'Workflow Optimization', cls: 'sm' },
+  { text: 'MRO Sourcing', cls: 'xs' }, { text: 'AIGC', cls: 'xs' },
+  { text: 'ODM/OEM', cls: 'xs' }, { text: 'AutoCAD', cls: 'xs' },
+  { text: 'No-code Agent', cls: 'xs' }, { text: 'Skill Design', cls: 'xs' },
+  { text: 'Cross-functional', cls: 'xs' }, { text: 'Gantt Chart', cls: 'xs' },
+  { text: 'SPSS', cls: 'xs' }, { text: 'MS Office', cls: 'xs' },
+  { text: 'Music Tech', cls: 'xs' }, { text: 'Solo Travel', cls: 'xs' },
 ]
-const clsMap: Record<string, { fontSize: number; weight: number; color: string }> = {
-  xl: { fontSize: 48, weight: 200, color: '#E1E0CC' }, lg: { fontSize: 34, weight: 200, color: 'rgba(222,219,200,0.78)' },
-  md: { fontSize: 24, weight: 300, color: 'rgba(222,219,200,0.62)' }, sm: { fontSize: 17, weight: 300, color: 'rgba(222,219,200,0.62)' },
-  xs: { fontSize: 13, weight: 400, color: 'rgba(222,219,200,0.42)' },
-}
-
-function WordCloud({ onTagClick }: { onTagClick: (text: string) => void }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [tags, setTags] = useState<{ text: string; x: number; y: number; fs: number; w: number; c: string; v: boolean }[]>([])
-  const built = useRef(false)
-  const tRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-
-  useEffect(() => {
-    const build = async () => {
-      const el = ref.current; if (!el) return
-      await document.fonts.ready
-      const W = el.clientWidth, H = el.clientHeight
-      if (W < 60 || H < 60) return
-      built.current = true
-      const CELL = 10, COLS = Math.floor(W / CELL), ROWS = Math.floor(H / CELL)
-      const grid = new Uint8Array(COLS * ROWS)
-      const order: Record<string, number> = { xl: 5, lg: 4, md: 3, sm: 2, xs: 1 }
-      const sorted = [...tagItems].sort((a, b) => order[b.cls] - order[a.cls])
-      const cx = Math.floor(COLS / 2), cy = Math.floor(ROWS / 2)
-
-      const m = document.createElement('div')
-      m.style.cssText = 'position:absolute;left:-9999px;top:-9999px;font-family:Almarai,sans-serif;'
-      document.body.appendChild(m)
-
-      // Scale down font sizes on narrow screens
-      const scale = Math.min(1, W / 500)
-      const out: typeof tags = []
-      sorted.forEach(t => {
-        const s = clsMap[t.cls]
-        const fs = Math.round(s.fontSize * scale)
-        m.innerHTML = `<span style="font-size:${fs}px;font-weight:${s.weight};white-space:nowrap;writing-mode:${t.v ? 'vertical-rl' : 'horizontal-tb'};text-orientation:mixed;">${t.text}</span>`
-        const r = (m.firstChild as HTMLElement).getBoundingClientRect()
-        const tw = Math.ceil(r.width) + 10, th = Math.ceil(r.height) + 10
-        const gw = Math.max(1, Math.floor(tw / CELL)), gh = Math.max(1, Math.floor(th / CELL))
-        let bx = -1, by = -1, best = Infinity
-
-        for (let rad = 0; rad < Math.max(COLS, ROWS) && best === Infinity; rad++) {
-          for (let dy = -rad; dy <= rad && best === Infinity; dy++) {
-            for (let dx = -rad; dx <= rad && best === Infinity; dx++) {
-              if (Math.abs(dx) !== rad && Math.abs(dy) !== rad) continue
-              const gx = cx + dx - Math.floor(gw / 2), gy = cy + dy - Math.floor(gh / 2)
-              if (gx < 0 || gy < 0 || gx + gw > COLS || gy + gh > ROWS) continue
-              let ok = true
-              for (let y2 = gy; y2 < gy + gh && ok; y2++) for (let x2 = gx; x2 < gx + gw && ok; x2++) if (grid[y2 * COLS + x2]) ok = false
-              if (ok && dx * dx + dy * dy < best) { best = dx * dx + dy * dy; bx = gx; by = gy }
-            }
-          }
-        }
-        if (bx < 0) { bx = cx - Math.floor(gw / 2); by = cy - Math.floor(gh / 2) }
-        for (let y2 = by; y2 < by + gh; y2++) for (let x2 = bx; x2 < bx + gw; x2++) grid[y2 * COLS + x2] = 1
-        out.push({ text: t.text, x: bx * CELL + tw / 2, y: by * CELL + th / 2, fs, w: s.weight, c: s.color, v: t.v })
-      })
-      document.body.removeChild(m)
-      setTags(out)
-    }
-    clearTimeout(tRef.current); tRef.current = setTimeout(build, 80)
-    const onResize = () => { built.current = false; setTags([]); clearTimeout(tRef.current); tRef.current = setTimeout(() => { build() }, 300) }
-    window.addEventListener('resize', onResize)
-    return () => { window.removeEventListener('resize', onResize); clearTimeout(tRef.current) }
-  }, [])
-
-  return (
-    <motion.div ref={ref} initial={{ opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      style={{ position: 'relative', width: '100%', maxWidth: '700px', height: 'clamp(420px,58vh,560px)', margin: '0 auto', border: '0.5px solid rgba(222,219,200,0.08)' }}>
-      {tags.map((t, i) => (
-        <motion.span key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.03 }}
-          style={{ position: 'absolute', left: t.x, top: t.y, transform: 'translate(-50%,-50%)', fontSize: t.fs, fontWeight: t.w, color: t.c, letterSpacing: '0.01em', cursor: 'pointer', whiteSpace: 'nowrap', writingMode: t.v ? 'vertical-rl' : 'horizontal-tb', textOrientation: 'mixed' }}
-          onClick={() => onTagClick(t.text)}
-          onMouseEnter={e => { (e.target as HTMLElement).style.color = '#DEDBC8' }}
-          onMouseLeave={e => { (e.target as HTMLElement).style.color = t.c }}
-        >{t.text}</motion.span>
-      ))}
-    </motion.div>
-  )
-}
 
 /* ============================================================
    Section Card
@@ -763,7 +683,9 @@ export default function App() {
           <div style={{ fontSize: '12px', letterSpacing: '0.3em', color: 'rgba(222,219,200,0.5)', textTransform: 'uppercase', marginBottom: '6px', marginTop: 'clamp(20px,3vh,40px)', textAlign: 'center', width: '100%' }}>技能词云</div>
           <div style={{ fontSize: '13px', color: 'rgba(222,219,200,0.35)', fontWeight: 300, marginBottom: '10px', textAlign: 'center', width: '100%' }}>点击标签查看详情</div>
         </FadeIn>
-        <WordCloud onTagClick={openTag} />
+        <motion.div initial={{ opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} style={{ width: '100%' }}>
+          <SkillNebula tags={tagItems} onTagClick={openTag} />
+        </motion.div>
       </section>
 
       {/* ============================================================
