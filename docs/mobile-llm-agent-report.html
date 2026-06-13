@@ -200,6 +200,57 @@
 <span class="confidence-badge conf-estimated">估算</span> — 基于可见数据合理推算 &nbsp;
 <span class="confidence-badge" style="background:rgba(255,255,255,0.05);color:var(--muted);">—</span> — 无公开来源，留空
 </p>
+	<h2>1.8 用户旅程地图 <span class="tag tag-green">NEW</span></h2>
+	<p style="font-size:11px;color:var(--muted);margin-bottom:14px;">目标用户: 技术爱好者 Chiara, 28岁, 后端工程师, 隐私敏感</p>
+
+	<h3>阶段 1：发现（Awareness）</h3>
+	<div class="table-wrap"><table>
+	<tr><th>触点</th><th>用户行为</th><th>情绪</th><th>痛点/摩擦</th><th>PA 需要做到的</th></tr>
+	<tr><td>Reddit r/Android 帖子</td><td>看到 "零配置开源手机Agent" 帖子，点赞 234</td><td>😮 好奇</td><td>标题党太多——"又一个 AutoGLM？"</td><td>帖子必须说清楚跟 AutoGLM 的区别：零配置、零 Python、零 ADB</td></tr>
+	<tr><td>GitHub README</td><td>点进 repo 看 README，10 秒内决定要不要继续看</td><td>🤔 评估</td><td>无数开源项目 README 前 500 字在讲愿景不说人话</td><td>README 第一屏：三行核心承诺 + 安装命令 + 10 秒 GIF 演示</td></tr>
+	<tr><td>Landing Page</td><td>看了 README 后点进官网</td><td>🤨 验证</td><td>"这会不会又是一个 Rabbit R1？"</td><td>首页直接展示隐私仪表盘截图——「这是你所有的数据流向，全部在本地」</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);margin-bottom:14px;"><strong>衡量指标:</strong> GitHub Star (目标 >500 in 30d)、Landing Page 访问 → Download 转化 >8%</p>
+
+	<h3>阶段 2：安装 + 授权（Onboarding）</h3>
+	<div class="table-wrap"><table>
+	<tr><th>步骤</th><th>用户行为</th><th>情绪</th><th>Friction</th><th>PA 设计策略</th></tr>
+	<tr><td>下载 APK</td><td>从 GitHub Releases 下载 → 系统警告「未知来源」</td><td>😰 紧张</td><td><strong>最大 drop-off 点</strong> —— 大部分用户在这步放弃</td><td>安装引导页提前展示「接下来你会看到 XX 警告，这是正常的，因为我们是开源 App，没有经过 Google 审核。这是为了保护你。」→ 把恐惧变成信任</td></tr>
+	<tr><td>安装</td><td>点击安装</td><td>😬 犹豫</td><td>国产手机「安全检测」弹窗可能再拦一次</td><td>各厂商安装指南截图（小米/OPPO/vivo/三星）放在下载页旁边</td></tr>
+	<tr><td>授权无障碍服务</td><td>系统跳转到「无障碍」设置 → 用户看到 "允许 PA 查看你的屏幕操作"</td><td>🤯 恐惧</td><td><strong>第二大 drop-off</strong> —— 用户看到「查看屏幕」就退缩</td><td>授权页面分两步：① 先解释 "为什么需要这个权限——像给你请了个秘书，秘书需要看到你在做什么才能帮忙" ② 再跳转系统设置。每项权限单独解释、单独授权</td></tr>
+	<tr><td>授权通知权限</td><td>允许前台服务通知</td><td>😌 接受</td><td>这个权限用户习惯了</td><td>说明「这个通知让我们不被系统杀掉」</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);margin-bottom:14px;"><strong>衡量指标:</strong> Download → Install 转化 >60%、Install → Accessibility 授权 >40%、Install → 首次任务完成 >30%</p>
+
+	<h3>阶段 3：首次使用（First Task / Aha Moment）</h3>
+	<div class="table-wrap"><table>
+	<tr><th>步骤</th><th>用户行为</th><th>情绪</th><th>Friction</th><th>PA 设计策略</th></tr>
+	<tr><td>打开 App</td><td>看到简洁界面：底部一个麦克风按钮 + "告诉我你要做什么" 的提示</td><td>🤔 不确定</td><td>"我该说什么？"——用户不知道命令的边界</td><td>提供 5 个预设示例（发消息 / 搜信息 / 设提醒 / 订咖啡 / 查天气），点击即可触发</td></tr>
+	<tr><td>说出第一个命令</td><td>"帮我给张三发微信，说明天下午 3 点开会"</td><td>😬 紧张</td><td>第一次语音交互的尴尬——怕说错、怕 AI 理解不了</td><td>边说边实时转写，用户可以纠正。Agent 先复述理解再执行——「我理解：你要给微信好友张三发一条消息，内容是'明天下午 3 点开会'。对吗？」</td></tr>
+	<tr><td>看到执行过程</td><td>Agent 打开微信 → 搜索"张三" → 输入消息 → 展示每一步</td><td>🤩 惊喜</td><td>如果执行出错（找不到联系人/App 弹窗干扰），信任瞬间崩塌</td><td>每步可见。出错时 Agent 说 "我找不到张三，可能是通讯录里有多个张三。请帮我确认是哪一个？" ——不假装知道</td></tr>
+	<tr><td>任务完成</td><td>Agent 显示 "消息已发送 ✓ | 用时 23 秒 | 数据全部在本地 ✅"</td><td>🎉 满足</td><td>—</td><td>完成后的隐私摘要：「本次任务：屏幕数据未上传，指令在本地解析，微信数据未被读取」</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);margin-bottom:8px;"><strong>Aha Moment 定义:</strong> 用户在 3 分钟内完成第一个任务并且看到隐私摘要，理解 "AI 能帮我又不偷看"。</p>
+	<p style="font-size:11px;color:var(--muted);margin-bottom:14px;"><strong>衡量指标:</strong> Time to First Success &lt;3min、首次任务成功率 >75%、完成后的 NPS >40</p>
+
+	<h3>阶段 4：日常使用（Habit Formation）</h3>
+	<div class="table-wrap"><table>
+	<tr><th>频率</th><th>场景</th><th>情绪</th><th>Retention Driver</th></tr>
+	<tr><td>每天 1-2 次</td><td>发消息、搜信息、设提醒</td><td>🙂 习惯</td><td>比手动快——节省10-30秒/次</td></tr>
+	<tr><td>每周 2-3 次</td><td>填表单、订外卖、比价</td><td>😊 满意</td><td>自动发现并推荐新技能——"你最近经常在这家店下单，要不要设一个'一键复购'技能？"</td></tr>
+	<tr><td>每周 1 次</td><td>查看隐私仪表盘</td><td>🔒 安心</td><td>每周推送隐私报告："本周 PA 帮你完成了 15 个任务，0 次云端请求，数据全部在本地"</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);margin-bottom:14px;"><strong>关键:</strong> 技能缓存让重复任务越来越快——第 1 次 60s，第 5 次 8s。用户感知到 "它在学习我的习惯"。<br><strong>衡量指标:</strong> 7 日留存 >30%、30 日留存 >25%、周活跃天数 >4</p>
+
+	<h3>阶段 5：沉淀与分享（Advocacy）</h3>
+	<div class="table-wrap"><table>
+	<tr><th>行为</th><th>触发</th><th>PA 设计</th></tr>
+	<tr><td>分享技能到社区</td><td>用户自己创建了一个实用技能</td><td>一键 "分享到技能市场"，自动生成 SKILL.md</td></tr>
+	<tr><td>在社交平台推荐 PA</td><td>朋友问 "你刚才演示的那个是什么？"</td><td>App 内置 "分享成绩单"——生成一张卡片：你的 PA 本月完成了 X 个任务，节省了 Y 分钟，数据全部在本地 🔒</td></tr>
+	<tr><td>贡献代码/文档</td><td>发现 bug 或想加功能</td><td>GitHub Issues 友好模板 + 贡献指南</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);"><strong>衡量指标:</strong> 社区技能提交数 >50 (Beta)、NPS 推荐意愿 >50</p>
+
 </section></div>
 
 <!-- ====== 2. COMPETITIVE ====== -->
@@ -429,6 +480,170 @@
 <tr><td>LTV/CAC</td><td style="font-weight:700;color:var(--green);"><strong>7-12:1 ✅</strong></td><td>>3:1</td></tr>
 <tr><td>盈亏平衡</td><td>3,000 付费用户（Month 6-8）</td><td>—</td></tr>
 <tr><td colspan="3" style="font-size:10px;color:var(--red);">🔴 如果云推理成本超预期（>30%任务走云端）→ 毛利率从 80% 跌到 <60%</td></tr></table></div>
+	<h2>7.9 留存与激活模型 <span class="tag tag-green">NEW</span></h2>
+	<p style="font-size:12px;color:var(--muted);margin-bottom:14px;"><strong>核心命题:</strong> 舆情显示「AI 功能试用率 >80%，每日高频使用率 <30%」是品类生存风险。PA 怎么破？</p>
+
+	<h3>品类留存基准</h3>
+	<div class="table-wrap"><table>
+	<tr><th>指标</th><th>豆包(参考)</th><th>行业 SaaS</th><th>PA 目标 (Alpha)</th><th>PA 目标 (Year 1)</th></tr>
+	<tr><td>D1 留存</td><td>~65%</td><td>~40%</td><td>>50%</td><td>>55%</td></tr>
+	<tr><td>D7 留存</td><td>~45%</td><td>~20%</td><td>>30%</td><td>>35%</td></tr>
+	<tr><td>D30 留存</td><td>~35%</td><td>~10%</td><td>>25%</td><td>>30%</td></tr>
+	<tr><td>周活跃天数</td><td>~5</td><td>~3</td><td>>4</td><td>>5</td></tr>
+	<tr><td>日均会话数</td><td>~6</td><td>~2</td><td>>3</td><td>>4</td></tr>
+	</table></div>
+
+	<h3>留存漏斗（AARRR + North Star）</h3>
+	<pre style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;color:var(--text);line-height:1.8;overflow-x:auto;">
+<span style="color:var(--yellow);font-weight:700;">North Star: 每周完成的任务数（Weekly Completed Tasks）</span>
+         ↓
+     Acquisition ←── 下载量
+         ↓
+     Activation ←── 首次任务完成 (Aha: &lt;3min TTS)
+         ↓
+     Retention ←── 7日/30日留存
+         ↓
+     Revenue   ←── Pro 转化
+         ↓
+     Referral  ←── 技能分享 + 社区贡献</pre>
+	<p style="font-size:11px;color:var(--muted);margin:8px 0 16px;"><strong>为什么 North Star 是「周完成任务数」而不是 DAU 或 MAU？</strong><br>
+	DAU 可以靠推送拉起来但没价值。任务完成数直接衡量 "用户真正靠 PA 在做事"。每周粒度平滑了工作日vs周末的波动。</p>
+
+	<h3>激活模型：Aha Moment 的三层信任</h3>
+	<p style="font-size:12px;color:var(--muted);margin-bottom:10px;">品类最大的留存杀手是「用了一次、新鲜感过了、不敢再用了」。激活不是让用户完成一个任务，是建立三层信任：</p>
+	<div class="table-wrap"><table>
+	<tr><th>信任层</th><th>用户心理</th><th>PA 设计</th></tr>
+	<tr><td><strong>第一层：它能行</strong></td><td>"它真的能帮我发消息？"</td><td>首次任务成功率 >75%。预设 5 个示例降低决策负担。Agent 先复述再执行</td></tr>
+	<tr><td><strong>第二层：它不乱来</strong></td><td>"它不会在我不知道的时候偷看我的东西？"</td><td>首次任务完成后的隐私摘要弹窗——「本次任务：数据全部在本地，未上传」</td></tr>
+	<tr><td><strong>第三层：我需要它</strong></td><td>"手动也可以，但用它更快"</td><td>技能缓存让重复任务从 60s→8s，用户感知效率提升。推送「你上周在 PA 上完成了 12 个任务，平均每个节省 25 秒」</td></tr>
+	</table></div>
+	<div class="verdict" style="margin-top:12px;"><div class="vt">激活定义</div><div class="vx">用户在注册 3 天内完成 ≥3 个任务 且查看了至少一次隐私仪表盘。</div></div>
+
+	<h3>留存驱动：4 个习惯环</h3>
+	<div class="cards2">
+	<div class="card"><h4>1. 效率环（日活驱动）</h4><p style="font-size:12px;">用户每天 1-3 个高频任务（发消息、查信息、设提醒）→ 技能缓存加速 → 感知节省时间 → 第二天继续用</p><p style="font-size:10px;color:var(--yellow);margin-top:6px;">触发: 推送 "早上好，提醒你今天下午 3 点和张三有会，要我帮你准备吗？"</p></div>
+	<div class="card"><h4>2. 探索环（周活驱动）</h4><p style="font-size:12px;">PA 自动发现用户 App 使用模式 → 推荐新技能。用户尝试新技能 → 成功 → 技能库 +1</p><p style="font-size:10px;color:var(--yellow);margin-top:6px;">触发: "我注意到你每周用美团至少 3 次，要不要设一个快速复购技能？下次说'再买上次那个'就行。"</p></div>
+	<div class="card"><h4>3. 信任环（月活驱动）</h4><p style="font-size:12px;">每周推送隐私报告 → 用户看到 0 次云端请求 → 信任累积 → 愿意让 PA 做更多事</p><p style="font-size:10px;color:var(--yellow);margin-top:6px;">触发: 每周日晚上推送 "你的隐私周报：本周完成 15 个任务，0 次云端请求。2 个新技能缓存到本地。🔒"</p></div>
+	<div class="card"><h4>4. 社区环（长期留存）</h4><p style="font-size:12px;">用户创建技能 → 分享到社区 → 获得反馈/Star → 身份认同感 → 继续贡献</p><p style="font-size:10px;color:var(--yellow);margin-top:6px;">触发: "你的'订咖啡'技能被 23 人下载了，排本周 Top 10 🏆"</p></div>
+	</div>
+
+	<h3>流失预警与干预</h3>
+	<div class="table-wrap"><table>
+	<tr><th>信号</th><th>干预</th></tr>
+	<tr><td>安装后 24h 未完成首个任务</td><td>Push: "还在犹豫吗？试试让 PA 帮你发一条微信消息。不会偷看你的聊天记录 🔒"</td></tr>
+	<tr><td>3 天未打开</td><td>推送一条隐私报告摘要：你的数据一直安全</td></tr>
+	<tr><td>首次任务失败</td><td>立即弹窗：Agent 主动说 "我没成功，因为 XXX。要不要换个方式试试？" — 不能假装没出错</td></tr>
+	<tr><td>14 天未使用技能缓存</td><td>推送：你之前设的'快速发消息'技能还在，说一声就能用</td></tr>
+	<tr><td>卸载（如果可检测）</td><td>最后一次会话 90% 是因为 "任务失败" → 说明可靠性是第一流失原因</td></tr>
+	</table></div>
+
+	<h3>Pro 转化路径</h3>
+	<div class="table-wrap"><table>
+	<tr><th>触发</th><th>Free 限制</th><th>Pro 价值</th></tr>
+	<tr><td>今天云端 fallback 用完（第 6 次复杂任务）</td><td>✅ 5 次/天</td><td>无限</td></tr>
+	<tr><td>想在电脑上也用</td><td>❌ 单设备</td><td>跨设备同步</td></tr>
+	<tr><td>想调度定时任务</td><td>❌ 仅手动触发</td><td>定时/条件触发的自动化规则</td></tr>
+	<tr><td>看别人的技能想导入</td><td>❌ 基础技能</td><td>社区技能库优先</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);margin-top:6px;"><strong>转化率目标:</strong> Free → Pro 3% (Beta)、5% (Year 1)</p>
+	<h2>7.10 端侧技术可行性深度论证 <span class="tag tag-green">NEW</span></h2>
+	<p style="font-size:12px;color:var(--muted);margin-bottom:14px;"><strong>核心命题:</strong> 「端侧 3B 模型能否可靠完成屏幕理解和意图解析？」——这是 PA 差异化三角的技术底座。</p>
+
+	<h3>1. 端侧模型选型对比</h3>
+	<div class="table-wrap"><table>
+	<tr><th>模型</th><th>参数量</th><th>量化后大小</th><th>推理速度 (手机 NPU)</th><th>开源协议</th><th>中文能力</th><th>屏幕理解</th></tr>
+	<tr><td>Meta Llama 3.2 3B</td><td>3.2B</td><td>~2GB (INT4)</td><td>~25 tok/s (8 Gen 4)</td><td>Llama 3.2 Community</td><td>弱</td><td>需 fine-tune</td></tr>
+	<tr><td>微软 Phi-3.5-mini</td><td>3.8B</td><td>~2.4GB (INT4)</td><td>~22 tok/s</td><td>MIT</td><td>弱</td><td>需 fine-tune</td></tr>
+	<tr><td><strong>通义千问 Qwen2.5 3B</strong></td><td>3.0B</td><td>~1.9GB (INT4)</td><td>~28 tok/s</td><td>Apache 2.0</td><td><strong>强</strong></td><td>需 fine-tune</td></tr>
+	<tr><td>Gemma 3 4B (Google)</td><td>4.0B</td><td>~2.6GB (INT4)</td><td>~18 tok/s</td><td>Gemma</td><td>中</td><td>需 fine-tune</td></tr>
+	<tr><td><strong>MiniCPM-V 2.0 (面壁)</strong></td><td>2.4B</td><td>~1.5GB (INT4)</td><td>~30 tok/s</td><td>Apache 2.0</td><td><strong>强</strong></td><td><strong>原生多模态</strong></td></tr>
+	</table></div>
+	<div class="verdict" style="margin-top:12px;"><div class="vt">推荐</div><div class="vx"><strong>MiniCPM-V 2.0</strong> 或 <strong>Qwen2.5 3B</strong>。前者天然支持屏幕截图理解（多模态训练包含 UI），后者中文能力最强。两者 Apache 2.0 可商用。</div></div>
+
+	<h3>2. 意图解析 + 屏幕理解流水线</h3>
+	<pre style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:11px;color:var(--text);line-height:1.8;overflow-x:auto;">
+用户语音 "帮我给张三发微信说明天见"
+  ↓
+[端侧 ASR] Whisper tiny (150MB) → 文本
+  ↓
+[端侧 NLU] Qwen2.5 3B / MiniCPM-V → 结构化意图
+  {
+    action: "send_message",
+    app: "微信",
+    recipient: "张三",
+    content: "明天见"
+  }
+  ↓
+[端侧 GUI Agent] 屏幕截图 → MiniCPM-V 理解当前 UI
+  → 定位 "搜索" 按钮坐标 (x=340, y=120)
+  → AccessibilityService 点击
+  → 输入 "张三"
+  → 定位联系人
+  → 点击进入聊天
+  → 粘贴消息内容
+  → 点击发送</pre>
+
+	<h3>关键延迟预算</h3>
+	<div class="table-wrap"><table>
+	<tr><th>步骤</th><th>目标延迟</th><th>当前可达</th></tr>
+	<tr><td>ASR (语音→文本)</td><td>&lt;300ms</td><td>~200ms</td></tr>
+	<tr><td>NLU (意图解析)</td><td>&lt;500ms</td><td>~400ms (3B, 量化INT4)</td></tr>
+	<tr><td>GUI (屏幕理解)</td><td>&lt;800ms per screen</td><td>~600ms</td></tr>
+	<tr><td>执行 (点击/输入)</td><td>&lt;100ms per action</td><td>~50ms</td></tr>
+	<tr style="font-weight:700;border-top:2px solid var(--border);"><td><strong>端到端总延迟</strong></td><td><strong>&lt;5秒 (简单任务)</strong></td><td><strong>~3-5秒</strong></td></tr>
+	<tr style="font-weight:700;"><td></td><td><strong>&lt;15秒 (复杂多步)</strong></td><td><strong>~8-12秒</strong></td></tr>
+	</table></div>
+
+	<h3>3. 端侧 vs 云端 Fallback 决策树</h3>
+	<pre style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:11px;color:var(--text);line-height:1.8;overflow-x:auto;">
+任务到达 → 端侧 NLU 解析意图
+  ↓
+意图复杂度评估:
+  ├── 简单 (发消息/设提醒/搜本地) → 端侧独立完成 ✅
+  ├── 中等 (搜网页/比价/翻译) → 端侧解析意图 + 云端执行 ✈️
+  └── 复杂 (多步推理/代码生成) → 直接走云端 ☁️
+
+Fallback 触发条件:
+  - 端侧模型置信度 &lt;70% → 自动切云端
+  - 端侧推理超时 (>2秒) → 自动切云端
+  - 连续 3 次端侧失败 → 降级到云端优先（当前会话）
+  - 用户在隐私仪表盘标记 "这个任务允许云端" → 下次相同任务直接用云端</pre>
+	<p style="font-size:11px;color:var(--muted);margin:8px 0 16px;"><strong>目标分布:</strong> 70% 端侧独立完成、20% 端侧+云端混合、10% 云端优先</p>
+
+	<h3>4. 设备兼容性矩阵</h3>
+	<div class="table-wrap"><table>
+	<tr><th>芯片</th><th>NPU TOPS</th><th>RAM</th><th>端侧推理可行？</th><th>代表机型</th><th>全球占比</th></tr>
+	<tr><td><strong>骁龙 8 Gen 4</strong></td><td>45</td><td>12-16GB</td><td><span class="tag tag-green">✅ 全功能</span></td><td>Galaxy S26, Xiaomi 16</td><td>~15%</td></tr>
+	<tr><td><strong>骁龙 8 Gen 3</strong></td><td>34</td><td>8-12GB</td><td><span class="tag tag-green">✅ 全功能</span></td><td>Galaxy S25, OnePlus 13</td><td>~20%</td></tr>
+	<tr><td><strong>天玑 9400</strong></td><td>42</td><td>12-16GB</td><td><span class="tag tag-green">✅ 全功能</span></td><td>vivo X200</td><td>~8%</td></tr>
+	<tr><td><strong>骁龙 8 Gen 2</strong></td><td>20</td><td>8GB</td><td><span class="tag tag-yellow">⚠️ 降级（仅意图解析）</span></td><td>Galaxy S24, Xiaomi 14</td><td>~25%</td></tr>
+	<tr><td><strong>麒麟 9100</strong></td><td>38</td><td>12GB</td><td><span class="tag tag-green">✅ (仅鸿蒙)</span></td><td>Huawei P70</td><td>~5%</td></tr>
+	<tr><td><strong>低端/老旧 (&lt;8 Gen 2)</strong></td><td>&lt;15</td><td>&lt;6GB</td><td><span class="tag tag-red">❌ 云端 only</span></td><td>中低端</td><td>~27%</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);margin:8px 0 16px;"><strong>PA 策略:</strong> 自动检测设备 → ① 高端（8 Gen 3+）：全功能端侧 ② 中端（8 Gen 2）：仅意图解析端侧，GUI 云端 ③ 低端：全云端（降级体验但可用）</p>
+
+	<h3>5. 内存与电量预算</h3>
+	<div class="table-wrap"><table>
+	<tr><th>组件</th><th>驻留内存</th><th>CPU 占用</th></tr>
+	<tr><td>Whisper ASR</td><td>~150MB</td><td>5-10% (推理时)</td></tr>
+	<tr><td>Qwen2.5 3B (INT4)</td><td>~2GB</td><td>15-25% (推理时)</td></tr>
+	<tr><td>屏幕截图缓存</td><td>~50MB</td><td>可忽略</td></tr>
+	<tr><td>技能缓存 (SQLite)</td><td>~20MB</td><td>可忽略</td></tr>
+	<tr><td>Accessibility Service</td><td>~80MB</td><td>5% (常驻)</td></tr>
+	<tr style="font-weight:700;border-top:2px solid var(--border);"><td><strong>总内存占用</strong></td><td><strong>~2.3GB</strong></td><td>—</td></tr>
+	</table></div>
+	<p style="font-size:11px;color:var(--muted);margin:8px 0 16px;"><strong>电量影响:</strong> 每次推理 (3-8 秒 NPU 全速) 耗电 ~0.3-0.5%。每天 10 次使用 ≈ 额外耗电 3-5%。在 5000mAh 电池上可忽略。</p>
+
+	<h3>6. MVP 阶段的技术风险缓解</h3>
+	<div class="table-wrap"><table>
+	<tr><th>风险</th><th>概率</th><th>缓解</th></tr>
+	<tr><td>端侧模型在部分机型上无法加载</td><td><span class="tag tag-yellow">中</span></td><td>集成多个模型（MiniCPM-V + Qwen），运行时选最优。失败自动切云端</td></tr>
+	<tr><td>Accessibility Service 被系统杀掉</td><td><span class="tag tag-red">高</span></td><td>前台服务通知 + WRITE_SECURE_SETTINGS + 厂商白名单提交</td></tr>
+	<tr><td>VLM 对非标准 UI（游戏/自定义 View）识别失败</td><td><span class="tag tag-yellow">中高</span></td><td>检测到非标准 UI → 主动告知用户 "这个 App 的界面我还不认识"</td></tr>
+	<tr><td>INT4 量化导致中文理解精度下降</td><td><span class="tag tag-yellow">中</span></td><td>提前 benchmark：中英文 50 个任务，量化前后准确率对比。下降 >5% → 换模型</td></tr>
+	</table></div>
+
+
 
 
 <div class="killed-item"><span class="ki-icon">✕</span><div><strong>独立硬件</strong><div class="ki-reason">Rabbit R1 已被判死刑——"无屏 AI 设备 90% 用户踩坑"。手机端是唯一合理载体，不做硬件路线。</div></div></div>
@@ -567,6 +782,97 @@
 5. 无障碍权限信任度（渐进式权限 + 操作可视化建立信任）<br><br>
 <strong>建议风险验证顺序：</strong>Week 0：A2（英文 app 成功率）→ Week 1：A3（iOS App Intents）→ Week 2：R10（国产手机兼容性）→ 此后：持续监控 R3+R4（大厂动向 + 用户信任度）。
 </div></div>
+
+	<h2>6.X 隐私合规评估 <span class="tag tag-green">NEW</span></h2>
+	<p style="font-size:12px;color:var(--muted);margin-bottom:14px;"><strong>核心承诺:</strong> 数据默认留在设备上。这个承诺需要技术架构和法律合规双线支撑，不能只靠口号。</p>
+
+	<h3>1. 权限最小化清单</h3>
+	<p style="font-size:12px;color:var(--muted);margin-bottom:10px;">PA 需要的系统权限与豆包的对比：</p>
+	<div class="table-wrap"><table>
+	<tr><th>权限</th><th>豆包</th><th>Pocket Agent</th><th>为什么需要？</th><th>用户怎么知道？</th></tr>
+	<tr><td>Accessibility（无障碍）</td><td>✅</td><td>✅</td><td>GUI 自动化的唯一合法方式</td><td>授权时逐条解释 + 隐私仪表盘实时展示每次使用记录</td></tr>
+	<tr><td>悬浮窗</td><td>✅</td><td>✅</td><td>执行进度浮层</td><td>—</td></tr>
+	<tr><td>通知（前台服务）</td><td>✅</td><td>✅</td><td>防止系统杀后台</td><td>—</td></tr>
+	<tr><td>麦克风</td><td>✅</td><td>✅</td><td>语音输入</td><td><strong>每次使用后自动关闭</strong>，隐私仪表盘可查</td></tr>
+	<tr><td>存储（读写）</td><td>✅</td><td>⚠️ 仅读取技能缓存目录</td><td>技能文件本地存储</td><td>不请求「所有文件」权限，用 scoped storage</td></tr>
+	<tr><td>通讯录</td><td>✅</td><td><span class="tag tag-green">❌ 不需要</span></td><td>—</td><td>—</td></tr>
+	<tr><td>短信</td><td>✅</td><td><span class="tag tag-green">❌ 不需要</span></td><td>—</td><td>—</td></tr>
+	<tr><td>位置</td><td>✅</td><td><span class="tag tag-green">❌ 不需要</span></td><td>—</td><td>—</td></tr>
+	<tr><td>相机</td><td>✅</td><td><span class="tag tag-green">❌ 不需要</span></td><td>—</td><td>—</td></tr>
+	<tr><td>电话</td><td>✅</td><td><span class="tag tag-green">❌ 不需要</span></td><td>—</td><td>—</td></tr>
+	<tr><td>已安装应用列表</td><td>✅</td><td>✅ 扫描应用以匹配技能</td><td>仅获取包名列表，不上传</td><td>—</td></tr>
+	<tr style="font-weight:700;border-top:2px solid var(--border);"><td><strong>权限总数</strong></td><td><strong>100+</strong></td><td><strong>5-6 个</strong></td><td>—</td><td>—</td></tr>
+	<tr style="font-weight:700;"><td><strong>高敏感权限占比</strong></td><td><strong>~40%</strong></td><td><strong>~20%（1个）</strong></td><td>仅无障碍为高敏感</td><td>—</td></tr>
+	</table></div>
+
+	<h3>2. 数据流架构（本地 → 云端边界）</h3>
+	<pre style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:11px;color:var(--text);line-height:1.6;overflow-x:auto;">
+┌─────────────────────────────────────────────┐
+│                   设备端                      │
+│                                              │
+│  语音输入 ──→ Whisper ASR (本地)               │
+│       ↓                                      │
+│  意图解析 ──→ Qwen2.5 3B (本地 NPU)           │
+│       ↓                                      │
+│  屏幕截图 ──→ MiniCPM-V (本地)               │
+│       │                                      │
+│       ├── 简单任务 → 本地执行 ✅ 数据不离开设备 │
+│       │                                      │
+│       └── 复杂任务 → 发送到云端 ☁️             │
+│             ↓                                │
+│           仅发送：                             │
+│           · 脱敏后的意图 JSON                  │
+│             (不含联系人名、消息内容、密码)        │
+│           · 当前屏幕的结构化描述                  │
+│             (不含实际文本内容，仅UI元素坐标和类型)  │
+│                                              │
+│  隐私护栏：                                    │
+│  · 支付页面 → 强制仅本地                       │
+│  · 密码输入框 → 强制仅本地                     │
+│  · 含身份证/银行卡号 → 强制仅本地              │
+└─────────────────────────────────────────────┘</pre>
+
+	<h3>3. 监管合规矩阵</h3>
+	<div class="table-wrap"><table>
+	<tr><th>法规</th><th>适用范围</th><th>PA 的合规措施</th><th>状态</th></tr>
+	<tr><td><strong>GDPR</strong></td><td>欧盟用户</td><td>端侧默认处理 = 最小数据收集。用户有数据可携带权（本地 SQLite 导出）。无云端存储用户数据</td><td><span class="tag tag-green">✅ 架构满足</span></td></tr>
+	<tr><td><strong>个人信息保护法</strong></td><td>中国用户</td><td>端侧处理属于《个保法》第 13 条 "为个人提供必要的服务" 的合法基础。敏感个人信息（屏幕内容）留在本地不过境</td><td><span class="tag tag-green">✅ 架构满足</span></td></tr>
+	<tr><td><strong>CCPA</strong></td><td>加州用户</td><td>无个人数据收集（端侧处理无"Sell/Share"问题）。卸载即清除</td><td><span class="tag tag-green">✅ 架构满足</span></td></tr>
+	<tr><td><strong>DMA</strong> (EU)</td><td>大型平台</td><td>不适用——PA 不是 Gatekeeper，不运营平台</td><td>N/A</td></tr>
+	<tr><td><strong>Google Play 政策</strong></td><td>全球（如后续上架）</td><td><strong>当前不可上架</strong>——Accessibility API 用于"通用自动化"违反政策。这是结构性问题，不是合规能解决的</td><td><span class="tag tag-red">❌ 仅侧载</span></td></tr>
+	<tr><td><strong>开源 License 合规</strong></td><td>全球</td><td>Apache 2.0 (Qwen/MiniCPM) + MIT (Whisper) —— 均允许商用。不包含 GPL 传染性代码</td><td><span class="tag tag-green">✅</span></td></tr>
+	</table></div>
+
+	<h3>4. 隐私仪表盘：用户可验证的信任</h3>
+	<div class="table-wrap"><table>
+	<tr><th>功能</th><th>展示内容</th><th>用户操作</th></tr>
+	<tr><td><strong>实时隐私指示器</strong></td><td>任务执行中右上角始终显示 "🔒 本地" 或 "☁️ 云端"</td><td>点击可切换（仅对非敏感任务）</td></tr>
+	<tr><td><strong>任务回放</strong></td><td>每次任务的屏幕录像（存在本地，不备份）</td><td>播放/删除/分享（用于调试或投诉）</td></tr>
+	<tr><td><strong>数据流向图</strong></td><td>可视化的 "本次任务数据流"：语音→本地ASR→意图→GUI→完成。每步标注 "本地/云端"</td><td>—</td></tr>
+	<tr><td><strong>周报</strong></td><td>"本周 15 个任务、0 次云端请求、2 个新技能缓存"</td><td>分享到社交平台（可选的成绩单）</td></tr>
+	<tr><td><strong>权限用量</strong></td><td>"无障碍服务：本周使用 15 次，每次平均 23 秒。无异常行为"</td><td>怀疑异常 → 一键锁定 Agent</td></tr>
+	<tr><td><strong>数据导出</strong></td><td>所有本地数据（技能文件、任务历史）以 JSON 导出</td><td>用于迁移到新设备或自行审计</td></tr>
+	<tr><td><strong>一键销毁</strong></td><td>清除所有本地数据 + 缓存技能</td><td>用于彻底卸载或设备转让</td></tr>
+	</table></div>
+
+	<h3>5. 安全威胁模型</h3>
+	<div class="table-wrap"><table>
+	<tr><th>威胁</th><th>描述</th><th>概率</th><th>影响</th><th>缓解</th></tr>
+	<tr><td><strong>恶意技能注入</strong></td><td>社区技能市场提交的 SKILL.md 含恶意指令（如读取通讯录并上传）</td><td><span class="tag tag-yellow">中高</span></td><td><span class="tag tag-red">高</span></td><td>① 所有社区技能默认沙箱执行 ② 含敏感权限的技能需额外审核 ③ 社区 review 机制（≥3 人 approve 才上架） ④ 执行前向用户展示将要操作的 App 列表</td></tr>
+	<tr><td><strong>APK 被篡改</strong></td><td>用户在非官方渠道下载到被注入后门的 APK</td><td><span class="tag tag-yellow">中</span></td><td><span class="tag tag-red">致命</span></td><td>① GitHub Releases 签名 APK ② 官网提供 SHA256 checksum ③ F-Droid 官方 repo（自动签名验证）</td></tr>
+	<tr><td><strong>云端 API Key 泄露</strong></td><td>用户配置的 API Key 被恶意代码窃取</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-red">高</span></td><td>① API Key 存 Android Keystore (硬件级加密) ② 明文 Key 不出 Keystore</td></tr>
+	<tr><td><strong>屏幕数据被截获</strong></td><td>恶意 App 读取 Accessibility Service 的事件流</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-red">高</span></td><td>① Accessibility Service 只读取必要事件类型 ② 事件数据不持久化到磁盘</td></tr>
+	</table></div>
+
+	<h3>6. MVP 阶段合规行动计划</h3>
+	<div class="table-wrap"><table>
+	<tr><th>时间</th><th>行动</th></tr>
+	<tr><td><strong>Pre-Alpha</strong></td><td>完成权限最小化设计 → 法务 review（可找开源基金会或 pro bono）</td></tr>
+	<tr><td><strong>Alpha 前</strong></td><td>实现隐私仪表盘 v1（至少：实时隐私指示器 + 任务回放 + 数据流向）</td></tr>
+	<tr><td><strong>Alpha 前</strong></td><td>确定开源 License（建议 Apache 2.0）并完成第三方依赖 License 审计</td></tr>
+	<tr><td><strong>Beta 前</strong></td><td>建立技能提交审核流程（至少：沙箱执行 + 权限检测 + 人工 review）</td></tr>
+	<tr><td><strong>Public 前</strong></td><td>聘请外部安全审计（核心模块：端侧推理沙箱 + 技能执行引擎 + 云端通信）</td></tr>
+	</table></div>
 
 </section></div>
 
