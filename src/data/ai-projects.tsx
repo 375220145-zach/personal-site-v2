@@ -36,14 +36,69 @@ function Tag({ children }: { children: string }) {
   return <span style={{ display: 'inline-block', background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: 'rgba(222,219,200,0.55)', margin: '0 4px 4px 0' }}>{children}</span>
 }
 
+/* Metric bar — horizontal stat cards */
+function MetricBar({ items }: { items: { label: string; value: string }[] }) {
+  return (
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', margin: '12px 0' }}>
+      {items.map((m, i) => (
+        <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '0.5px solid rgba(255,255,255,0.06)', padding: '10px 16px', borderRadius: '6px', textAlign: 'center', minWidth: '80px' }}>
+          <div style={{ fontSize: '22px', fontWeight: 300, color: '#E1E0CC', letterSpacing: '-0.02em' }}>{m.value}</div>
+          <div style={{ fontSize: '10px', color: 'rgba(222,219,200,0.4)', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{m.label}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/* Pipeline node — one stage in the workflow */
+function PipelineNode({ label, active }: { label: string; active?: boolean }) {
+  return (
+    <div style={{
+      background: active ? 'rgba(222,219,200,0.08)' : 'rgba(255,255,255,0.02)',
+      border: `0.5px solid ${active ? 'rgba(222,219,200,0.2)' : 'rgba(255,255,255,0.06)'}`,
+      padding: '6px 10px', borderRadius: '5px',
+      fontSize: '11px', color: active ? '#E1E0CC' : 'rgba(222,219,200,0.5)',
+      whiteSpace: 'nowrap', flexShrink: 0,
+    }}>
+      {label}
+    </div>
+  )
+}
+function PipeArrow() {
+  return <span style={{ color: 'rgba(222,219,200,0.15)', fontSize: '10px', flexShrink: 0 }}>→</span>
+}
+
+/* Category badge for Skills card */
+function CatBadge({ label, count }: { label: string; count: number }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.05)', borderRadius: '6px' }}>
+      <span style={{ fontSize: '12px', color: 'rgba(222,219,200,0.7)' }}>{label}</span>
+      <span style={{ fontSize: '10px', color: 'rgba(222,219,200,0.3)', background: 'rgba(255,255,255,0.04)', padding: '1px 6px', borderRadius: '3px' }}>{count}</span>
+    </div>
+  )
+}
+
+
 /* ============================================================
-   PM OS
+   1. PM OS
    ============================================================ */
 function PmOsDetail() {
   return <>
+    <MetricBar items={[
+      { label: '会议纪要', value: '30→5min' },
+      { label: '里程碑准时率', value: '100%' },
+      { label: 'TR 一次通过', value: '85.7%' },
+      { label: '数据存储', value: 'IndexedDB' },
+    ]} />
+
     <H3>项目简介</H3>
     <P>源自 DONNER 实战经验（IPD 流程、TR/DCP 评审、MIL、BOM），用 Claude Code 独立开发。覆盖概念到量产全过程，集成了 AI 会议纪要智能分析能力。</P>
     <div style={{ marginTop: '8px' }}><Link href="https://demo.pm-os.pages.dev">Live Demo ↗ demo.pm-os.pages.dev</Link></div>
+
+    <H3>产品截图</H3>
+    <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.06)', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+      <img src={import.meta.env.BASE_URL + 'pm-os-screenshot.png'} alt="PM OS 截图" style={{ width: '100%', display: 'block' }} />
+    </div>
 
     <H3>解决的问题</H3>
     <P>同时管理多个项目时，里程碑、任务、BOM、会议纪要散落在不同工具里，互相割裂。把这套东西整合进一个<HL>按 IPD 流程设计的工具</HL>。</P>
@@ -57,15 +112,6 @@ function PmOsDetail() {
     <P><HL>双部署</HL> — Vercel 全功能可编辑版 + Cloudflare Pages 只读 Demo 版（国内直连）</P>
     <P><HL>Excel 批量导入</HL> — 所有面板支持模板下载 + 批量导入，适配企业级数据迁移</P>
 
-    <H3>效率提升</H3>
-    <div style={{ padding: '10px 0' }}>
-      <THead><span>指标</span><span>变化</span></THead>
-      <TRow left="会议纪要整理时间" right="30min → 5min" />
-      <TRow left="行动项遗漏率" right="显著降低" />
-      <TRow left="项目里程碑准时率" right="100%" />
-      <TRow left="TR 评审一次通过率" right="85.7%" />
-    </div>
-
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
       <Tag>Next.js 15</Tag><Tag>React</Tag><Tag>TypeScript</Tag><Tag>IndexedDB (Dexie)</Tag><Tag>SVG 自绘</Tag><Tag>DeepSeek API</Tag><Tag>Vercel</Tag><Tag>Cloudflare Pages</Tag>
@@ -74,33 +120,64 @@ function PmOsDetail() {
 }
 
 /* ============================================================
-   产品全链路 Skill System
+   2. 产品全链路工作流
    ============================================================ */
 function PmChainDetail() {
+  const stages = ['舆情预研', '市场调研', '竞品分析', '头脑风暴', 'PRD', 'GTM', '风险评估', '架构图', '交互原型']
   return <>
-    <H3>项目简介</H3>
-    <P>基于 Claude Code Skill 框架搭建的 PM 全链路自动化体系。覆盖市场调研 → 竞品分析 → 头脑风暴 → PRD → GTM 策略 → 风险评估 → 架构图 → 交互原型，输入产品 idea，输出 8 tab 完整 HTML 报告。每个 skill 也支持独立触发。</P>
-    <div style={{ marginTop: '8px' }}><Link href={import.meta.env.BASE_URL + 'mobile-llm-agent-report.html'}>Showcase: Pocket Agent 全链路报告 ↗</Link></div>
+    <MetricBar items={[
+      { label: '质量维度', value: '14' },
+      { label: '报告 Tab', value: '16' },
+      { label: '中间格式', value: '7 JSON' },
+      { label: '质量门禁', value: '10 项' },
+    ]} />
 
-    <H3>链路能力</H3>
-    <P><HL>市场调研</HL> — 6 模块报告（赛道概况 / 趋势 / 市场规模 / 用户画像 / 竞品格局 / 机会评估），3 模式（完整报告 / 快速扫描 / TAM-SAM-SOM），5 品类自动适配</P>
-    <P><HL>深度竞品分析</HL> — 4 模式智能分流（深度 Excel / 快速扫描 / 竞争简报 / 概念验证），6–10 竞品 × 9 sheet Excel 输出。每个数据字段标注可信度，无公开来源不填</P>
-    <P><HL>头脑风暴</HL> — PM / Designer / Engineer 三视角 × 各 5 个 idea，加权评分优先，强制"毙掉清单"</P>
-    <P><HL>PRD 撰写</HL> — 8 段式标准模板（Summary / Contacts / Background / Objective / Market / Value / Solution / Release），硬件产品自动追加 4 段（工业设计 / 技术规格 / 制造供应链 / 包装上市）</P>
-    <P><HL>GTM 策略</HL> — 定位 → 分阶段发布路径 → 定价策略 → 渠道优先级 → 冷启动方案</P>
-    <P><HL>风险评估</HL> — 概率 × 影响矩阵，逐项缓解策略 + 触发指标</P>
-    <P><HL>架构图</HL> — HTML+CSS 直出，CJK 无渲染问题</P>
-    <P><HL>交互原型</HL> — 嵌入式 HTML/CSS 可交互原型，自适应产品形态（Web / 移动端 / 硬件面板）</P>
+    <H3>一句话</H3>
+    <P>一套<HL>自动化产品工作流引擎</HL>。你给一句话产品方向，它按顺序跑完 9 个专业阶段——每阶段输出结构化中间产物、自动做假设冲突检查——最终拼成一份 16 tab、可直接分享的专业报告。</P>
+    <div style={{ marginTop: '12px' }}><Link href={import.meta.env.BASE_URL + 'mobile-llm-agent-report.html'}>Showcase: Pocket Agent 全链路报告 ↗</Link></div>
+
+    <H3>工作流管线</H3>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap', padding: '12px 0', overflowX: 'auto' }}>
+      <div style={{ fontSize: '15px', marginRight: '6px', flexShrink: 0 }}>💡</div>
+      {stages.map((s, i) => (
+        <span key={s} style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+          <PipelineNode label={s} active={i < 3} />
+          {i < stages.length - 1 && <PipeArrow />}
+        </span>
+      ))}
+      <PipeArrow />
+      <div style={{ fontSize: '13px', marginLeft: '2px', flexShrink: 0 }}>📄</div>
+    </div>
+    <P style={{ fontSize: '12px', color: 'rgba(222,219,200,0.4)', textAlign: 'center' }}>
+      输入 Idea ──→ 9 阶段自动执行 ──→ 16 tab HTML 报告
+    </P>
+
+    <H3>每阶段产出</H3>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 12px', marginTop: '8px' }}>
+      <TRow left="舆情预研" right="last30days 双版，社区情绪信号" />
+      <TRow left="市场调研" right="TAM/SAM/SOM + 细分 + Go/No-Go" />
+      <TRow left="竞品分析" right="6-10 竞品 × 10 维度 × Excel" />
+      <TRow left="头脑风暴" right="三视角方案 + 毙掉清单 ≥10 项" />
+      <TRow left="PRD" right="两版交付：概念 → 落地" />
+      <TRow left="GTM 策略" right="定位 + 三阶段路线 + 定价" />
+      <TRow left="风险评估" right="概率×影响矩阵 + 触发指标" />
+      <TRow left="架构图" right="HTML+CSS 直出，CJK 无问题" />
+      <TRow left="交互原型" right="嵌入式可交互原型" />
+    </div>
+
+    <H3>质量体系</H3>
+    <P>每份报告过 10 项质量门禁：毙掉清单 ≥10 · 财务 3 情景 · War Game 6 场景 · 触发指标全覆盖 · 数据来源标注可信度 · 架构图嵌入报告 · 原型至少 3 页面预览</P>
+    <P><HL>改进机制</HL> — 每次产出后对照标准审查，审查结论写回质量标准文件。下次跑新产品时自动加载最新规范。</P>
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-      <Tag>Claude Code Skill</Tag><Tag>Web Search</Tag><Tag>Excel (exceljs)</Tag><Tag>DeepSeek API</Tag><Tag>HTML+CSS</Tag><Tag>SWOT</Tag>
+      <Tag>Claude Code Skill</Tag><Tag>Web Search</Tag><Tag>Excel (exceljs)</Tag><Tag>DeepSeek API</Tag><Tag>HTML+CSS</Tag><Tag>Pipeline 编排</Tag>
     </div>
   </>
 }
 
 /* ============================================================
-   Obsidian AI 记忆系统
+   3. Obsidian AI 记忆系统
    ============================================================ */
 function ObsidianMemoryDetail() {
   return <>
@@ -154,80 +231,103 @@ function ObsidianMemoryDetail() {
 }
 
 /* ============================================================
-   灵枢 Oracle
+   4. 灵枢 Oracle
    ============================================================ */
 function FortuneDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>八字 + 紫微斗数 + 塔罗三板块融合的命理应用。国内用户友好，Cloudflare Pages 直连部署。</P>
+    <P>八字 + 紫微斗数 + 塔罗三板块融合的命理应用。国内用户友好，Cloudflare Pages 直连部署。朋友间口碑传播，已验证三套体系可以在单一应用中流畅切换。</P>
     <div style={{ marginTop: '8px' }}><Link href="https://fortune-telling-84p.pages.dev">Live Demo ↗ fortune-telling-84p.pages.dev</Link></div>
 
-    <H3>解决的问题</H3>
-    <P>八字、紫微、塔罗三套体系分散在不同平台。身边多位好友有实际使用需求，整合到一个应用里。</P>
+    <H3>三板块</H3>
+    <P><HL>八字排盘</HL> — 完整八字排盘 + AI 解读，覆盖大运流年。日柱计算准确，节气交界处理正确。</P>
+    <P><HL>紫微斗数</HL> — 十二宫完整排盘，主星 + 辅星 + 四化飞星。支持多种命盘视图切换。</P>
+    <P><HL>塔罗抽牌</HL> — 经典 Celtic Cross 牌阵，AI 解读结合牌位含义。支持单张 / 三张 / 完整牌阵。</P>
+    <P><HL>风水方位</HL> — 基于罗盘方向的快速查询功能。</P>
 
-    <H3>已实现功能</H3>
-    <P>• 八字排盘 + 解读</P>
-    <P>• 紫微斗数排盘</P>
-    <P>• 塔罗抽牌</P>
-    <P>• 方位风水功能</P>
-    <P>• Cloudflare Pages 国内直连</P>
-
-    <H3>待实现</H3>
-    <P>• 飞盘排盘</P>
-    <P>• 置闰法</P>
-    <P>• 节气时分精度</P>
+    <H3>技术特点</H3>
+    <P>• Cloudflare Pages 国内直连，无 VPN 可用</P>
+    <P>• DeepSeek API 驱动 AI 解读，中文理解精准</P>
+    <P>• 纯前端计算，排盘不需要服务端</P>
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-      <Tag>Next.js</Tag><Tag>React</Tag><Tag>TypeScript</Tag><Tag>Cloudflare Pages</Tag><Tag>DeepSeek API</Tag>
+      <Tag>Next.js</Tag><Tag>React</Tag><Tag>TypeScript</Tag><Tag>Cloudflare Pages</Tag><Tag>DeepSeek API</Tag><Tag>传统历法</Tag>
     </div>
   </>
 }
 
 /* ============================================================
-   Claude Code Skills 总览
+   5. Claude Code Skills 总览
    ============================================================ */
 function SkillsDetail() {
+  const categories = [
+    {
+      label: 'PM 全链路',
+      count: 5,
+      items: [
+        ['market-research', '市场调研：6 模块报告，3 模式，5 品类适配'],
+        ['competitive-analysis', '竞品分析：4 模式分流，6-10 竞品 × 9 sheet Excel'],
+        ['brainstorming', '头脑风暴：PM/Designer/Engineer 三视角，毙掉清单'],
+        ['prd-writer', 'PRD 撰写：两版交付，硬件自动追加 4 段'],
+        ['pm-chain', '全链路串联：一条指令输出 16 tab 完整报告'],
+      ],
+    },
+    {
+      label: '效率工具',
+      count: 4,
+      items: [
+        ['weekly-review', '周度 AI 使用深度复盘，自动提炼可复用教训'],
+        ['prompt-optimizer', '分析原始指令，匹配最佳实践，输出优化提示词'],
+        ['to-prd', '将对话上下文一键转化为 PRD 文档'],
+        ['to-issues', '将方案/PRD 拆分为独立可抓取的 Issues'],
+      ],
+    },
+    {
+      label: '分析与研究',
+      count: 2,
+      items: [
+        ['diagnose', '受控诊断循环：复现 → 缩小 → 假设 → 插桩 → 修复'],
+        ['triag', 'Issue 状态机管理，按角色路由'],
+      ],
+    },
+    {
+      label: '部署与网络',
+      count: 2,
+      items: [
+        ['deploy-site', '一键部署到 Cloudflare Pages / Vercel'],
+        ['web-access', '统一网络入口，CLI 受阻自动切 CDP 浏览器'],
+      ],
+    },
+    {
+      label: '文档与创作',
+      count: 2,
+      items: [
+        ['pdf', 'PDF 读取/合并/拆分/表单填写/OCR'],
+        ['writing-fragments', '素材挖掘：从对话中提取写作片段'],
+      ],
+    },
+  ]
+
   return <>
     <H3>项目简介</H3>
-    <P>为 Claude Code 搭建的能力模块，覆盖 PM 全链路、效率工具、分析研究、部署发布四类场景。AI 遇到对应任务时自动加载。</P>
+    <P>为 Claude Code 搭建的<HL> 15+ 能力模块</HL>，覆盖产品全流程、效率提升、分析诊断、部署发布四类场景。AI 遇到对应任务时自动加载对应 Skill——不需要手动切换。</P>
 
-    <H3>Skills 清单</H3>
-
-    <div style={{ marginTop: '12px' }}>
-      <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>PM 全链路</div>
-      <TRow left="market-research" right="市场调研：6 模块报告，3 模式，5 品类适配" />
-      <TRow left="competitive-analysis" right="竞品分析：4 模式分流，6-10 竞品 × 9 sheet Excel" />
-      <TRow left="brainstorming" right="头脑风暴：PM/Designer/Engineer 三视角，强制毙掉清单" />
-      <TRow left="prd-writer" right="PRD 撰写：8 段式模板，硬件自动追加 4 段" />
-      <TRow left="pm-chain" right="全链路串联：一条指令输出 8 tab HTML 完整报告" />
+    <H3>模块分类</H3>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', margin: '12px 0' }}>
+      {categories.map(c => <CatBadge key={c.label} label={c.label} count={c.count} />)}
     </div>
 
-    <div style={{ marginTop: '16px' }}>
-      <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>效率工具</div>
-      <TRow left="weekly-review" right="周度 AI 使用深度复盘，自动提炼可复用教训" />
-      <TRow left="prompt-optimizer" right="分析原始指令，匹配最佳实践，输出优化后的提示词" />
-      <TRow left="to-prd" right="将对话上下文一键转化为 PRD 文档" />
-      <TRow left="to-issues" right="将方案/PRD 拆分为独立可抓取的 Issues" />
-    </div>
-
-    <div style={{ marginTop: '16px' }}>
-      <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>分析与研究</div>
-      <TRow left="diagnose" right="受控诊断循环：复现 → 缩小 → 假设 → 插桩 → 修复" />
-      <TRow left="triag" right="Issue 状态机管理，按角色路由" />
-    </div>
-
-    <div style={{ marginTop: '16px' }}>
-      <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>部署与网络</div>
-      <TRow left="deploy-site" right="一键部署到 Cloudflare Pages / Vercel" />
-      <TRow left="web-access" right="统一网络入口，CLI 受阻自动切 CDP 浏览器" />
-    </div>
-
-    <div style={{ marginTop: '16px' }}>
-      <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>文档与创作</div>
-      <TRow left="pdf" right="PDF 读取/合并/拆分/表单填写/OCR" />
-      <TRow left="writing-fragments" right="素材挖掘：从对话中提取写作片段" />
-    </div>
+    {categories.map(cat => (
+      <div key={cat.label} style={{ marginTop: '16px' }}>
+        <div style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(222,219,200,0.4)', marginBottom: '8px', textTransform: 'uppercase' }}>
+          {cat.label} · {cat.count}
+        </div>
+        {cat.items.map(([name, desc]) => (
+          <TRow key={name} left={name} right={desc} />
+        ))}
+      </div>
+    ))}
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
@@ -249,9 +349,9 @@ export const aiProjects: AIProject[] = [
   },
   {
     slug: 'pm-chain',
-    title: '产品全链路 Skill System',
-    tagline: '从 idea 到 8 tab 完整报告，一条指令跑通全流程',
-    tags: ['Skill Design', 'Web Search', 'Excel', 'DeepSeek'],
+    title: '产品全链路工作流',
+    tagline: '输入产品 idea → 自动跑通 9 阶段 → 输出 16 tab 专业报告',
+    tags: ['Pipeline 自动化', '14 维度', 'HTML 报告'],
     detail: <PmChainDetail />,
   },
   {
@@ -271,7 +371,7 @@ export const aiProjects: AIProject[] = [
   {
     slug: 'claude-code-skills',
     title: 'Claude Code Skills',
-    tagline: 'PM 全链路 + 效率工具 + 部署发布，15+ 能力模块',
+    tagline: '15+ 能力模块，4 大分类，AI 自动加载对应场景',
     tags: ['Skill Framework', 'Node.js', 'CDP', 'Automation'],
     detail: <SkillsDetail />,
   },
