@@ -236,23 +236,40 @@ function ObsidianMemoryDetail() {
 function FortuneDetail() {
   return <>
     <H3>项目简介</H3>
-    <P>八字 + 紫微斗数 + 塔罗三板块融合的命理应用。国内用户友好，Cloudflare Pages 直连部署。朋友间口碑传播，已验证三套体系可以在单一应用中流畅切换。</P>
+    <P>三大命理体系融合应用——<HL>奇门遁甲、八字、塔罗</HL>，每套体系独立运作又统一在一个应用内。国内用户友好，Cloudflare Pages 直连部署。</P>
     <div style={{ marginTop: '8px' }}><Link href="https://fortune-telling-84p.pages.dev">Live Demo ↗ fortune-telling-84p.pages.dev</Link></div>
 
-    <H3>三板块</H3>
-    <P><HL>八字排盘</HL> — 完整八字排盘 + AI 解读，覆盖大运流年。日柱计算准确，节气交界处理正确。</P>
-    <P><HL>紫微斗数</HL> — 十二宫完整排盘，主星 + 辅星 + 四化飞星。支持多种命盘视图切换。</P>
-    <P><HL>塔罗抽牌</HL> — 经典 Celtic Cross 牌阵，AI 解读结合牌位含义。支持单张 / 三张 / 完整牌阵。</P>
-    <P><HL>风水方位</HL> — 基于罗盘方向的快速查询功能。</P>
+    <H3>模块一：奇门遁甲</H3>
+    <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.06)', borderRadius: '6px', padding: '14px 16px', marginTop: '8px' }}>
+      <P style={{ marginBottom: '4px' }}><HL>阳盘排盘</HL> — 时家转盘奇门，含天盘 / 地盘 / 八门 / 九星 / 八神 / 天盘九宫。支持自动定局（置闰法）和手动选局。</P>
+      <P style={{ marginBottom: '4px' }}><HL>阴盘排盘</HL> — 道家阴盘奇门，侧重心法解读，不同起局逻辑。</P>
+      <P style={{ marginBottom: '4px' }}><HL>AI 解盘</HL> — DeepSeek 深度解读，按用神 / 时干 / 值符值使逐层分析。覆盖事业、财运、感情、健康、风水五类问题。</P>
+      <P style={{ marginBottom: 0 }}><HL>方位风水</HL> — 基于奇门九宫格快速查询吉方凶方，出行 / 谈判 / 布局参考。</P>
+    </div>
+
+    <H3>模块二：八字</H3>
+    <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.06)', borderRadius: '6px', padding: '14px 16px', marginTop: '8px' }}>
+      <P style={{ marginBottom: '4px' }}><HL>四柱排盘</HL> — 年柱 / 月柱 / 日柱 / 时柱完整推算，节气交界精确到时分。支持 1900-2100 年范围。</P>
+      <P style={{ marginBottom: '4px' }}><HL>大运流年</HL> — 自动计算起运年龄 + 十年大运 + 流年天干地支。顺逆排大运逻辑正确。</P>
+      <P style={{ marginBottom: '4px' }}><HL>十神分析</HL> — 比肩 / 劫财 / 食神 / 伤官 / 偏财 / 正财 / 七杀 / 正官 / 偏印 / 正印，完整十神定位 + 五行生克。</P>
+      <P style={{ marginBottom: 0 }}><HL>AI 命理解读</HL> — 综合日主强弱、格局喜忌、大运走势，输出结构化命理报告。可指定问事业 / 感情 / 财运。</P>
+    </div>
+
+    <H3>模块三：塔罗</H3>
+    <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.06)', borderRadius: '6px', padding: '14px 16px', marginTop: '8px' }}>
+      <P style={{ marginBottom: '4px' }}><HL>Celtic Cross 牌阵</HL> — 10 张牌完整牌阵，每张牌对应独立牌位含义。AI 综合牌阵位置 + 正逆位 + 牌义交叉解读。</P>
+      <P style={{ marginBottom: '4px' }}><HL>多牌阵支持</HL> — 单张问事 / 三张过去现在未来 / Celtic Cross 完整牌阵，按问题复杂度自动推荐牌阵。</P>
+      <P style={{ marginBottom: 0 }}><HL>正逆位解读</HL> — 78 张塔罗牌全部含正位 + 逆位含义，AI 解读时自动匹配当前抽取结果。</P>
+    </div>
 
     <H3>技术特点</H3>
     <P>• Cloudflare Pages 国内直连，无 VPN 可用</P>
-    <P>• DeepSeek API 驱动 AI 解读，中文理解精准</P>
-    <P>• 纯前端计算，排盘不需要服务端</P>
+    <P>• DeepSeek API 驱动 AI 解读，中文命理术语理解精准</P>
+    <P>• 八字 + 奇门纯前端计算，不依赖服务端排盘 API</P>
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-      <Tag>Next.js</Tag><Tag>React</Tag><Tag>TypeScript</Tag><Tag>Cloudflare Pages</Tag><Tag>DeepSeek API</Tag><Tag>传统历法</Tag>
+      <Tag>Next.js</Tag><Tag>React</Tag><Tag>TypeScript</Tag><Tag>Cloudflare Pages</Tag><Tag>DeepSeek API</Tag><Tag>传统历法</Tag><Tag>奇门遁甲</Tag>
     </div>
   </>
 }
@@ -364,7 +381,7 @@ export const aiProjects: AIProject[] = [
   {
     slug: 'fortune-telling',
     title: '灵枢 · Oracle',
-    tagline: '八字紫微塔罗三板块融合，国内直连',
+    tagline: '奇门遁甲 · 八字 · 塔罗，三大命理体系融合',
     tags: ['Next.js', 'React', 'CF Pages', 'DeepSeek'],
     detail: <FortuneDetail />,
   },
