@@ -134,9 +134,15 @@ function PmChainDetail() {
 
     <H3>一句话</H3>
     <P>一套<HL>自动化产品工作流引擎</HL>。你给一句话产品方向，它按顺序跑完 9 个专业阶段——每阶段输出结构化中间产物、自动做假设冲突检查——最终拼成一份 16 tab、可直接分享的专业报告。</P>
-    <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-      <Link href={import.meta.env.BASE_URL + 'miyavi-pedal-report.html'}>Showcase: MIYAVI × Donner 效果器 全链路报告 ↗</Link>
-      <Link href={import.meta.env.BASE_URL + 'mobile-llm-agent-report.html'}>Showcase: Pocket Agent 全链路报告 ↗</Link>
+    <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div>
+        <Link href={import.meta.env.BASE_URL + 'miyavi-pedal-report.html'}>Showcase: MIYAVI × Donner 效果器 全链路报告 ↗</Link>
+        <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.3)', marginTop: '1px' }}>实体产品 · 已上市市场分析</div>
+      </div>
+      <div>
+        <Link href={import.meta.env.BASE_URL + 'mobile-llm-agent-report.html'}>Showcase: Pocket Agent 全链路报告 ↗</Link>
+        <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.3)', marginTop: '1px' }}>概念产品 · 新品类验证</div>
+      </div>
     </div>
 
     <H3>工作流管线</H3>
