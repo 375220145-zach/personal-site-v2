@@ -107,9 +107,24 @@ export default function AiCardWall({ projects, onCardClick }: { projects: AIProj
                 {proj.title}
               </div>
 
-              {/* Tagline */}
-              <div style={{ fontSize: '13px', color: 'rgba(222,219,200,0.5)', lineHeight: 1.6, flex: 1 }}>
-                {proj.tagline}
+              {/* Problem / Solution */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {proj.problem ? (
+                  <>
+                    <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.35)', lineHeight: 1.5 }}>
+                      <span style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(222,219,200,0.25)', textTransform: 'uppercase', marginRight: '6px' }}>问题</span>
+                      {proj.problem}
+                    </div>
+                    <div style={{ fontSize: '12px', color: 'rgba(222,219,200,0.65)', lineHeight: 1.5 }}>
+                      <span style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'rgba(222,219,200,0.25)', textTransform: 'uppercase', marginRight: '6px' }}>解法</span>
+                      {proj.solution}
+                    </div>
+                  </>
+                ) : (
+                  <div style={{ fontSize: '13px', color: 'rgba(222,219,200,0.5)', lineHeight: 1.6 }}>
+                    {proj.tagline}
+                  </div>
+                )}
               </div>
 
               {/* Tags */}
