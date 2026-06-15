@@ -39,6 +39,49 @@
 </div>
 
 <!-- ====== 1. MARKET RESEARCH ====== -->
+<div class="tab" id="sentiment"><section>
+<h2>0. 舆情预研 <span class="confidence-badge conf-verified">双版（全球+国内）</span></h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:20px;">WebSearch 多平台采集。覆盖 Reddit/X/HN（全球）+ 微博/小红书/B站/知乎/CSDN（国内）。品类聚焦：手机 LLM Agent、端侧推理、GUI 自动化。</p>
+
+<h3>全球社区信号（Reddit / X / HN）</h3>
+<div class="table-wrap"><table><tr><th>信号</th><th>方向</th><th>证据</th><th style="width:80px">可信度</th></tr>
+<tr><td><strong>权限焦虑是最大障碍</strong></td><td>🔴 强</td><td>r/OpenAI 175↑ 讨论 OpenAI Agent Phone；用户最担心隐私/信任，远超技术能力</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>"人在回路"是主流模式</strong></td><td>🔴 强</td><td>Anthropic 2026 Agentic Coding Report 153↑：用户只敢委托一小部分工作，监督式委托是常态</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>Play Store 封杀通用自动化</strong></td><td>🔴 强</td><td>Sova AI 因 Accessibility API "通用自动化"被下架。分发只能走侧载</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>端侧是差异化，非云端</strong></td><td>🟡 中</td><td>LetItDo 架构讨论：无 ADB/无 PC 的端侧方案优于笔记本绑定方案</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>技能库是护城河</strong></td><td>🟡 中</td><td>自写 SKILL.md 模式：执行一次后缓存为技能，90s→14s，社区共享技能库有复利效应</td><td><span class="confidence-badge conf-referenced">引用</span></td></tr>
+<tr><td><strong>独立硬件 Agent 已死</strong></td><td>🔴 强</td><td>Rabbit R1 被验证为死路。Agent 必须依附于已有设备</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+</table></div>
+
+<h3>国内社区信号（微博 / 小红书 / B站 / 知乎）</h3>
+<div class="table-wrap"><table><tr><th>信号</th><th>方向</th><th>证据</th><th style="width:80px">可信度</th></tr>
+<tr><td><strong>豆包 2.26 亿 MAU 但"做事能力"被吐槽</strong></td><td>🔴 强</td><td>市场第一但被定位"娱乐陪伴之王"。AI 幻觉导致推荐不存在餐厅、误导支付退票费——信任受损</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>豆包手机助手刚起步</strong></td><td>🟡 中</td><td>2026.6.4 上市，100+ 权限申请（40% 高敏感），供应链溢价</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>华为小艺 Claw — 安全但封闭</strong></td><td>🟡 中</td><td>A2A 协议路径，97.5% 端侧闭环，信通院认证。但仅鸿蒙</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>AutoGLM 91% 成功率但部署门槛高</strong></td><td>🟡 中</td><td>需 Python+ADB，免费额度仅 4-5 次任务。开源但"说开不全"</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
+<tr><td><strong>DeepSeek 综合排名第一</strong></td><td>🟢 正</td><td>爱范儿综合排名 DeepSeek > 豆包，但在 Agent 执行层面都弱</td><td><span class="confidence-badge conf-referenced">引用</span></td></tr>
+</table></div>
+
+<h3>国内 vs 全球 差异</h3>
+<div class="table-wrap"><table><tr><th>维度</th><th>全球 (Reddit/X/HN)</th><th>国内 (微博/B站/知乎)</th></tr>
+<tr><td>用户信任</td><td>隐私/权限是 No.1 障碍</td><td>幻觉导致信任危机——"满嘴答应，到场发现被骗"</td></tr>
+<tr><td>分发路径</td><td>Play Store 封杀 → 侧载</td><td>各厂商应用商店 + 手机预装是主渠道</td></tr>
+<tr><td>端侧态度</td><td>端侧 = 隐私差异化</td><td>端侧 = 合规生存（数据不出境）</td></tr>
+<tr><td>竞品格局</td><td>开源项目 + Apple/Google 即将入场</td><td>豆包/小艺/DeepSeek 三国杀，全封闭</td></tr>
+<tr><td>开源价值</td><td>可审计 = 信任基础</td><td>开源 = 安全可验证，但非主流决策因素</td></tr>
+</table></div>
+
+<h3>PA 差异化缺口（社区验证）</h3>
+<div class="table-wrap"><table><tr><th>缺口</th><th>AutoGLM</th><th>豆包</th><th>小艺</th><th>PA 可切入</th></tr>
+<tr><td>零配置（无 ADB/无 Python）</td><td><span class="tag tag-red">❌</span></td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-green">✅</span></td></tr>
+<tr><td>隐私优先（端侧默认）</td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-red">❌ 云端+100权限</span></td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-green">✅</span></td></tr>
+<tr><td>跨平台（Android+iOS）</td><td><span class="tag tag-red">❌ Android only</span></td><td><span class="tag tag-red">❌ Android only</span></td><td><span class="tag tag-red">❌ 鸿蒙 only</span></td><td><span class="tag tag-green">✅</span></td></tr>
+<tr><td>开源可审计</td><td><span class="tag tag-yellow">⚠️ 部分</span></td><td><span class="tag tag-red">❌</span></td><td><span class="tag tag-red">❌</span></td><td><span class="tag tag-green">✅</span></td></tr>
+<tr><td>全球市场（中英文）</td><td><span class="tag tag-red">❌ 仅中国</span></td><td><span class="tag tag-red">❌ 仅中国</span></td><td><span class="tag tag-red">❌ 仅中国</span></td><td><span class="tag tag-green">✅</span></td></tr>
+</table></div>
+<p style="font-size:11px;color:var(--muted);margin-top:8px;"><span class="confidence-badge conf-verified">已验证</span> — 从官方/媒体页面直接提取 &nbsp;<span class="confidence-badge conf-referenced">引用</span> — 从第三方引用</p>
+
+</section></div>
 <div class="tab" id="mkt"><section><h2>1. 市场调研 <span class="confidence-badge conf-verified">深度模式</span></h2>
 <p style="font-size:12px;color:var(--muted);margin-bottom:20px;">基于 Grand View Research、MarketsandMarkets、Gartner、IDC、QuestMobile、艾媒等多家机构公开数据交叉验证。每个数字标注来源和可信度。</p>
 
@@ -142,49 +185,7 @@
 </p>
 </section></div>
 
-<div class="tab" id="sentiment"><section>
-<h2>0. 舆情预研 <span class="confidence-badge conf-verified">双版（全球+国内）</span></h2>
-<p style="font-size:12px;color:var(--muted);margin-bottom:20px;">WebSearch 多平台采集。覆盖 Reddit/X/HN（全球）+ 微博/小红书/B站/知乎/CSDN（国内）。品类聚焦：手机 LLM Agent、端侧推理、GUI 自动化。</p>
 
-<h3>全球社区信号（Reddit / X / HN）</h3>
-<div class="table-wrap"><table><tr><th>信号</th><th>方向</th><th>证据</th><th style="width:80px">可信度</th></tr>
-<tr><td><strong>权限焦虑是最大障碍</strong></td><td>🔴 强</td><td>r/OpenAI 175↑ 讨论 OpenAI Agent Phone；用户最担心隐私/信任，远超技术能力</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>"人在回路"是主流模式</strong></td><td>🔴 强</td><td>Anthropic 2026 Agentic Coding Report 153↑：用户只敢委托一小部分工作，监督式委托是常态</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>Play Store 封杀通用自动化</strong></td><td>🔴 强</td><td>Sova AI 因 Accessibility API "通用自动化"被下架。分发只能走侧载</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>端侧是差异化，非云端</strong></td><td>🟡 中</td><td>LetItDo 架构讨论：无 ADB/无 PC 的端侧方案优于笔记本绑定方案</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>技能库是护城河</strong></td><td>🟡 中</td><td>自写 SKILL.md 模式：执行一次后缓存为技能，90s→14s，社区共享技能库有复利效应</td><td><span class="confidence-badge conf-referenced">引用</span></td></tr>
-<tr><td><strong>独立硬件 Agent 已死</strong></td><td>🔴 强</td><td>Rabbit R1 被验证为死路。Agent 必须依附于已有设备</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-</table></div>
-
-<h3>国内社区信号（微博 / 小红书 / B站 / 知乎）</h3>
-<div class="table-wrap"><table><tr><th>信号</th><th>方向</th><th>证据</th><th style="width:80px">可信度</th></tr>
-<tr><td><strong>豆包 2.26 亿 MAU 但"做事能力"被吐槽</strong></td><td>🔴 强</td><td>市场第一但被定位"娱乐陪伴之王"。AI 幻觉导致推荐不存在餐厅、误导支付退票费——信任受损</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>豆包手机助手刚起步</strong></td><td>🟡 中</td><td>2026.6.4 上市，100+ 权限申请（40% 高敏感），供应链溢价</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>华为小艺 Claw — 安全但封闭</strong></td><td>🟡 中</td><td>A2A 协议路径，97.5% 端侧闭环，信通院认证。但仅鸿蒙</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>AutoGLM 91% 成功率但部署门槛高</strong></td><td>🟡 中</td><td>需 Python+ADB，免费额度仅 4-5 次任务。开源但"说开不全"</td><td><span class="confidence-badge conf-verified">已验证</span></td></tr>
-<tr><td><strong>DeepSeek 综合排名第一</strong></td><td>🟢 正</td><td>爱范儿综合排名 DeepSeek > 豆包，但在 Agent 执行层面都弱</td><td><span class="confidence-badge conf-referenced">引用</span></td></tr>
-</table></div>
-
-<h3>国内 vs 全球 差异</h3>
-<div class="table-wrap"><table><tr><th>维度</th><th>全球 (Reddit/X/HN)</th><th>国内 (微博/B站/知乎)</th></tr>
-<tr><td>用户信任</td><td>隐私/权限是 No.1 障碍</td><td>幻觉导致信任危机——"满嘴答应，到场发现被骗"</td></tr>
-<tr><td>分发路径</td><td>Play Store 封杀 → 侧载</td><td>各厂商应用商店 + 手机预装是主渠道</td></tr>
-<tr><td>端侧态度</td><td>端侧 = 隐私差异化</td><td>端侧 = 合规生存（数据不出境）</td></tr>
-<tr><td>竞品格局</td><td>开源项目 + Apple/Google 即将入场</td><td>豆包/小艺/DeepSeek 三国杀，全封闭</td></tr>
-<tr><td>开源价值</td><td>可审计 = 信任基础</td><td>开源 = 安全可验证，但非主流决策因素</td></tr>
-</table></div>
-
-<h3>PA 差异化缺口（社区验证）</h3>
-<div class="table-wrap"><table><tr><th>缺口</th><th>AutoGLM</th><th>豆包</th><th>小艺</th><th>PA 可切入</th></tr>
-<tr><td>零配置（无 ADB/无 Python）</td><td><span class="tag tag-red">❌</span></td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-green">✅</span></td></tr>
-<tr><td>隐私优先（端侧默认）</td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-red">❌ 云端+100权限</span></td><td><span class="tag tag-green">✅</span></td><td><span class="tag tag-green">✅</span></td></tr>
-<tr><td>跨平台（Android+iOS）</td><td><span class="tag tag-red">❌ Android only</span></td><td><span class="tag tag-red">❌ Android only</span></td><td><span class="tag tag-red">❌ 鸿蒙 only</span></td><td><span class="tag tag-green">✅</span></td></tr>
-<tr><td>开源可审计</td><td><span class="tag tag-yellow">⚠️ 部分</span></td><td><span class="tag tag-red">❌</span></td><td><span class="tag tag-red">❌</span></td><td><span class="tag tag-green">✅</span></td></tr>
-<tr><td>全球市场（中英文）</td><td><span class="tag tag-red">❌ 仅中国</span></td><td><span class="tag tag-red">❌ 仅中国</span></td><td><span class="tag tag-red">❌ 仅中国</span></td><td><span class="tag tag-green">✅</span></td></tr>
-</table></div>
-<p style="font-size:11px;color:var(--muted);margin-top:8px;"><span class="confidence-badge conf-verified">已验证</span> — 从官方/媒体页面直接提取 &nbsp;<span class="confidence-badge conf-referenced">引用</span> — 从第三方引用</p>
-
-</section></div>
 
 
 <!-- ====== 2. COMPETITIVE ====== -->
