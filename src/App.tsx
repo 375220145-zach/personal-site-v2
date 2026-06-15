@@ -84,7 +84,7 @@ function getProjectData(type: string) {
   }
   if (type === 'mro') return {
     title: 'MRO 2.0 数字化流程迭代 · 2022.11 – 2023.3',
-    body: <><ModalH4>项目背景</ModalH4><ModalP>针对系统流程老旧、非标采购周期长等痛点，对 MRO 系统进行全链路流程升级。</ModalP><ModalH4>核心职责</ModalH4><ModalP><HL>流程重构</HL> — 绘制 MRO 2.0 开发端及售后支持端全流转业务流程图。</ModalP><ModalP><HL>需求拉通</HL> — 主导挖掘采购、售后等多业务模块需求，与 IT 对齐逻辑实现可行性。</ModalP><ModalH4>核心成果</ModalH4><ModalP><HL>−2 人天</HL> — 单个售后流程耗时降低</ModalP><ModalP><HL>97.6%</HL> — 绿通打烊准时率</ModalP><ModalP><HL>100%</HL> — MP 质量合格率</ModalP><ModalP><HL>−3 单/月/店</HL> — 售后端返单数量</ModalP></>,
+    body: <><div style={{ marginBottom: '20px', borderRadius: '4px', overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.08)' }}><img src={BASE + 'mro20-flowchart.png'} alt="MRO 2.0 流程图" style={{ width: '100%', display: 'block' }} /></div><ModalH4>项目背景</ModalH4><ModalP>针对系统流程老旧、非标采购周期长等痛点，对 MRO 系统进行全链路流程升级。</ModalP><ModalH4>核心职责</ModalH4><ModalP><HL>流程重构</HL> — 绘制 MRO 2.0 开发端及售后支持端全流转业务流程图。</ModalP><ModalP><HL>需求拉通</HL> — 主导挖掘采购、售后等多业务模块需求，与 IT 对齐逻辑实现可行性。</ModalP><ModalH4>核心成果</ModalH4><ModalP><HL>−2 人天</HL> — 单个售后流程耗时降低</ModalP><ModalP><HL>97.6%</HL> — 绿通打烊准时率</ModalP><ModalP><HL>100%</HL> — MP 质量合格率</ModalP><ModalP><HL>−3 单/月/店</HL> — 售后端返单数量</ModalP></>,
   }
   if (type === 'ai-meeting') return {
     title: 'AI 会议纪要智能管理工具 · 2025',
@@ -631,7 +631,7 @@ export default function App() {
             {isMobile && /MicroMessenger/i.test(navigator.userAgent) ? (
               <img src={BASE + 'hero-poster.jpg'} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <video src={BASE + 'a0c102effbbde38923b32f318aba4a8c.mp4'} autoPlay loop muted playsInline webkit-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <video src={BASE + '17e11507400bd2e48ae40e43f1e87f47.mp4'} autoPlay loop muted playsInline webkit-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             )}
           </motion.div>
           <div className="noise-overlay" style={{ position: 'absolute', inset: 0, opacity: 0.55, mixBlendMode: 'overlay', pointerEvents: 'none' }} />
