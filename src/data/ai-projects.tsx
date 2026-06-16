@@ -168,7 +168,44 @@ function PmChainDetail() {
 }
 
 /* ============================================================
-   3. Obsidian AI 记忆系统
+   3. AIGC TVC
+   ============================================================ */
+function AigcTvcDetail() {
+  return <>
+    <div style={{ borderRadius: '4px', overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.06)', marginBottom: '20px' }}>
+      <video src={import.meta.env.BASE_URL + 'aigc-tvc.mp4'} controls playsInline preload="metadata" style={{ width: '100%', display: 'block' }} />
+    </div>
+
+    <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.06)', borderRadius: '8px', overflow: 'hidden', marginTop: '16px', marginBottom: '20px' }}>
+      <img src={import.meta.env.BASE_URL + 'aigc-tvc-shotlab.png'} alt="Shotlab 无限画布工作流" style={{ width: '100%', display: 'block' }} />
+    </div>
+
+    <MetricBar items={[
+      { label: '总耗时', value: '6h' },
+      { label: '分镜', value: '1min' },
+      { label: '工具链', value: '7 个' },
+      { label: '团队', value: '1 人' },
+    ]} />
+
+    <H3>做了什么</H3>
+    <P>MIYAVI × Donner TripleSwords-Azure Edge 效果器的品牌 TVC——从零开始，用 Shotlab 编排全流程：角色形象生成 → 产品三视图还原（嵌入 CMF 工程数据） → 场景资产搭建 → 1 分钟分镜脚本 → Seedance 逐段视频生成 → 剪映剪辑成片。<HL>一人，六小时，从概念到成片。</HL></P>
+
+    <H3>核心能力</H3>
+    <P><HL>Shotlab 分镜编排</HL> — 无限画布管理从角色设定、产品资产到场景背景的完整视觉工作流</P>
+    <P><HL>多模型图像管线</HL> — Midjourney 定角色与场景调性，Stable Diffusion 还原产品三视图，nano banana + image2 迭代细节</P>
+    <P><HL>Seedance 视频生成</HL> — 逐段 prompt 精确控制运镜、光影融合、产品与人物的大小比例关系</P>
+    <P><HL>Prompt 工程</HL> — 角色一致性锁定（--cref 跨镜头串联）、CMF 色号嵌入（PANTONE 10258 C）、去 AI 味约束</P>
+    <P><HL>全流程一人</HL> — 无团队、无实拍、无 3D 软件。纯 AI 管线从概念到成片</P>
+
+    <H3>技术栈</H3>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
+      <Tag>Shotlab</Tag><Tag>Midjourney</Tag><Tag>Stable Diffusion</Tag><Tag>nano banana</Tag><Tag>image2</Tag><Tag>Seedance</Tag><Tag>剪映</Tag>
+    </div>
+  </>
+}
+
+/* ============================================================
+   4. Obsidian AI 记忆系统
    ============================================================ */
 function ObsidianMemoryDetail() {
   return <>
@@ -201,7 +238,7 @@ function ObsidianMemoryDetail() {
 }
 
 /* ============================================================
-   4. 灵枢 Oracle
+   5. 灵枢 Oracle
    ============================================================ */
 function FortuneDetail() {
   return <>
@@ -222,7 +259,7 @@ function FortuneDetail() {
 }
 
 /* ============================================================
-   5. Claude Code Skills 总览
+   6. Claude Code Skills 总览
    ============================================================ */
 function SkillsDetail() {
   const categories = [
@@ -321,6 +358,15 @@ export const aiProjects: AIProject[] = [
     solution: '一条指令自动串联 9 个专业阶段，输出 16 tab HTML 报告',
     tags: ['Pipeline 自动化', '14 维度', 'HTML 报告'],
     detail: <PmChainDetail />,
+  },
+  {
+    slug: 'aigc-tvc',
+    title: 'AIGC TVC',
+    tagline: '单人 + AI 管线 = 一条 TVC 短片。从角色生成到视频输出，全流程一人完成。',
+    problem: '',
+    solution: '',
+    tags: ['Shotlab', 'Midjourney', 'Stable Diffusion', 'nano banana', 'image2', 'Seedance', '剪映'],
+    detail: <AigcTvcDetail />,
   },
   {
     slug: 'obsidian-memory',
