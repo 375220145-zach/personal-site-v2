@@ -172,14 +172,6 @@ function PmChainDetail() {
    ============================================================ */
 function AigcTvcDetail() {
   return <>
-    <div style={{ borderRadius: '4px', overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.06)', marginBottom: '20px' }}>
-      <video src={import.meta.env.BASE_URL + 'aigc-tvc.mp4'} controls playsInline preload="metadata" style={{ width: '100%', display: 'block' }} />
-    </div>
-
-    <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.06)', borderRadius: '8px', overflow: 'hidden', marginTop: '16px', marginBottom: '20px' }}>
-      <img src={import.meta.env.BASE_URL + 'aigc-tvc-shotlab.png'} alt="Shotlab 无限画布工作流" style={{ width: '100%', display: 'block' }} />
-    </div>
-
     <MetricBar items={[
       { label: '总耗时', value: '6h' },
       { label: '分镜', value: '1min' },
@@ -189,6 +181,14 @@ function AigcTvcDetail() {
 
     <H3>做了什么</H3>
     <P>MIYAVI × Donner TripleSwords-Azure Edge 效果器的品牌 TVC——从零开始，用 Shotlab 编排全流程：角色形象生成 → 产品三视图还原（嵌入 CMF 工程数据） → 场景资产搭建 → 1 分钟分镜脚本 → Seedance 逐段视频生成 → 剪映剪辑成片。<HL>一人，六小时，从概念到成片。</HL></P>
+
+    <div style={{ borderRadius: '4px', overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.06)', marginBottom: '20px' }}>
+      <video src={import.meta.env.BASE_URL + 'aigc-tvc.mp4'} controls playsInline preload="metadata" style={{ width: '100%', display: 'block' }} />
+    </div>
+
+    <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.5px solid rgba(255,255,255,0.06)', borderRadius: '8px', overflow: 'hidden', marginTop: '16px', marginBottom: '20px' }}>
+      <img src={import.meta.env.BASE_URL + 'aigc-tvc-shotlab.png'} alt="Shotlab 无限画布工作流" style={{ width: '100%', display: 'block' }} />
+    </div>
 
     <H3>核心能力</H3>
     <P><HL>Shotlab 分镜编排</HL> — 无限画布管理从角色设定、产品资产到场景背景的完整视觉工作流</P>
