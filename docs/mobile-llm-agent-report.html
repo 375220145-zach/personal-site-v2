@@ -2,7 +2,6 @@
 <style>:root{--bg:#0a0a0f;--surface:#13131a;--border:#1e1e2e;--text:#c8c8d4;--head:#f0f0f5;--muted:#6b6b7b;--green:#2ecc71;--green-bg:rgba(46,204,113,.1);--red:#e74c3c;--red-bg:rgba(231,76,60,.1);--yellow:#f39c12;--yellow-bg:rgba(243,156,18,.1);--blue:#3498db;--blue-bg:rgba(52,152,219,.1);--purple:#a855f7;--purple-bg:rgba(168,85,247,.1);--radius:8px}*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}.topbar{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;overflow-x:auto}.topbar a{display:block;padding:14px 20px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s}.topbar a:hover,.topbar a.active{color:var(--head)}.topbar a.active{border-bottom-color:var(--blue)}.container{max-width:1100px;margin:0 auto;padding:32px 24px 80px}.tab{display:none}.tab.active{display:block}section{margin-bottom:44px}section h2{font-size:22px;font-weight:700;color:var(--head);padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:20px}section h3{font-size:17px;font-weight:600;color:var(--head);margin:28px 0 10px}.hero{padding:48px 0 40px}.hero h1{font-size:34px;font-weight:700;color:var(--head);margin-bottom:6px}.hero .sub{font-size:17px;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 18px}.metric .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}.metric .value{font-size:26px;font-weight:700;color:var(--head);margin-bottom:3px}.metric .note{font-size:12px;color:var(--muted)}.table-wrap{overflow-x:auto;margin:14px 0 22px}table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;padding:9px 10px;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;border-bottom:1px solid var(--border)}td{padding:9px 10px;border-bottom:1px solid rgba(30,30,46,.5);vertical-align:top}tr:hover td{background:rgba(255,255,255,.015)}td strong{color:var(--head)}.tag{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600}.tag-red{background:var(--red-bg);color:var(--red)}.tag-yellow{background:var(--yellow-bg);color:var(--yellow)}.tag-green{background:var(--green-bg);color:var(--green)}.tag-blue{background:var(--blue-bg);color:var(--blue)}.tag-purple{background:var(--purple-bg);color:var(--purple)}.cards2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0 22px}.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0 22px}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}.card h4{font-size:14px;font-weight:600;color:var(--head);margin-bottom:10px}.card .item{margin-bottom:6px;font-size:12px}.verdict{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin:20px 0}.verdict .vt{font-size:12px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}.verdict .vx{font-size:15px;color:var(--head);line-height:1.7}.diff-grid{display:grid;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin:14px 0 22px}.diff-grid .dg-cell{background:var(--surface);padding:10px;font-size:12px;text-align:center}.diff-grid .dg-head{background:var(--bg);color:var(--muted);font-size:10px;font-weight:600;text-transform:uppercase}.diff-grid .dg-highlight{background:var(--green-bg);color:var(--green);font-weight:600}.prio{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:4px;font-size:12px;font-weight:700;margin-right:6px}.prio-p0{background:var(--red-bg);color:var(--red)}.prio-p1{background:var(--yellow-bg);color:var(--yellow)}.prio-p2{background:var(--blue-bg);color:var(--blue)}.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0 22px}.summary-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}.summary-card h4{font-size:14px;font-weight:600;color:var(--head);margin-bottom:8px}.summary-card ul{list-style:none;padding:0}.summary-card li{font-size:13px;padding:3px 0}.summary-card li::before{content:"— ";color:var(--muted)}.prd-badge{display:inline-block;padding:3px 10px;border-radius:3px;font-size:11px;font-weight:700;margin-right:6px}.prd-p0{background:var(--red-bg);color:var(--red)}.prd-p1{background:var(--yellow-bg);color:var(--yellow)}.prd-p2{background:var(--blue-bg);color:var(--blue)}.risk-grid{display:grid;grid-template-columns:60px 1fr 60px 60px 60px 1fr;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin:14px 0 22px;font-size:12px}.risk-grid .rcell{background:var(--surface);padding:10px;display:flex;align-items:center}.risk-grid .rhead{background:var(--bg);color:var(--muted);font-size:10px;font-weight:600;text-transform:uppercase;justify-content:center}.risk-high{border-left:3px solid var(--red)}.risk-med{border-left:3px solid var(--yellow)}.risk-low{border-left:3px solid var(--green)}.gantt{display:flex;gap:0;margin:16px 0;font-size:11px;overflow-x:auto}.gantt-row{display:flex;align-items:center;margin-bottom:8px}.gantt-label{width:140px;flex-shrink:0;font-weight:600;color:var(--head)}.gantt-bar{height:24px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#fff;font-weight:600}.gantt-m0{background:var(--blue)}.gantt-m1{background:var(--yellow);color:#1a1a1a}.gantt-m2{background:var(--purple)}.confidence-badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9px;font-weight:600;margin-left:4px}.conf-verified{background:rgba(46,204,113,.15);color:var(--green)}.conf-referenced{background:rgba(52,152,219,.15);color:var(--blue)}.conf-estimated{background:rgba(243,156,18,.15);color:var(--yellow)}.conf-unavailable{background:rgba(107,107,123,.15);color:var(--muted)}.proto-frame{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;width:280px;margin:8px}.proto-frame-header{background:rgba(0,0,0,.3);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--muted)}.proto-frame-body{padding:16px;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center}.proto-mic{width:50px;height:50px;border-radius:50%;border:2px solid var(--purple);background:rgba(168,85,247,.15);display:flex;align-items:center;justify-content:center;font-size:22px;animation:pulse 2s ease-out infinite}.proto-label{font-size:11px;color:var(--head);font-weight:600;margin-top:10px}.proto-chip-list{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:12px}.proto-chip{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:10px;color:var(--text)}.proto-step{padding:8px 10px;border-radius:8px;margin-bottom:6px;font-size:10px;display:flex;align-items:center;gap:8px}.proto-step.done{background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.2)}.proto-step.active{background:rgba(108,92,231,.08);border:1px solid rgba(108,92,231,.3)}.proto-step.pending{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);opacity:.4}@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}.arch{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:16px 0;overflow-x:auto}.arch-flow{display:flex;flex-direction:column;gap:14px;min-width:700px}.arch-row{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}.arch-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center;min-width:90px}.arch-arrow{font-size:18px;color:var(--muted);flex-shrink:0}.arch-label{font-size:10px;color:var(--muted);margin-top:4px}.arch-layer{background:var(--surface);border-radius:10px;padding:16px 20px;margin-bottom:10px}.al-user{border:1px solid rgba(220,38,38,.2);background:rgba(220,38,38,.04)}.al-router{border:1px solid rgba(217,119,6,.2);background:rgba(217,119,6,.04)}.al-exec{border:1px solid rgba(37,99,235,.2);background:rgba(37,99,235,.04)}.al-output{border:1px solid rgba(22,163,74,.2);background:rgba(22,163,74,.04)}.arch-layer-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}.al-user .arch-layer-title{color:var(--red)}.al-router .arch-layer-title{color:var(--yellow)}.al-exec .arch-layer-title{color:var(--blue)}.al-output .arch-layer-title{color:var(--green)}.arch-split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}.arch-branch{border-radius:8px;padding:12px}.arch-branch.android{border:1px dashed rgba(37,99,235,.25);background:rgba(37,99,235,.04)}.arch-branch.ios{border:1px dashed rgba(100,116,139,.25);background:rgba(100,116,139,.04)}.arch-branch h4{font-size:11px;font-weight:700;margin-bottom:8px;color:var(--head)}.arch-flow-inline{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:10px}.arch-fbox{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;font-weight:600;color:var(--text)}.arch-fbox.hl{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.4);color:#a78bfa}.arch-note{font-size:9px;color:var(--muted);margin-top:8px;text-align:center}.sources{font-size:11px;color:var(--muted);line-height:1.8}.sources a{color:var(--blue);text-decoration:none}.killed-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:6px;font-size:12px;display:flex;align-items:flex-start;gap:10px}.killed-item .ki-icon{flex-shrink:0;font-size:14px}.killed-item .ki-reason{color:var(--muted);font-size:11px}footer{border-top:1px solid var(--border);padding-top:20px;color:var(--muted);font-size:12px}@media(max-width:768px){.metrics,.cards2,.cards3,.summary-grid{grid-template-columns:repeat(2,1fr)}.diff-grid{grid-template-columns:repeat(2,1fr)}.risk-grid{grid-template-columns:1fr}.proto-frame{width:100%}}</style></head><body>
 <nav class="topbar">
 <a href="#sum" class="active" onclick="switchTab('sum',this)">总览</a>
-<a href="#sentiment" onclick="switchTab('sentiment',this)">0.舆情预研</a>
 <a href="#mkt" onclick="switchTab('mkt',this)">1.市场调研</a>
 <a href="#comp" onclick="switchTab('comp',this)">2.深度竞品</a>
 <a href="#brm" onclick="switchTab('brm',this)">3.头脑风暴</a>
@@ -10,14 +9,7 @@
 <a href="#gtm" onclick="switchTab('gtm',this)">5.GTM策略</a>
 <a href="#risk" onclick="switchTab('risk',this)">6.风险评估</a>
 <a href="#arch" onclick="switchTab('arch',this)">7.架构图</a>
-<a href="#proto" onclick="switchTab('proto',this)">8.交互原型</a>
-<a href="#journey" onclick="switchTab('journey',this)">9.用户旅程</a>
-<a href="#retention" onclick="switchTab('retention',this)">10.留存模型</a>
-<a href="#tech" onclick="switchTab('tech',this)">11.技术论证</a>
-<a href="#privacy" onclick="switchTab('privacy',this)">12.隐私合规</a>
-<a href="#wargame" onclick="switchTab('wargame',this)">13.War Game</a>
-<a href="#oss" onclick="switchTab('oss',this)">14.开源治理</a>
-<a href="#finance" onclick="switchTab('finance',this)">15.财务模型</a>
+<a href="#proto" onclick="switchTab('proto',this)">8.原型</a>
 </nav><div class="container">
 
 <!-- ====== SUMMARY ====== -->
@@ -144,16 +136,7 @@
 
 <!-- ====== 2. COMPETITIVE ====== -->
 <div class="tab" id="comp"><section><h2>2. 深度竞品分析</h2>
-<p style="font-size:12px;color:var(--muted);margin-bottom:16px;">8 个直接竞品 + 8 个开源项目 + 6 大厂 | 全维度对比 | 下载 Excel 看 9 sheet 完整版（含雷达图/SWOT/评价分析）<br><a href="竞品分析_Pocket_Agent_—_手机端_LLM_Agent_2026-06-10.xlsx" style="color:var(--blue);">📥 完整 Excel 报告</a></p>
-
-<h3>行业结构分析（Porter's Five Forces）</h3>
-<div class="table-wrap"><table><tr><th>力量</th><th>强度</th><th>判断依据</th><th>利润影响</th></tr>
-<tr><td>新进入者威胁</td><td><span class="tag tag-red">高</span></td><td>开源模型（AutoGLM/GHOST）+ GUI agent 框架降低技术门槛。GitHub 上 GUI agent 项目增长 500%/年。但系统级集成（豆包）和预装渠道（Siri/Gemini）仍是壁垒</td><td>纯第三方 agent 定价天花板低——免费竞品是 OS 内置</td></tr>
-<tr><td>供应商议价力</td><td><span class="tag tag-yellow">中</span></td><td>推理 API 供应商（DeepSeek/OpenAI）议价力强，但端侧推理降低依赖。芯片供应（高通/联发科 NPU）非第三方可控</td><td>云推理成本是主要变量，端侧占比决定利润率</td></tr>
-<tr><td>买方议价力</td><td><span class="tag tag-red">高</span></td><td>ChatGPT 免费 + OS 内置 agent 免费。用户愿为"隐私+跨平台"付多少待验证</td><td>$5/月定价面临免费替代品的持续压力</td></tr>
-<tr><td>替代品威胁</td><td><span class="tag tag-red">极高</span></td><td>Siri 3.0（2026秋）、Gemini on Android、豆包手机助手——都是预装+免费。用户可能"够用了"</td><td>差异化必须在"大厂做不到的"——跨平台+端侧隐私</td></tr>
-<tr><td>现有竞争强度</td><td><span class="tag tag-red">高</span></td><td>3 层竞争：OS 内置（Siri/Gemini/豆包）、开源框架（AutoGLM/MobileUse）、独立设备（Rabbit R1）。巨头入场只是时间问题</td><td>窗口期 ~6-12 个月建立社区护城河</td></tr></table></div>
-<div class="verdict" style="margin-bottom:20px;"><div class="vt">行业吸引力判断</div><div class="vx"><strong>🚦 行业吸引力中等偏低，但有结构性窗口。</strong>手机 Agent 是巨头必争之地，但巨头的"系统级优势"恰恰是他们的软肋——他们不可能跨平台。第三方 agent 的机会在「跨 Android+iOS + 端侧隐私 + 开源」。这不是大部分市场，是 niche 市场。窗口期 ~6-12 个月，需要在这个窗口内建立社区和口碑护城河。</div></div>
+<p style="font-size:12px;color:var(--muted);margin-bottom:16px;">8 个直接竞品 + 8 个开源项目 + 6 大厂 | 全维度对比 | 下载 Excel 看 9 sheet 完整版（含雷达图/SWOT/评价分析）<br><a href="../竞品分析_Pocket_Agent_—_手机端_LLM_Agent_2026-06-10.xlsx" style="color:var(--blue);">📥 完整 Excel 报告</a></p>
 
 <h3>竞品全维度对比</h3>
 <div class="table-wrap"><table><tr><th>竞品</th><th>类型</th><th>操作手机</th><th>配置门槛</th><th>价格</th><th>平台</th><th>地域</th><th>威胁</th></tr>
@@ -185,30 +168,6 @@
 <div class="dg-cell dg-head">维度</div><div class="dg-cell dg-head">配置门槛</div><div class="dg-cell dg-head">平台</div><div class="dg-cell dg-head">地域</div><div class="dg-cell dg-head">隐私</div><div class="dg-cell dg-head">透明度</div>
 <div class="dg-cell dg-head">现有方案</div><div class="dg-cell">ADB/Python/特定硬件</div><div class="dg-cell">单平台</div><div class="dg-cell">单一市场</div><div class="dg-cell">云端为主</div><div class="dg-cell">黑盒执行</div>
 <div class="dg-cell dg-head">Pocket Agent</div><div class="dg-cell dg-highlight"><strong>零配置</strong></div><div class="dg-cell dg-highlight"><strong>Android+iOS</strong></div><div class="dg-cell dg-highlight"><strong>全球</strong></div><div class="dg-cell dg-highlight"><strong>端侧优先</strong></div><div class="dg-cell dg-highlight"><strong>可视化+可打断</strong></div></div>
-
-<h3>Competitive Battlecards</h3>
-<div class="cards2">
-<div class="card" style="border-left:3px solid var(--red);"><h4>⚔️ 豆包手机助手</h4>
-<div class="item"><strong>护城河：</strong>系统级集成（定制ROM）+ 字节生态（微信/抖音打通）+ 零边际成本推广</div>
-<div class="item"><strong>致命弱点：</strong>封闭生态——只能在特定机型上跑，永远不可能跨 iOS。数据全部云端，隐私敏感用户不会用</div>
-<div class="item"><strong>他们最可能的反击：</strong>更多手机品牌合作（OPPO/vivo 定制），降低硬件门槛</div>
-<div class="item" style="color:var(--green);"><strong>赢法：</strong>「豆包只能在你换手机时选择——Pocket Agent 在你现在的手机上就能用」</div></div>
-<div class="card" style="border-left:3px solid var(--yellow);"><h4>⚔️ AutoGLM 2.0</h4>
-<div class="item"><strong>护城河：</strong>开源社区最先发者 + 学术影响力 + 免费</div>
-<div class="item"><strong>致命弱点：</strong>需要部署（ADB+Python+API）——普通用户根本装不了。它是个框架，不是个产品</div>
-<div class="item"><strong>他们最可能的反击：</strong>出一个打包好的 APK 降低门槛</div>
-<div class="item" style="color:var(--green);"><strong>赢法：</strong>「AutoGLM 帮你做研究，Pocket Agent 帮你发微信——我们是同一棵树上的不同果子」</div></div>
-<div class="card" style="border-left:3px solid var(--yellow);"><h4>⚔️ Siri 3.0 + Gemini</h4>
-<div class="item"><strong>护城河：</strong>预装+免费+系统级权限。用户不需要安装任何东西</div>
-<div class="item"><strong>致命弱点：</strong>平台锁定——Siri 只在 Apple，Gemini 只在 Android。他们的存在反而证明跨平台 agent 的合理性</div>
-<div class="item"><strong>他们最可能的反击：</strong>开放跨平台 API（Apple 不太可能，Google 有可能）</div>
-<div class="item" style="color:var(--green);"><strong>赢法：</strong>「Siri 管你的 iPhone，Gemini 管你的 Android——Pocket Agent 管你的两部手机」</div></div>
-<div class="card" style="border-left:3px solid var(--green);"><h4>⚔️ Rabbit R1</h4>
-<div class="item"><strong>护城河：</strong>先发硬件品牌 + 媒体关注</div>
-<div class="item"><strong>致命弱点：</strong>$199 独立设备——用户已经有手机了为什么要再买一个？LAM 被 AutoGLM 等开源方案超越</div>
-<div class="item"><strong>他们最可能的反击：</strong>转型做软件（已暗示）</div>
-<div class="item" style="color:var(--green);"><strong>赢法：</strong>不直接竞争——Rabbit 验证了"手机 agent"这个品类，然后硬件路线证明不可行</div></div>
-</div>
 </section></div>
 
 <!-- ====== 3. BRAINSTORMING ====== -->
@@ -270,36 +229,6 @@
 <tr><td>Tech Lead（待定）</td><td>技术可行性、端侧推理方案评审</td><td><span class="tag tag-yellow">否决</span></td></tr>
 <tr><td>Design Lead（待定）</td><td>交互/视觉评审</td><td><span class="tag tag-blue">建议</span></td></tr>
 <tr><td>开源社区</td><td>使用 & 贡献反馈</td><td><span style="color:var(--muted);">知会</span></td></tr></table></div>
-
-<h3>影响力-兴趣网格（Stakeholder Map）</h3>
-<div class="cards2">
-<div class="card" style="border-top:3px solid var(--red);"><h4>A 区：紧密管理</h4>
-<div class="item"><strong>潘子健（Zach）</strong> — Product Owner，唯一审批人</div></div>
-<div class="card" style="border-top:3px solid var(--yellow);"><h4>B 区：保持满意</h4>
-<div class="item"><strong>Tech Lead（待定）</strong> — 技术否决权，按里程碑评审</div></div>
-<div class="card" style="border-top:3px solid var(--blue);"><h4>C 区：保持知情</h4>
-<div class="item"><strong>Design Lead（待定）</strong> — 交互评审，不阻塞决策</div>
-<div class="item"><strong>开源社区</strong> — GitHub Issues/PR 贡献，欢迎但不依赖</div></div>
-<div class="card" style="border-top:3px solid var(--muted);"><h4>D 区：最小投入</h4>
-<div class="item">独立项目阶段，无外部高影响低兴趣干系人</div></div>
-</div>
-
-<h3>沟通策略</h3>
-<div class="table-wrap"><table><tr><th>干系人</th><th>频率</th><th>方式</th><th>触发条件</th></tr>
-<tr><td>Zach (PO)</td><td>N/A 自驱动</td><td>内化决策</td><td>独立项目</td></tr>
-<tr><td>Tech Lead（未来）</td><td>双周</td><td>技术评审会</td><td>架构决策节点</td></tr>
-<tr><td>Design Lead（未来）</td><td>按里程碑</td><td>设计评审</td><td>原型阶段</td></tr>
-<tr><td>开源社区</td><td>持续</td><td>GitHub Issues + Discussions</td><td>有贡献/反馈时</td></tr></table></div>
-
-<h3>Outcome Roadmap（以结果为导向）</h3>
-<div class="table-wrap"><table><tr><th>阶段</th><th>目标结果</th><th>验证假设</th><th>需要功能</th><th>不做</th></tr>
-<tr><td><strong>MVP</strong><br><span style="font-size:10px;color:var(--muted);">M1-3</span></td><td>5,000 用户中 30 日留存 >30%</td><td>零配置 Agent 有人愿意用</td><td>F1+F2+F3+F4</td><td>iOS/iPad/模板市场/企业</td></tr>
-<tr><td><strong>V1.0</strong><br><span style="font-size:10px;color:var(--muted);">M4-8</span></td><td>付费转化 >3%，MRR >$25K</td><td>用户愿为隐私+跨平台付 $5/月</td><td>+F5+F6+F7</td><td>企业 SSO/独立硬件</td></tr>
-<tr><td><strong>V2.0</strong><br><span style="font-size:10px;color:var(--muted);">M9-18</span></td><td>MRR >$500K，社区开源贡献 >100 人</td><td>可规模化增长</td><td>+F8+F9</td><td>自研大模型/IoT</td></tr></table></div>
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin:12px 0;font-size:12px;line-height:1.6;">
-<strong>路线图逻辑：</strong>MVP 只验证一件事——有人用。V1.0 验证第二件事——有人付费。V2.0 验证第三件事——能持续增长。<br>
-<strong>前置条件：</strong>MVP→V1.0 需要 30 日留存 >30%。V1.0→V2.0 需要 MRR >$25K。
-</div>
 
 <h3>Key Results (SMART)</h3>
 <div class="table-wrap"><table><tr><th>KR</th><th>目标</th><th>时限</th></tr>
@@ -399,29 +328,6 @@
 <tr><td>传播机制</td><td>任务完成后自动生成分享卡片 · 模板创建者 badge 飞轮</td></tr>
 <tr><td>模板冷启动</td><td>预置 20 个官方模板，6 个月后开放用户创建</td></tr>
 <tr><td>预算</td><td>零广告预算，靠社区内容 + GitHub star + KOL 试用</td></tr></table></div>
-
-<h3>自增长模型（Growth Loops）</h3>
-<h4>核心飞轮</h4>
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin:12px 0;font-size:13px;text-align:center;line-height:2;">
-  用户在手机上完成一个任务（如「发 PDF 给张三」）→ 任务完成后自动生成分享卡片<br>
-  → 用户分享到社交媒体 / 即刻 / X（「我用 Pocket Agent 发了封邮件」）<br>
-  → 看到的人好奇 → 搜索 Pocket Agent → 下载 → 完成自己的第一个任务<br>
-  → 自己的分享卡片贡献回飞轮<br>
-  <span style="font-size:11px;color:var(--muted);">← 每个完成任务都是一次传播机会 →</span>
-</div>
-
-<h4>传播内置点（Viral by Design）</h4>
-<div class="table-wrap"><table><tr><th>触发点</th><th>用户做了什么</th><th>谁会看到</th><th>预期转化</th></tr>
-<tr><td>任务完成卡片</td><td>完成任务后自动生成可视化分享图</td><td>社交媒体关注者</td><td>看到→好奇→搜索→下载</td></tr>
-<tr><td>模板创建 Badge</td><td>创建并分享一个任务模板</td><td>模板市场浏览者</td><td>看到实用模板→注册使用</td></tr>
-<tr><td>GitHub Star</td><td>在 GitHub 上 Star 了项目</td><td>GitHub 关注者动态</td><td>开发者→贡献或推荐</td></tr>
-<tr><td>Product Hunt 首发</td><td>Upvote + 评论</td><td>PH 社区 + 科技媒体</td><td>媒体覆盖→自然增长</td></tr></table></div>
-
-<h4>增长假设</h4>
-<div class="table-wrap"><table><tr><th>假设</th><th>验证方法</th><th>Fallback</th></tr>
-<tr><td>分享卡片触达率为完成任务的 5%</td><td>埋点追踪卡片生成/分享数</td><td>如果 <1% → 优化卡片设计 + 在完成页面增加分享引导</td></tr>
-<tr><td>GitHub star 增长带动自然下载 30%</td><td>追踪 star 增长 vs 下载量相关性</td><td>如果 <10% → 增加 Product Hunt + KOL 等推力渠道</td></tr>
-<tr><td>模板市场产生 20% 的病毒获客</td><td>追踪模板分享带来的新注册</td><td>如果 <5% → 官方预置模板增加 + 社区激励</td></tr></table></div>
 </section></div>
 <!-- ====== 6. RISK ====== -->
 <div class="tab" id="risk"><section><h2>6. 风险评估矩阵</h2>
@@ -452,16 +358,6 @@
 <tr><td>预购 Pro 转化</td><td>&lt;1% 注册→预购</td><td>调整定价模型：先试一次性付费（$9.99 Lifetime）</td></tr>
 <tr><td>无障碍权限授权率</td><td>&lt;30%</td><td>优先解决信任问题：加视频演示 + 隐私说明</td></tr>
 </table></div>
-
-<h3>Pre-mortem：如果 Pocket Agent 失败了</h3>
-<p style="font-size:12px;color:var(--muted);margin-bottom:12px;">场景设定：2027 年 12 月。Pocket Agent 的 GitHub repo 归档，App Store/Google Play 下架。复盘——发生了什么？</p>
-<div class="table-wrap"><table><tr><th>#</th><th>死因</th><th>维度</th><th>现有矩阵覆盖？</th></tr>
-<tr><td>1</td><td><strong>Siri 3.0 "够用了"</strong>——2026 秋 Siri 3.0 更新后，普通用户的手机操作需求被覆盖。Pocket Agent 的差异化（跨平台+隐私）对大众不够痛</td><td>市场</td><td><span class="tag tag-green">已覆盖 R3</span></td></tr>
-<tr><td>2</td><td><strong>无障碍权限恐惧症</strong>——用户看到「需要开启无障碍权限」后立即卸载。教育成本太高，每个用户都需要手把手解释「为什么需要这个权限」</td><td>产品</td><td><span class="tag tag-green">已覆盖 R4</span></td></tr>
-<tr><td>3</td><td><strong>端侧模型效果差</strong>——3B 量化模型在真实场景中成功率 <50%，用户试两次失败后放弃。云端 fallback 太慢（>10s），用户等不了</td><td>技术</td><td><span class="tag tag-red">🔴 新增盲区</span></td></tr>
-<tr><td>4</td><td><strong>开源社区没起来</strong>——只有 Star 没有 PR。模板市场冷启动失败（没人创建模板），下载量靠 PH 首发一波流后自然衰减</td><td>执行</td><td><span class="tag tag-red">🔴 新增盲区</span></td></tr>
-<tr><td>5</td><td><strong>赚钱模型是幻觉</strong>——免费用户 <2% 转化为付费。$5/月在 ChatGPT 免费 + OS Agent 免费的时代难以成立。MRR 永远没到 $10K</td><td>商业</td><td><span class="tag tag-yellow">⚠️ 部分覆盖 R5</span></td></tr></table></div>
-<div class="verdict"><div class="vt">Pre-mortem 盲区发现</div><div class="vx"><strong>现有风险矩阵遗漏了两个关键盲区：</strong>① 端侧模型真实场景成功率——这里的风险不是"性能不足延迟 >5s"（R7），而是"它根本做不对"。如果 3B 模型在发微信/搜机票这种真实任务上连 50% 成功率都没有，用户不会给第二次机会。② 开源社区冷启动——GitHub star 是面子，PR 和模板贡献是里子。没有里子的开源项目是一波流。</div></div>
 </section></div>
 
 <!-- ====== 7. ARCHITECTURE ====== -->
@@ -496,345 +392,6 @@
 </div>
 <p style="font-size:10px;color:var(--muted);text-align:center;">▲ 在手机框内点击标签切换页面、点击麦克风体验交互</p>
 </div>
-</section></div>
-
-<!-- ====== 0. SENTIMENT ====== -->
-<div class="tab" id="sentiment"><section><h2>0. 舆情预研 <span class="tag tag-green">NEW v4.0</span></h2>
-<p style="font-size:12px;color:var(--muted);margin-bottom:20px;">last30days 双版并行 · 原版（Reddit/X/YouTube/HN/Polymarket/GitHub）+ 国内版（微博/小红书/B站/知乎/抖音/微信/百度/今日头条）· 2026年6月</p>
-
-<h3>研究方法说明</h3>
-<p style="font-size:12px;color:var(--muted);margin-bottom:12px;">双版本并行扫描确保覆盖中英文社区的不同讨论焦点。原版覆盖 Reddit（r/OpenAI, r/Android, r/MachineLearning）、X/Twitter、YouTube、Hacker News、Polymarket、GitHub Trending。国内版覆盖微博、小红书、B站、知乎、抖音、微信公众号、百度热搜、今日头条。时间范围：2026年5月-6月。分析方法：主题聚类 + 情感分析 + 关键意见领袖追踪。</p>
-
-<h3>全球社区信号</h3>
-<div class="table-wrap"><table>
-<tr><th>话题</th><th>热度</th><th>关键洞察</th></tr>
-<tr><td><strong>权限焦虑 / 隐私信任</strong></td><td><span class="tag tag-red">高</span></td><td>Reddit r/OpenAI、r/Android 等社区高频讨论——隐私和信任是用户接受手机 Agent 的最大障碍，远超技术能力。用户明确表示"不会把屏幕内容交给任何云端服务"。</td></tr>
-<tr><td><strong>监督式委托 (Supervised Delegation)</strong></td><td><span class="tag tag-yellow">中高</span></td><td>Anthropic 2026 报告确认：用户只敢部分委托，人在回路（human-in-the-loop）是当前主流模式。完全自主 Agent 尚未被大众接受。</td></tr>
-<tr><td><strong>Play Store 封杀通用自动化</strong></td><td><span class="tag tag-yellow">中</span></td><td>Sova AI 等 App 因"通用自动化"功能被 Google Play 下架。侧载（sideloading）成为第三方 Agent 的唯一可行分发路径。</td></tr>
-<tr><td><strong>社区技能库 / SKILL.md</strong></td><td><span class="tag tag-blue">新兴</span></td><td>开发者社区自写 SKILL.md 验证有效：首次执行 90s → 缓存后 14s（缩短 85%）。社区共享技能可形成复利引擎和护城河。</td></tr>
-<tr><td><strong>独立硬件路线已死</strong></td><td><span class="tag tag-red">结论</span></td><td>Rabbit R1 被判死刑——"无屏 AI 设备 90% 用户踩坑"成为社区共识。手机端是唯一合理载体。</td></tr>
-</table></div>
-<h3>国内社区信号</h3>
-<div class="table-wrap"><table>
-<tr><th>话题</th><th>平台</th><th>关键洞察</th></tr>
-<tr><td><strong>豆包 2.27 亿 MAU</strong></td><td>微博/知乎/B站</td><td>市场绝对第一，但"娱乐陪伴之王"标签明显——AI 幻觉导致推荐不存在餐厅、误导退票费等负面频发。用户需要更可靠的执行型 Agent。</td></tr>
-<tr><td><strong>豆包手机助手隐私争议</strong></td><td>微博/知乎</td><td>2026.6.4 上市，100+ 权限（40% 高敏感）——隐私信任严重缺失。用户直言"100多个权限太吓人了"。</td></tr>
-<tr><td><strong>华为小艺 + A2A 协议</strong></td><td>B站/知乎</td><td>97.5% 端侧闭环 + 信通院认证——技术领先但仅限鸿蒙生态。证明了端侧 Agent 技术可行。</td></tr>
-<tr><td><strong>AutoGLM 开发者热度</strong></td><td>GitHub/知乎</td><td>91% 成功率获社区认可，但"需 Python+ADB"的门槛使其停留在开发者圈层——不是消费者产品。这恰好是 Pocket Agent 的机会。</td></tr>
-<tr><td><strong>端侧 AI 硬件就绪</strong></td><td>B站/数码评测</td><td>骁龙 8 Gen 4 / 天玑 9400 的 NPU 已可本地运行 3-9B 模型。社区评测确认"端侧推理延迟已可接受"。</td></tr>
-</table></div>
-<div class="verdict" style="margin-top:16px;"><div class="vt">舆情预研核心发现</div><div class="vx"><strong>隐私信任是第一障碍，而不是技术能力。</strong>所有社区信号一致指向：用户愿意使用手机 Agent，但前提是数据留在设备上、操作过程可见可打断。这直接验证了 Pocket Agent "端侧优先 + 操作可视化"策略的正确性。同时确认了侧载分发是唯一可行路径——Play Store 对通用自动化类 App 的封杀是系统性的。</div></div>
-</section></div>
-
-<!-- ====== 9. JOURNEY ====== -->
-<div class="tab" id="journey"><section><h2>9. 用户旅程地图 <span class="tag tag-green">NEW</span></h2>
-<p style="font-size:12px;color:var(--muted);margin-bottom:16px">目标用户: Chiara，28岁，后端工程师，隐私敏感 — 5阶段旅程（发现→安装→首次使用→日常→分享）</p>
-
-<h3>阶段 1：发现</h3>
-<div class="table-wrap"><table>
-<tr><th>触点</th><th>行为</th><th>情绪</th><th>PA策略</th></tr>
-<tr><td>Reddit</td><td>看到帖子"零配置开源Agent"</td><td>😮 好奇</td><td>标题说清楚与AutoGLM区别:零配置零Python零ADB</td></tr>
-<tr><td>GitHub README</td><td>10秒决定是否继续看</td><td>🤔 评估</td><td>第一屏:三行核心承诺+安装命令+10秒GIF演示</td></tr>
-<tr><td>Landing Page</td><td>验证"不是另一个Rabbit R1"</td><td>🤨 验证</td><td>首页直接展示隐私仪表盘截图——所有数据流向本地</td></tr>
-</table></div>
-
-<h3>阶段 2：安装+授权（最大Drop-off）</h3>
-<div class="table-wrap"><table>
-<tr><th>步骤</th><th>Friction</th><th>PA策略</th></tr>
-<tr><td>下载APK</td><td>系统警告「未知来源」— 最大drop-off</td><td>提前展示「接下来你会看到XX警告，这是正常的，因为我们是开源App没有经过Google审核」→ 把恐惧变信任</td></tr>
-<tr><td>授权无障碍</td><td>「允许查看屏幕操作」— 第二大drop-off</td><td>分两步:①解释"像请了个秘书，需要看到你在做什么才能帮忙" ②再跳转设置。每项权限单独解释</td></tr>
-</table></div>
-<p style="font-size:11px;color:var(--muted)">衡量: Download→Install>60%、Install→Accessibility授权>40%、Install→首次任务>30%</p>
-
-<h3>阶段 3：首次使用 — Aha Moment</h3>
-<p><strong>Aha定义:</strong> 用户在3分钟内完成第一个任务并看到隐私摘要，理解"AI能帮我又不偷看"。</p>
-<p>Agent先复述理解再执行。出错时说"我找不到XX，请帮我确认"——不假装知道。完成后的隐私摘要弹窗:「本次任务:数据全部在本地，未上传 ✅」</p>
-<p style="font-size:11px;color:var(--muted)">衡量: TTS<3min、首次成功率>75%、NPS>40</p>
-
-<h3>阶段 4：日常使用 — 习惯环</h3>
-<div class="table-wrap"><table>
-<tr><th>频率</th><th>场景</th><th>Retention Driver</th></tr>
-<tr><td>每天1-2次</td><td>发消息/搜信息/设提醒</td><td>比手动快—节省10-30秒/次。技能缓存让第5次从60s→8s</td></tr>
-<tr><td>每周2-3次</td><td>填表单/订外卖</td><td>主动推荐新技能—"你最近常在这家店下单，要不要设一键复购?"</td></tr>
-<tr><td>每周1次</td><td>查看隐私仪表盘</td><td>周报:"本周15个任务，0次云端请求，数据全部在本地🔒"</td></tr>
-</table></div>
-
-<h3>阶段 5：分享 — Advocacy</h3>
-<div class="table-wrap"><table>
-<tr><th>行为</th><th>PA设计</th></tr>
-<tr><td>分享技能到社区</td><td>一键"分享到技能市场"，自动生成SKILL.md</td></tr>
-<tr><td>社交推荐</td><td>内置"分享成绩单"——生成卡片:本月完成X个任务，节省Y分钟，数据全部在本地🔒</td></tr>
-</table></div>
-</section></div>
-
-<!-- ====== 10. RETENTION ====== -->
-<div class="tab" id="retention"><section><h2>10. 留存与激活模型 <span class="tag tag-green">NEW</span></h2>
-
-<div class="verdict"><div class="vt">North Star</div><div class="vx"><strong>每周完成的任务数（Weekly Completed Tasks）</strong> — 不是DAU或MAU。任务完成数直接衡量用户真正靠PA在做事。</div></div>
-
-<h3>AARRR 漏斗</h3>
-<div class="table-wrap"><table>
-<tr><th>阶段</th><th>目标(Alpha)</th><th>目标(Year1)</th></tr>
-<tr><td>Acquisition (下载)</td><td>GitHub Star>500 in 30d</td><td>100K+ installs</td></tr>
-<tr><td>Activation (首次任务)</td><td>TTS<3min · 成功率>75%</td><td>TTS<2min · 成功率>85%</td></tr>
-<tr><td>Retention (7日/30日)</td><td>>30% / >25%</td><td>>35% / >30%</td></tr>
-<tr><td>Revenue (Pro转化)</td><td>>2%</td><td>>4%</td></tr>
-<tr><td>Referral (技能分享)</td><td>>50 社区技能</td><td>>500 社区技能</td></tr>
-</table></div>
-
-<h3>Aha Moment: 三层信任</h3>
-<div class="cards2"><div class="card"><h4>第一层: 它能行</h4><p style="font-size:12px;color:var(--muted)">首次任务成功率>75%。Agent先复述再执行。预设5个示例降低决策负担。</p></div>
-<div class="card"><h4>第二层: 它不乱来</h4><p style="font-size:12px;color:var(--muted)">首次任务完成后的隐私摘要弹窗——「数据全部在本地，未上传」。这是与所有竞品的分水岭时刻。</p></div>
-<div class="card"><h4>第三层: 我需要它</h4><p style="font-size:12px;color:var(--muted)">技能缓存让重复任务60s→8s。推送「上周PA帮你完成12个任务，每个节省25秒」。</p></div></div>
-
-<h3>4个习惯环</h3>
-<div class="table-wrap"><table>
-<tr><th>环</th><th>驱动</th><th>触发</th></tr>
-<tr><td>效率环 (日活)</td><td>高频任务→缓存加速→感知节省时间</td><td>推送"早上好，提醒你今天下午3点和张三有会"</td></tr>
-<tr><td>探索环 (周活)</td><td>发现新模式→推荐新技能→技能库+1</td><td>"我注意到你每周用美团3次，要不要设快速复购?"</td></tr>
-<tr><td>信任环 (月活)</td><td>周报→0次云端请求→信任累积</td><td>每周日晚"你的隐私周报:15个任务，0次云端请求🔒"</td></tr>
-<tr><td>社区环 (长期)</td><td>创建技能→分享→获Star→身份认同</td><td>"你的'订咖啡'技能被23人下载，排本周Top10🏆"</td></tr>
-</table></div>
-
-<h3>流失预警</h3>
-<div class="table-wrap"><table>
-<tr><th>信号</th><th>干预</th></tr>
-<tr><td>安装后24h未完成首个任务</td><td>Push:"还在犹豫？试试让PA帮你发一条微信消息。不会偷看聊天记录🔒"</td></tr>
-<tr><td>3天未打开</td><td>推送隐私报告摘要：你的数据一直安全</td></tr>
-<tr><td>首次任务失败</td><td>立即弹窗:Agent主动说"我没成功，因为XXX。要不要换个方式?"<br>——不能假装没出错</td></tr>
-<tr><td>14天未使用技能缓存</td><td>推送:你之前设的'快速发消息'技能还在，说一声就能用</td></tr>
-</table></div>
-
-<h3>Pro 转化路径</h3>
-<div class="table-wrap"><table>
-<tr><th>触发</th><th>Free限制</th><th>Pro价值</th></tr>
-<tr><td>今天第6次复杂任务</td><td>5次/天云端</td><td>无限云端推理</td></tr>
-<tr><td>想在电脑上也用</td><td>单设备</td><td>跨设备同步</td></tr>
-</table></div>
-</section></div>
-
-<!-- ====== 11. TECH ====== -->
-<div class="tab" id="tech"><section><h2>11. 端侧技术深度论证 <span class="tag tag-green">NEW</span></h2>
-
-<h3>模型选型对比</h3>
-<div class="table-wrap"><table>
-<tr><th>模型</th><th>参数</th><th>量化大小</th><th>推理速度(8 Gen 4)</th><th>开源</th><th>中文</th><th>屏幕理解</th></tr>
-<tr style="background:rgba(46,204,113,0.06)"><td><strong>MiniCPM-V 2.0</strong></td><td>2.4B</td><td>~1.5GB</td><td>~30 tok/s</td><td>Apache 2.0</td><td>强</td><td><strong>原生多模态 ✅</strong></td></tr>
-<tr><td>通义千问 Qwen2.5 3B</td><td>3.0B</td><td>~1.9GB</td><td>~28 tok/s</td><td>Apache 2.0</td><td>强</td><td>需 fine-tune</td></tr>
-<tr><td>Meta Llama 3.2 3B</td><td>3.2B</td><td>~2.0GB</td><td>~25 tok/s</td><td>Llama Community</td><td>弱</td><td>需 fine-tune</td></tr>
-<tr><td>微软 Phi-3.5-mini</td><td>3.8B</td><td>~2.4GB</td><td>~22 tok/s</td><td>MIT</td><td>弱</td><td>需 fine-tune</td></tr>
-</table></div>
-<p style="font-size:11px;color:var(--muted)"><strong>推荐: MiniCPM-V 2.0</strong> — 原生多模态(屏幕截图理解无需额外训练) + Apache 2.0可商用 + 体积最小。</p>
-
-<h3>推理流水线 + 延迟预算</h3>
-<pre style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:11px;color:var(--text);overflow-x:auto">
-语音 → Whisper ASR (本地<300ms) → NLU意图解析(<500ms) → 屏幕截图 → VLM理解(<800ms)
-  ↓
-简单任务 → 本地执行 ✅（数据不离开设备）
-复杂任务 → 仅发送脱敏意图JSON + UI结构化描述到云端 ☁️（不含联系人名/消息内容/密码）
-</pre>
-
-<h3>设备兼容矩阵</h3>
-<div class="table-wrap"><table>
-<tr><th>芯片</th><th>NPU TOPS</th><th>RAM</th><th>端侧能力</th><th>代表机型</th><th>占比</th></tr>
-<tr><td>骁龙 8 Gen 4</td><td>45</td><td>12-16GB</td><td><span class="tag tag-green">全功能</span></td><td>Galaxy S26, Xiaomi 16</td><td>~15%</td></tr>
-<tr><td>骁龙 8 Gen 3 / 天玑9400</td><td>34-42</td><td>8-12GB</td><td><span class="tag tag-green">全功能</span></td><td>Galaxy S25, vivo X200</td><td>~28%</td></tr>
-<tr><td>骁龙 8 Gen 2</td><td>20</td><td>8GB</td><td><span class="tag tag-yellow">降级(仅意图)</span></td><td>Galaxy S24, Xiaomi 14</td><td>~25%</td></tr>
-<tr><td>低端 (<8 Gen 2)</td><td><15</td><td><6GB</td><td><span class="tag tag-red">云端only</span></td><td>中低端</td><td>~27%</td></tr>
-</table></div>
-
-<h3>内存与电量</h3>
-<div class="cards2"><div class="card"><h4>内存占用</h4><p style="font-size:12px">模型: ~1.5GB (INT4)<br>ASR: ~150MB<br>总计: ~2.3GB<br><span style="color:var(--muted);font-size:10px">在8GB+设备上占比<30%</span></p></div>
-<div class="card"><h4>电量影响</h4><p style="font-size:12px">每次推理: ~0.3-0.5%电池<br>每天10次: ~3-5%额外耗电<br><span style="color:var(--muted);font-size:10px">5000mAh电池上可忽略</span></p></div></div>
-</section></div>
-
-<!-- ====== 12. PRIVACY ====== -->
-<div class="tab" id="privacy"><section><h2>12. 隐私合规评估 <span class="tag tag-green">NEW</span></h2>
-
-<h3>权限最小化对比: PA vs 豆包</h3>
-<div class="table-wrap"><table>
-<tr><th>权限</th><th>豆包</th><th>PA</th><th>PA为什么需要/不需要</th></tr>
-<tr><td>无障碍</td><td>✅</td><td>✅</td><td>GUI自动化唯一合法方式</td></tr>
-<tr><td>麦克风</td><td>✅</td><td>✅</td><td>语音输入 — <strong>每次使用后自动关闭</strong></td></tr>
-<tr><td>悬浮窗</td><td>✅</td><td>✅</td><td>执行进度浮层</td></tr>
-<tr><td>通知</td><td>✅</td><td>✅</td><td>前台服务防杀后台</td></tr>
-<tr><td>已安装应用列表</td><td>✅</td><td>✅</td><td>扫描应用匹配技能 — 仅包名</td></tr>
-<tr><td>存储(所有文件)</td><td>✅</td><td>⚠️ Scoped</td><td>仅技能缓存目录</td></tr>
-<tr><td>通讯录/短信/位置/相机/电话</td><td>✅</td><td><strong>❌ 不需要</strong></td><td>—</td></tr>
-<tr style="font-weight:700;border-top:2px solid var(--border)"><td>权限总数</td><td style="color:var(--red)">100+</td><td style="color:var(--green)">5-6个</td><td>—</td></tr>
-</table></div>
-
-<h3>数据流架构</h3>
-<pre style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:10px;color:var(--text);line-height:1.4">
-┌──────────────────────────────────────┐
-│              设备端                    │
-│  语音→ASR(本地)→NLU(NPU)→GUI(本地)      │
-│       │                               │
-│       ├─ 简单任务 → 本地执行 ✅          │
-│       │  数据不离开设备                  │
-│       │                               │
-│       └─ 复杂任务 → 云端 ☁️             │
-│          仅发送:脱敏意图JSON              │
-│          + UI元素坐标(不含文本内容)        │
-│                                        │
-│  隐私护栏: 支付/密码/身份证 → 强制仅本地  │
-└──────────────────────────────────────┘
-</pre>
-
-<h3>6法规合规矩阵</h3>
-<div class="table-wrap"><table>
-<tr><th>法规</th><th>范围</th><th>PA合规状态</th></tr>
-<tr><td>GDPR</td><td>欧盟</td><td><span class="tag tag-green">✅ 满足</span> — 端侧默认=最小数据收集。本地SQLite导出=数据可携带权</td></tr>
-<tr><td>个人信息保护法</td><td>中国</td><td><span class="tag tag-green">✅ 满足</span> — 端侧处理=合法基础。敏感数据不过境</td></tr>
-<tr><td>CCPA</td><td>加州</td><td><span class="tag tag-green">✅ 满足</span> — 无个人数据收集=无Sell/Share问题</td></tr>
-<tr><td>Google Play政策</td><td>全球</td><td><span class="tag tag-red">❌ 不可上架</span> — 通用自动化违反政策。仅侧载</td></tr>
-</table></div>
-
-<h3>安全威胁模型</h3>
-<div class="table-wrap"><table>
-<tr><th>威胁</th><th>概率</th><th>缓解</th></tr>
-<tr><td>恶意技能注入</td><td><span class="tag tag-yellow">中高</span></td><td>沙箱执行 + 敏感权限人工审核 + 社区≥3人approve才上架</td></tr>
-<tr><td>APK被篡改</td><td><span class="tag tag-yellow">中</span></td><td>GitHub签名APK + SHA256 checksum + F-Droid自动验证</td></tr>
-<tr><td>API Key泄露</td><td><span class="tag tag-blue">低</span></td><td>存Android Keystore(硬件级加密)，明文不出Keystore</td></tr>
-</table></div>
-</section></div>
-
-<!-- ====== 13. WARGAME ====== -->
-<div class="tab" id="wargame"><section><h2>13. 竞品响应预案 (War Game) <span class="tag tag-green">NEW</span></h2>
-
-<div class="verdict"><div class="vt">核心原则</div><div class="vx">12-18个月窗口期里，如果巨头做了X，PA怎么应对？每个场景提前推演，不等到发生时被动反应。</div></div>
-
-<h3>6大场景推演</h3>
-<div class="table-wrap"><table>
-<tr><th>场景</th><th>概率</th><th>影响</th><th>PA应对</th></tr>
-<tr>
-<td><strong>Google AppFunctions GA</strong></td>
-<td><span class="tag tag-yellow">中高</span></td>
-<td><span class="tag tag-yellow">⚠️有限</span></td>
-<td>AppFunctions需开发者适配→仅覆盖头部App。PA的GUI Agent永远可操作任何App。<br><strong>不pivot</strong>——但支持AppFunctions作为"快速通道"检测到已适配App时优先用</td>
-</tr>
-<tr>
-<td><strong>Apple开放iOS侧载</strong></td>
-<td><span class="tag tag-yellow">中</span></td>
-<td><span class="tag tag-green">利好</span></td>
-<td>确认后1月内发iOS Alpha(如Android已验证PMF)。利用Android社区技能库无缝迁移。<br>iOS特有策略:App Intents+Shortcuts</td>
-</tr>
-<tr>
-<td><strong>豆包宣布开源</strong></td>
-<td><span class="tag tag-blue">低</span></td>
-<td><span class="tag tag-red">高</span></td>
-<td><strong>不恐慌</strong>——豆包即使开源也是100+权限云端架构。PA的差异化是端侧默认+最小权限+社区信任的组合。<br>"豆包即使开源，权限仍是PA的20倍"</td>
-</tr>
-<tr>
-<td><strong>Play政策修改</strong></td>
-<td><span class="tag tag-blue">低</span></td>
-<td><span class="tag tag-green">利好</span></td>
-<td>上架Play Store→安装量10x。提前准备安全审计文档、隐私合规材料。社区技能库+信任积累是竞品涌入时的壁垒</td>
-</tr>
-<tr>
-<td><strong>端侧模型重大突破</strong></td>
-<td><span class="tag tag-yellow">中</span></td>
-<td><span class="tag tag-green">利好</span></td>
-<td>即插即用架构→新模型发布1-2周集成。先发优势:真实用户技能缓存是模型切换后仍有的资产</td>
-</tr>
-<tr>
-<td><strong>开源竞品直接复刻</strong></td>
-<td><span class="tag tag-yellow">中高</span></td>
-<td><span class="tag tag-yellow">⚠️预期</span></td>
-<td>开源宿命——欢迎复刻说明方向被验证。护城河:社区技能库+持续迭代速度+真实用户信任</td>
-</tr>
-</table></div>
-
-<div class="card"><h4>立即准备的（不依赖场景触发）</h4><ul style="font-size:12px"><li>模型即插即用架构 — 应对端侧突破</li><li>Play Store安全审计文档预准备 — 应对政策变化</li><li>iOS App Intents预研 — 应对侧载开放</li><li>社区治理框架 — 应对竞品复刻</li></ul></div>
-</section></div>
-
-<!-- ====== 14. OSS ====== -->
-<div class="tab" id="oss"><section><h2>14. 开源社区治理方案 <span class="tag tag-green">NEW</span></h2>
-
-<div class="verdict"><div class="vt">核心理念</div><div class="vx">开源不是把代码扔到GitHub。社区是PA的护城河——治理框架决定这个护城河有多深。</div></div>
-
-<h3>License选型</h3>
-<div class="table-wrap"><table>
-<tr><th>License</th><th>PA适用?</th><th>理由</th></tr>
-<tr><td>MIT</td><td><span class="tag tag-red">❌</span></td><td>太弱——大厂可直接拿走闭源集成到Gemini/Siri</td></tr>
-<tr><td>Apache 2.0</td><td><span class="tag tag-yellow">⚠️</span></td><td>可接受。含专利授权。但仍允许闭源fork</td></tr>
-<tr><td>GPL 3.0</td><td><span class="tag tag-red">❌</span></td><td>太强——企业法务拒绝，阻碍企业采用</td></tr>
-<tr style="background:rgba(46,204,113,0.06)"><td><strong>AGPL 3.0</strong></td><td><span class="tag tag-green">✅ 推荐</span></td><td>含网络服务条款——云服务也需要开源。精准打击:防止大厂fork后在云端跑闭源版。端侧使用不触发AGPL限制</td></tr>
-</table></div>
-
-<h3>贡献者协议</h3>
-<p><strong>推荐: DCO (Developer Certificate of Origin)</strong> — 贡献者在commit中签"S-o-b"声明有权贡献。Linux内核用的方式，轻量且法律有效。所有PR必须含<code>Signed-off-by: Name &lt;email&gt;</code>，GitHub Actions自动检查。</p>
-
-<h3>三阶段社区治理</h3>
-<div class="table-wrap"><table>
-<tr><th>阶段</th><th>模型</th><th>触发条件</th></tr>
-<tr><td>Phase 1</td><td><strong>BDFL — Zach独裁</strong><br>唯一维护者，review所有PR，核心模块仅Zach修改</td><td>Alpha→Beta</td></tr>
-<tr><td>Phase 2</td><td><strong>Trusted Contributors</strong><br>持续贡献者获得特定模块合并权。安全模块需≥2人approve。Zach保留veto</td><td>>5个活跃贡献者</td></tr>
-<tr><td>Phase 3</td><td><strong>技术委员会 (TSC)</strong><br>选举3-5人。路线决策、安全审计、License合规。Zach→TSC主席</td><td>>50个贡献者</td></tr>
-</table></div>
-
-<h3>技能市场治理</h3>
-<div class="table-wrap"><table>
-<tr><th>风险</th><th>缓解</th></tr>
-<tr><td>恶意技能(读通讯录上传)</td><td>沙箱执行→只能调PA暴露的有限API。敏感权限技能人工审核。沙箱内模拟3次</td></tr>
-<tr><td>低质量技能(成功率<50%)</td><td>社区评分+成功率标签。连续30天<2星自动下架</td></tr>
-<tr><td>技能抄袭</td><td>提交需DCO签名。被举报暂停上架待裁决</td></tr>
-</table></div>
-
-<h3>MVP最低可行治理</h3>
-<ul style="font-size:12px"><li>License: AGPL 3.0 · DCO签名 · Code of Conduct (Contributor Covenant 2.1) · GitHub Issue模板 · SECURITY.md · 20个种子技能(Zach自写)</li></ul>
-</section></div>
-
-<!-- ====== 15. FINANCE ====== -->
-<div class="tab" id="finance"><section><h2>15. 详细财务模型 <span class="tag tag-green">NEW</span></h2>
-
-<h3>三年收入预测（基础情景: Pro转化4%）</h3>
-<div class="table-wrap"><table>
-<tr><th></th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr>
-<tr><td>总安装量</td><td>80,000</td><td>350,000</td><td>1,000,000</td></tr>
-<tr><td>Pro 用户</td><td>3,200</td><td>14,000</td><td>40,000</td></tr>
-<tr><td>Pro MRR (年末)</td><td>$16,000</td><td>$70,000</td><td>$200,000</td></tr>
-<tr><td>年收入</td><td>$96,000</td><td>$504,000</td><td>$1,680,000</td></tr>
-<tr><td>年成本</td><td>$80,000</td><td>$200,000</td><td>$400,000</td></tr>
-<tr style="font-weight:700"><td>净利润</td><td style="color:var(--green)">$16,000</td><td style="color:var(--green)">$304,000</td><td style="color:var(--green)">$1,280,000</td></tr>
-</table></div>
-
-<h3>Pro转化率敏感性</h3>
-<div class="table-wrap"><table>
-<tr><th>转化率</th><th>Year 1 收入</th><th>Year 3 收入</th></tr>
-<tr><td>2% (保守)</td><td>$30,000</td><td>$420,000</td></tr>
-<tr><td>4% (基础)</td><td>$96,000</td><td>$1,680,000</td></tr>
-<tr><td>6% (乐观)</td><td>$216,000</td><td>$3,780,000</td></tr>
-</table></div>
-<p style="font-size:11px;color:var(--muted)">核心敏感因子: Pro转化率——±1%变化影响Year 3收入±$300K。这是整个财务模型最关键的杠杆。</p>
-
-<h3>成本结构</h3>
-<div class="table-wrap"><table>
-<tr><th>成本项</th><th>Year 1 (月均)</th><th>备注</th></tr>
-<tr><td>云端API (DeepSeek/Claude)</td><td>$500</td><td>Pro用户云端推理</td></tr>
-<tr><td>云基础设施</td><td>$200</td><td>技能市场+下载分发</td></tr>
-<tr><td>域名+邮箱+工具</td><td>$50</td><td>GitHub Pro等</td></tr>
-<tr><td>安全审计</td><td>$0 (社区)</td><td>Year 2+聘请外部</td></tr>
-<tr style="font-weight:700"><td>月均总成本</td><td>~$1,250</td><td>不含Zach个人生活成本</td></tr>
-</table></div>
-
-<h3>盈亏平衡路径</h3>
-<div class="table-wrap"><table>
-<tr><th>里程碑</th><th>所需Pro用户</th><th>预计达到(基础情景)</th></tr>
-<tr><td>Cover 云端成本 ($700/月)</td><td>140</td><td>Month 5-6</td></tr>
-<tr><td>Cover 全部运营成本 ($1,250/月)</td><td>250</td><td>Month 8-9</td></tr>
-<tr><td>Cover Zach最低生活成本 (+$2K/月)</td><td>650</td><td>Month 14-16</td></tr>
-</table></div>
-
-<h3>定价体系</h3>
-<div class="table-wrap"><table>
-<tr><th>层级</th><th>月付</th><th>年付</th><th>包含</th></tr>
-<tr><td>Free</td><td>$0</td><td>$0</td><td>端侧推理无限、5次/天云端、基础技能库</td></tr>
-<tr><td>Pro</td><td>$5/月</td><td>$48/年</td><td>无限云端推理、社区技能优先、跨设备同步、隐私仪表盘高级版、定时任务</td></tr>
-<tr><td>Pro+ (Year 2)</td><td>$10/月</td><td>$96/年</td><td>Pro + 自定义模型选择、API接入、多人共享技能库</td></tr>
-<tr><td>Enterprise</td><td>按量</td><td>按量</td><td>私有部署、SAML SSO、SLA、定制技能</td></tr>
-</table></div>
-<p style="font-size:11px;color:var(--muted)">支付: Stripe(全球) + 支付宝/微信(中国) + GitHub Sponsors替代渠道</p>
 </section></div>
 
 <footer>

@@ -122,21 +122,21 @@ function PmChainDetail() {
   return <>
     <MetricBar items={[
       { label: '质量维度', value: '14' },
-      { label: '报告 Tab', value: '16' },
+      { label: '报告 Tab', value: '17' },
       { label: '中间格式', value: '7 JSON' },
       { label: '质量门禁', value: '10 项' },
     ]} />
 
     <H3>做了什么</H3>
-    <P>一套自动化产品工作流引擎。给一句话产品方向，按顺序跑完 9 个专业阶段——每阶段输出结构化中间产物、自动做假设冲突检查——最终拼成一份 16 tab、可直接分享的专业报告。</P>
+    <P>一套自动化产品工作流引擎。给一句话产品方向，按顺序跑完 9 个专业阶段——每阶段输出结构化中间产物、自动做假设冲突检查——最终拼成一份 17 tab、可直接分享的专业报告。</P>
     <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <div>
         <Link href={import.meta.env.BASE_URL + 'miyavi-pedal-report.html'}>Showcase: MIYAVI × Donner 效果器 全链路报告 ↗</Link>
-        <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.3)', marginTop: '1px' }}>实体产品 · 已上市市场分析</div>
+        <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.3)', marginTop: '1px' }}>消费电子 · 已上市产品</div>
       </div>
       <div>
         <Link href={import.meta.env.BASE_URL + 'mobile-llm-agent-report.html'}>Showcase: Pocket Agent 全链路报告 ↗</Link>
-        <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.3)', marginTop: '1px' }}>概念产品 · 新品类验证</div>
+        <div style={{ fontSize: '11px', color: 'rgba(222,219,200,0.3)', marginTop: '1px' }}>AI 原生产品 · 概念验证</div>
       </div>
     </div>
 
@@ -152,12 +152,12 @@ function PmChainDetail() {
       <div style={{ fontSize: '13px', marginLeft: '2px', flexShrink: 0 }}>📄</div>
     </div>
     <P style={{ fontSize: '12px', color: 'rgba(222,219,200,0.4)', textAlign: 'center' }}>
-      输入 Idea ──→ 9 阶段自动执行 ──→ 16 tab HTML 报告
+      输入 Idea ──→ 9 阶段自动执行 ──→ 17 tab HTML 报告
     </P>
 
     <H3>核心能力</H3>
     <P><HL>9 阶段管线</HL> — 舆情预研 → 市场调研 → 竞品分析 → 头脑风暴 → PRD → GTM → 风险评估 → 架构图 → 交互原型，全自动串联</P>
-    <P><HL>10 项质量门禁</HL> — 毙掉清单 ≥10 · 财务 3 情景 · War Game 6 场景 · 触发指标全覆盖 · 数据来源标注可信度 · 架构图嵌入报告 · 原型至少 3 页面预览</P>
+    <P><HL>10 项质量门禁</HL> — 毙掉清单 ≥10 · 财务 3 情景 · War Game 6 场景 · 17 tab 缺一不可 · 触发指标全覆盖 · 数据来源标注可信度 · 品类自动路由（7 品类 × 概念/具体双维度）</P>
     <P><HL>自改进机制</HL> — 每次产出后对照标准审查，审查结论写回质量标准文件。下次跑新产品时自动加载最新规范</P>
 
     <H3>技术栈</H3>
@@ -271,7 +271,7 @@ function SkillsDetail() {
         ['competitive-analysis', '竞品分析：4 模式分流，6-10 竞品 × 9 sheet Excel'],
         ['brainstorming', '头脑风暴：PM/Designer/Engineer 三视角，毙掉清单'],
         ['prd-writer', 'PRD 撰写：两版交付，硬件自动追加 4 段'],
-        ['pm-chain', '全链路串联：一条指令输出 16 tab 完整报告'],
+        ['pm-chain', '全链路串联：一条指令输出 17 tab 完整报告'],
       ],
     },
     {
@@ -355,8 +355,8 @@ export const aiProjects: AIProject[] = [
     title: '产品全链路工作流',
     tagline: '',
     problem: '从 idea 到 PRD 到 GTM，每个阶段都要手动切换工具、重复输入上下文',
-    solution: '一条指令自动串联 9 个专业阶段，输出 16 tab HTML 报告',
-    tags: ['Pipeline 自动化', '14 维度', 'HTML 报告'],
+    solution: '一条指令自动串联 9 个专业阶段，输出 17 tab HTML 报告',
+    tags: ['Pipeline 自动化', '17 tab', '7 品类', 'HTML 报告'],
     detail: <PmChainDetail />,
   },
   {
