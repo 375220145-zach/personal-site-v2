@@ -136,7 +136,16 @@
 
 <!-- ====== 2. COMPETITIVE ====== -->
 <div class="tab" id="comp"><section><h2>2. 深度竞品分析</h2>
-<p style="font-size:12px;color:var(--muted);margin-bottom:16px;">8 个直接竞品 + 8 个开源项目 + 6 大厂 | 全维度对比 | 下载 Excel 看 9 sheet 完整版（含雷达图/SWOT/评价分析）<br><a href="../竞品分析_Pocket_Agent_—_手机端_LLM_Agent_2026-06-10.xlsx" style="color:var(--blue);">📥 完整 Excel 报告</a></p>
+<p style="font-size:12px;color:var(--muted);margin-bottom:16px;">8 个直接竞品 + 8 个开源项目 + 6 大厂 | 全维度对比 | 下载 Excel 看 9 sheet 完整版（含雷达图/SWOT/评价分析）<br><a href="竞品分析_Pocket_Agent_—_手机端_LLM_Agent_2026-06-10.xlsx" style="color:var(--blue);">📥 完整 Excel 报告</a></p>
+
+<h3>行业结构分析（Porter's Five Forces）</h3>
+<div class="table-wrap"><table><tr><th>力量</th><th>强度</th><th>判断依据</th><th>利润影响</th></tr>
+<tr><td>新进入者威胁</td><td><span class="tag tag-red">高</span></td><td>开源模型（AutoGLM/GHOST）+ GUI agent 框架降低技术门槛。GitHub 上 GUI agent 项目增长 500%/年。但系统级集成（豆包）和预装渠道（Siri/Gemini）仍是壁垒</td><td>纯第三方 agent 定价天花板低——免费竞品是 OS 内置</td></tr>
+<tr><td>供应商议价力</td><td><span class="tag tag-yellow">中</span></td><td>推理 API 供应商（DeepSeek/OpenAI）议价力强，但端侧推理降低依赖。芯片供应（高通/联发科 NPU）非第三方可控</td><td>云推理成本是主要变量，端侧占比决定利润率</td></tr>
+<tr><td>买方议价力</td><td><span class="tag tag-red">高</span></td><td>ChatGPT 免费 + OS 内置 agent 免费。用户愿为"隐私+跨平台"付多少待验证</td><td>$5/月定价面临免费替代品的持续压力</td></tr>
+<tr><td>替代品威胁</td><td><span class="tag tag-red">极高</span></td><td>Siri 3.0（2026秋）、Gemini on Android、豆包手机助手——都是预装+免费。用户可能"够用了"</td><td>差异化必须在"大厂做不到的"——跨平台+端侧隐私</td></tr>
+<tr><td>现有竞争强度</td><td><span class="tag tag-red">高</span></td><td>3 层竞争：OS 内置（Siri/Gemini/豆包）、开源框架（AutoGLM/MobileUse）、独立设备（Rabbit R1）。巨头入场只是时间问题</td><td>窗口期 ~6-12 个月建立社区护城河</td></tr></table></div>
+<div class="verdict" style="margin-bottom:20px;"><div class="vt">行业吸引力判断</div><div class="vx"><strong>🚦 行业吸引力中等偏低，但有结构性窗口。</strong>手机 Agent 是巨头必争之地，但巨头的"系统级优势"恰恰是他们的软肋——他们不可能跨平台。第三方 agent 的机会在「跨 Android+iOS + 端侧隐私 + 开源」。这不是大部分市场，是 niche 市场。窗口期 ~6-12 个月，需要在这个窗口内建立社区和口碑护城河。</div></div>
 
 <h3>竞品全维度对比</h3>
 <div class="table-wrap"><table><tr><th>竞品</th><th>类型</th><th>操作手机</th><th>配置门槛</th><th>价格</th><th>平台</th><th>地域</th><th>威胁</th></tr>
@@ -168,6 +177,30 @@
 <div class="dg-cell dg-head">维度</div><div class="dg-cell dg-head">配置门槛</div><div class="dg-cell dg-head">平台</div><div class="dg-cell dg-head">地域</div><div class="dg-cell dg-head">隐私</div><div class="dg-cell dg-head">透明度</div>
 <div class="dg-cell dg-head">现有方案</div><div class="dg-cell">ADB/Python/特定硬件</div><div class="dg-cell">单平台</div><div class="dg-cell">单一市场</div><div class="dg-cell">云端为主</div><div class="dg-cell">黑盒执行</div>
 <div class="dg-cell dg-head">Pocket Agent</div><div class="dg-cell dg-highlight"><strong>零配置</strong></div><div class="dg-cell dg-highlight"><strong>Android+iOS</strong></div><div class="dg-cell dg-highlight"><strong>全球</strong></div><div class="dg-cell dg-highlight"><strong>端侧优先</strong></div><div class="dg-cell dg-highlight"><strong>可视化+可打断</strong></div></div>
+
+<h3>Competitive Battlecards</h3>
+<div class="cards2">
+<div class="card" style="border-left:3px solid var(--red);"><h4>⚔️ 豆包手机助手</h4>
+<div class="item"><strong>护城河：</strong>系统级集成（定制ROM）+ 字节生态（微信/抖音打通）+ 零边际成本推广</div>
+<div class="item"><strong>致命弱点：</strong>封闭生态——只能在特定机型上跑，永远不可能跨 iOS。数据全部云端，隐私敏感用户不会用</div>
+<div class="item"><strong>他们最可能的反击：</strong>更多手机品牌合作（OPPO/vivo 定制），降低硬件门槛</div>
+<div class="item" style="color:var(--green);"><strong>赢法：</strong>「豆包只能在你换手机时选择——Pocket Agent 在你现在的手机上就能用」</div></div>
+<div class="card" style="border-left:3px solid var(--yellow);"><h4>⚔️ AutoGLM 2.0</h4>
+<div class="item"><strong>护城河：</strong>开源社区最先发者 + 学术影响力 + 免费</div>
+<div class="item"><strong>致命弱点：</strong>需要部署（ADB+Python+API）——普通用户根本装不了。它是个框架，不是个产品</div>
+<div class="item"><strong>他们最可能的反击：</strong>出一个打包好的 APK 降低门槛</div>
+<div class="item" style="color:var(--green);"><strong>赢法：</strong>「AutoGLM 帮你做研究，Pocket Agent 帮你发微信——我们是同一棵树上的不同果子」</div></div>
+<div class="card" style="border-left:3px solid var(--yellow);"><h4>⚔️ Siri 3.0 + Gemini</h4>
+<div class="item"><strong>护城河：</strong>预装+免费+系统级权限。用户不需要安装任何东西</div>
+<div class="item"><strong>致命弱点：</strong>平台锁定——Siri 只在 Apple，Gemini 只在 Android。他们的存在反而证明跨平台 agent 的合理性</div>
+<div class="item"><strong>他们最可能的反击：</strong>开放跨平台 API（Apple 不太可能，Google 有可能）</div>
+<div class="item" style="color:var(--green);"><strong>赢法：</strong>「Siri 管你的 iPhone，Gemini 管你的 Android——Pocket Agent 管你的两部手机」</div></div>
+<div class="card" style="border-left:3px solid var(--green);"><h4>⚔️ Rabbit R1</h4>
+<div class="item"><strong>护城河：</strong>先发硬件品牌 + 媒体关注</div>
+<div class="item"><strong>致命弱点：</strong>$199 独立设备——用户已经有手机了为什么要再买一个？LAM 被 AutoGLM 等开源方案超越</div>
+<div class="item"><strong>他们最可能的反击：</strong>转型做软件（已暗示）</div>
+<div class="item" style="color:var(--green);"><strong>赢法：</strong>不直接竞争——Rabbit 验证了"手机 agent"这个品类，然后硬件路线证明不可行</div></div>
+</div>
 </section></div>
 
 <!-- ====== 3. BRAINSTORMING ====== -->
@@ -229,6 +262,36 @@
 <tr><td>Tech Lead（待定）</td><td>技术可行性、端侧推理方案评审</td><td><span class="tag tag-yellow">否决</span></td></tr>
 <tr><td>Design Lead（待定）</td><td>交互/视觉评审</td><td><span class="tag tag-blue">建议</span></td></tr>
 <tr><td>开源社区</td><td>使用 & 贡献反馈</td><td><span style="color:var(--muted);">知会</span></td></tr></table></div>
+
+<h3>影响力-兴趣网格（Stakeholder Map）</h3>
+<div class="cards2">
+<div class="card" style="border-top:3px solid var(--red);"><h4>A 区：紧密管理</h4>
+<div class="item"><strong>潘子健（Zach）</strong> — Product Owner，唯一审批人</div></div>
+<div class="card" style="border-top:3px solid var(--yellow);"><h4>B 区：保持满意</h4>
+<div class="item"><strong>Tech Lead（待定）</strong> — 技术否决权，按里程碑评审</div></div>
+<div class="card" style="border-top:3px solid var(--blue);"><h4>C 区：保持知情</h4>
+<div class="item"><strong>Design Lead（待定）</strong> — 交互评审，不阻塞决策</div>
+<div class="item"><strong>开源社区</strong> — GitHub Issues/PR 贡献，欢迎但不依赖</div></div>
+<div class="card" style="border-top:3px solid var(--muted);"><h4>D 区：最小投入</h4>
+<div class="item">独立项目阶段，无外部高影响低兴趣干系人</div></div>
+</div>
+
+<h3>沟通策略</h3>
+<div class="table-wrap"><table><tr><th>干系人</th><th>频率</th><th>方式</th><th>触发条件</th></tr>
+<tr><td>Zach (PO)</td><td>N/A 自驱动</td><td>内化决策</td><td>独立项目</td></tr>
+<tr><td>Tech Lead（未来）</td><td>双周</td><td>技术评审会</td><td>架构决策节点</td></tr>
+<tr><td>Design Lead（未来）</td><td>按里程碑</td><td>设计评审</td><td>原型阶段</td></tr>
+<tr><td>开源社区</td><td>持续</td><td>GitHub Issues + Discussions</td><td>有贡献/反馈时</td></tr></table></div>
+
+<h3>Outcome Roadmap（以结果为导向）</h3>
+<div class="table-wrap"><table><tr><th>阶段</th><th>目标结果</th><th>验证假设</th><th>需要功能</th><th>不做</th></tr>
+<tr><td><strong>MVP</strong><br><span style="font-size:10px;color:var(--muted);">M1-3</span></td><td>5,000 用户中 30 日留存 >30%</td><td>零配置 Agent 有人愿意用</td><td>F1+F2+F3+F4</td><td>iOS/iPad/模板市场/企业</td></tr>
+<tr><td><strong>V1.0</strong><br><span style="font-size:10px;color:var(--muted);">M4-8</span></td><td>付费转化 >3%，MRR >$25K</td><td>用户愿为隐私+跨平台付 $5/月</td><td>+F5+F6+F7</td><td>企业 SSO/独立硬件</td></tr>
+<tr><td><strong>V2.0</strong><br><span style="font-size:10px;color:var(--muted);">M9-18</span></td><td>MRR >$500K，社区开源贡献 >100 人</td><td>可规模化增长</td><td>+F8+F9</td><td>自研大模型/IoT</td></tr></table></div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin:12px 0;font-size:12px;line-height:1.6;">
+<strong>路线图逻辑：</strong>MVP 只验证一件事——有人用。V1.0 验证第二件事——有人付费。V2.0 验证第三件事——能持续增长。<br>
+<strong>前置条件：</strong>MVP→V1.0 需要 30 日留存 >30%。V1.0→V2.0 需要 MRR >$25K。
+</div>
 
 <h3>Key Results (SMART)</h3>
 <div class="table-wrap"><table><tr><th>KR</th><th>目标</th><th>时限</th></tr>
@@ -328,6 +391,29 @@
 <tr><td>传播机制</td><td>任务完成后自动生成分享卡片 · 模板创建者 badge 飞轮</td></tr>
 <tr><td>模板冷启动</td><td>预置 20 个官方模板，6 个月后开放用户创建</td></tr>
 <tr><td>预算</td><td>零广告预算，靠社区内容 + GitHub star + KOL 试用</td></tr></table></div>
+
+<h3>自增长模型（Growth Loops）</h3>
+<h4>核心飞轮</h4>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin:12px 0;font-size:13px;text-align:center;line-height:2;">
+  用户在手机上完成一个任务（如「发 PDF 给张三」）→ 任务完成后自动生成分享卡片<br>
+  → 用户分享到社交媒体 / 即刻 / X（「我用 Pocket Agent 发了封邮件」）<br>
+  → 看到的人好奇 → 搜索 Pocket Agent → 下载 → 完成自己的第一个任务<br>
+  → 自己的分享卡片贡献回飞轮<br>
+  <span style="font-size:11px;color:var(--muted);">← 每个完成任务都是一次传播机会 →</span>
+</div>
+
+<h4>传播内置点（Viral by Design）</h4>
+<div class="table-wrap"><table><tr><th>触发点</th><th>用户做了什么</th><th>谁会看到</th><th>预期转化</th></tr>
+<tr><td>任务完成卡片</td><td>完成任务后自动生成可视化分享图</td><td>社交媒体关注者</td><td>看到→好奇→搜索→下载</td></tr>
+<tr><td>模板创建 Badge</td><td>创建并分享一个任务模板</td><td>模板市场浏览者</td><td>看到实用模板→注册使用</td></tr>
+<tr><td>GitHub Star</td><td>在 GitHub 上 Star 了项目</td><td>GitHub 关注者动态</td><td>开发者→贡献或推荐</td></tr>
+<tr><td>Product Hunt 首发</td><td>Upvote + 评论</td><td>PH 社区 + 科技媒体</td><td>媒体覆盖→自然增长</td></tr></table></div>
+
+<h4>增长假设</h4>
+<div class="table-wrap"><table><tr><th>假设</th><th>验证方法</th><th>Fallback</th></tr>
+<tr><td>分享卡片触达率为完成任务的 5%</td><td>埋点追踪卡片生成/分享数</td><td>如果 <1% → 优化卡片设计 + 在完成页面增加分享引导</td></tr>
+<tr><td>GitHub star 增长带动自然下载 30%</td><td>追踪 star 增长 vs 下载量相关性</td><td>如果 <10% → 增加 Product Hunt + KOL 等推力渠道</td></tr>
+<tr><td>模板市场产生 20% 的病毒获客</td><td>追踪模板分享带来的新注册</td><td>如果 <5% → 官方预置模板增加 + 社区激励</td></tr></table></div>
 </section></div>
 <!-- ====== 6. RISK ====== -->
 <div class="tab" id="risk"><section><h2>6. 风险评估矩阵</h2>
@@ -358,6 +444,16 @@
 <tr><td>预购 Pro 转化</td><td>&lt;1% 注册→预购</td><td>调整定价模型：先试一次性付费（$9.99 Lifetime）</td></tr>
 <tr><td>无障碍权限授权率</td><td>&lt;30%</td><td>优先解决信任问题：加视频演示 + 隐私说明</td></tr>
 </table></div>
+
+<h3>Pre-mortem：如果 Pocket Agent 失败了</h3>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px;">场景设定：2027 年 12 月。Pocket Agent 的 GitHub repo 归档，App Store/Google Play 下架。复盘——发生了什么？</p>
+<div class="table-wrap"><table><tr><th>#</th><th>死因</th><th>维度</th><th>现有矩阵覆盖？</th></tr>
+<tr><td>1</td><td><strong>Siri 3.0 "够用了"</strong>——2026 秋 Siri 3.0 更新后，普通用户的手机操作需求被覆盖。Pocket Agent 的差异化（跨平台+隐私）对大众不够痛</td><td>市场</td><td><span class="tag tag-green">已覆盖 R3</span></td></tr>
+<tr><td>2</td><td><strong>无障碍权限恐惧症</strong>——用户看到「需要开启无障碍权限」后立即卸载。教育成本太高，每个用户都需要手把手解释「为什么需要这个权限」</td><td>产品</td><td><span class="tag tag-green">已覆盖 R4</span></td></tr>
+<tr><td>3</td><td><strong>端侧模型效果差</strong>——3B 量化模型在真实场景中成功率 <50%，用户试两次失败后放弃。云端 fallback 太慢（>10s），用户等不了</td><td>技术</td><td><span class="tag tag-red">🔴 新增盲区</span></td></tr>
+<tr><td>4</td><td><strong>开源社区没起来</strong>——只有 Star 没有 PR。模板市场冷启动失败（没人创建模板），下载量靠 PH 首发一波流后自然衰减</td><td>执行</td><td><span class="tag tag-red">🔴 新增盲区</span></td></tr>
+<tr><td>5</td><td><strong>赚钱模型是幻觉</strong>——免费用户 <2% 转化为付费。$5/月在 ChatGPT 免费 + OS Agent 免费的时代难以成立。MRR 永远没到 $10K</td><td>商业</td><td><span class="tag tag-yellow">⚠️ 部分覆盖 R5</span></td></tr></table></div>
+<div class="verdict"><div class="vt">Pre-mortem 盲区发现</div><div class="vx"><strong>现有风险矩阵遗漏了两个关键盲区：</strong>① 端侧模型真实场景成功率——这里的风险不是"性能不足延迟 >5s"（R7），而是"它根本做不对"。如果 3B 模型在发微信/搜机票这种真实任务上连 50% 成功率都没有，用户不会给第二次机会。② 开源社区冷启动——GitHub star 是面子，PR 和模板贡献是里子。没有里子的开源项目是一波流。</div></div>
 </section></div>
 
 <!-- ====== 7. ARCHITECTURE ====== -->
