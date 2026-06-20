@@ -205,12 +205,12 @@ function AigcTvcDetail() {
 }
 
 /* ============================================================
-   4. Obsidian AI 记忆系统
+   4. Agent Loop · 自主迭代
    ============================================================ */
-function ObsidianMemoryDetail() {
+function AgentLoopDetail() {
   return <>
     <H3>做了什么</H3>
-    <P>Claude Code 每次新对话从零开始，上回告诉它的偏好、规则、教训，换个对话框就全忘了。我用 Obsidian + Claude Code 搭了一套 Agent 共享记忆系统——<HL>一套 Markdown 文件夹，Agent 能读也能写，人也能随时改。</HL>新 session 自动加载全部偏好和项目上下文，每次踩坑自动沉淀为可复用的经验。</P>
+    <P><HL>记忆基础设施（Vault）</HL> — Claude Code 每次新对话从零开始，上回告诉它的偏好、规则、教训全忘。用 Obsidian + Claude Code 搭了一套 Agent 共享记忆系统——一套 Markdown 文件夹，Agent 能读也能写，人也能随时改。新 session 自动加载全部偏好和项目上下文，每次踩坑自动沉淀为可复用的经验。</P>
 
     <Flow>{`Vault/
 ├── 00-Rules/         ← 全局规则：我是谁、怎么沟通、什么不能做
@@ -223,16 +223,30 @@ function ObsidianMemoryDetail() {
 └── 04-Feedback/
     └── graduation-queue.md ← 跨项目原则候审队列`}</Flow>
 
+    <P><HL>自主循环层（Loop）</HL> — 基于 Loop Engineer 方法论，在此之上搭了后台记忆循环。会话结束 → Stop hook 自动把完整 transcript 发给 Letta 后台 Agent → Agent 独立分析对话、提取关键偏好和教训 → 存入 8 个结构化 memory blocks → 下次会话自动 whisper 回来。<HL>不再依赖人"写 feedback"——Agent 从完整对话中自主判断什么值得记住。</HL>双层记忆分流：Vault 管人类主动管理的结构化规则，Letta 管 Agent 被动学到的隐形知识（偏好/语气/坑点），两条路互补不打架。</P>
+
+    <P><HL>执行闭环（构建中）</HL> — 正在从"只记不动"走向"自动执行"：graduation-queue 跨项目重复模式积累 → 达到阈值 → 触发对应修复 Agent → 自动提交 PR → 交叉验证 → 写回信号文件 → 其他循环读取信号接力。从"AI 帮你记"到"AI 帮你做"。</P>
+
+    <Flow>{`记忆闭环（已有）                        执行闭环（构建中）
+─────────────                          ─────────────
+会话结束 → Stop hook                   graduation-queue 模式重复
+    ↓                                      ↓
+transcript → Letta Agent 分析          触发修复 Agent → PR
+    ↓                                      ↓
+更新 8 个 memory blocks               交叉验证 → 写回信号
+    ↓                                      ↓
+下次 whisper 唤醒                      其他循环读信号 → 接力`}</Flow>
+
     <H3>核心能力</H3>
-    <P><HL>自动沉淀</HL> — 用户纠正 Agent → Agent 自动写 _feedback/ 文件 → 10 条后压缩成 compacted.md → 跨项目重复出现进入 graduation-queue → 用户 approve 升入 _principles/ 全局生效</P>
-    <P><HL>读取链</HL> — 新 session 启动 → who-i-am → 协作规则 → 工程纪律 → 跨项目教训 → 当前项目 _feedback/ → _memory/。AI 速读关键信号摘要，30 秒内理解人格模式</P>
-    <P><HL>Markdown 原生</HL> — 不用数据库，Agent 原生支持 Markdown 读写，人用 Obsidian 随时改</P>
+    <P><HL>自动记忆积累</HL> — 会话结束自动触发，Agent 从完整 transcript 自主判断什么值得记住，零人工介入</P>
+    <P><HL>双层记忆分流</HL> — Vault 管结构化知识（规则/反馈/决策），Letta 管隐形记忆（偏好/语气/坑点），不打架</P>
+    <P><HL>跨会话唤醒</HL> — 下次会话启动时自动 whisper 上次学到的关键提醒</P>
     <P><HL>分级权限</HL> — 项目 _feedback/ Agent 直接写（写错改起来成本低）；全局 _principles/ Agent 决不能写（错了影响所有项目）</P>
-    <P><HL>自动备份</HL> — Obsidian Git + GitHub 仓库，60 分钟自动备份</P>
+    <P><HL>闭环执行设计</HL> — 观察 → 记录 → 识别 → 执行 → 验证。信号达阈值自动触发修复，跨循环接力</P>
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-      <Tag>Obsidian</Tag><Tag>Claude Code Agent SDK</Tag><Tag>AGENTS.md</Tag><Tag>GitHub</Tag><Tag>Obsidian Git</Tag><Tag>Templater</Tag><Tag>Vault Starter Pack</Tag>
+      <Tag>Obsidian</Tag><Tag>Claude Code Agent SDK</Tag><Tag>Letta Agent SDK</Tag><Tag>Subconscious</Tag><Tag>Loop Engineer</Tag><Tag>AGENTS.md</Tag><Tag>GitHub</Tag><Tag>Obsidian Git</Tag>
     </div>
   </>
 }
@@ -360,6 +374,15 @@ export const aiProjects: AIProject[] = [
     detail: <PmChainDetail />,
   },
   {
+    slug: 'agent-loop',
+    title: 'Agent Loop · 自主迭代',
+    tagline: '',
+    problem: 'Claude Code 会话结束即失忆。Vault 存了主动写的规则，但 Agent 真正学到的隐形偏好只存在对话里，下次全忘。',
+    solution: 'Loop Engineer 范式：Subconscious 后台自动分析 transcript，双层记忆分流，从"只记不动"走向执行闭环。',
+    tags: ['Loop Engineer', 'Subconscious', 'Letta', '自动化'],
+    detail: <AgentLoopDetail />,
+  },
+  {
     slug: 'aigc-tvc',
     title: 'AIGC TVC',
     tagline: '单人 + AI 管线 = 一条 TVC 短片。从角色生成到视频输出，全流程一人完成。',
@@ -367,15 +390,6 @@ export const aiProjects: AIProject[] = [
     solution: '',
     tags: ['Shotlab', 'Midjourney', 'Stable Diffusion', 'nano banana', 'image2', 'Seedance', '剪映'],
     detail: <AigcTvcDetail />,
-  },
-  {
-    slug: 'obsidian-memory',
-    title: 'Obsidian AI 记忆系统',
-    tagline: '',
-    problem: 'Claude Code 每次新对话从零开始，忘了规则、偏好和教训',
-    solution: '一套 Agent 可读可写、人可随时改的 Markdown 知识库',
-    tags: ['Obsidian', 'Agent SDK', 'Markdown', 'Git'],
-    detail: <ObsidianMemoryDetail />,
   },
   {
     slug: 'fortune-telling',
