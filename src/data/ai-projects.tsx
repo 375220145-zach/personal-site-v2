@@ -209,46 +209,63 @@ function AigcTvcDetail() {
    ============================================================ */
 function AgentLoopDetail() {
   return <>
-    <H3>做了什么</H3>
-    <P><HL>记忆基础设施（Vault）</HL> — Claude Code 每次新对话从零开始，上回告诉它的偏好、规则、教训全忘。用 Obsidian + Claude Code 搭了一套 Agent 共享记忆系统——一套 Markdown 文件夹，Agent 能读也能写，人也能随时改。新 session 自动加载全部偏好和项目上下文，每次踩坑自动沉淀为可复用的经验。</P>
+    <H3>应用层：内容平台选题自动化</H3>
 
-    <Flow>{`Vault/
-├── 00-Rules/         ← 全局规则：我是谁、怎么沟通、什么不能做
-├── 01-Projects/      ← 每个项目独立，互不污染
-│   └── <project>/
-│       ├── _memory/  ← 项目状态、决策、事实（Agent 直接写）
-│       └── _feedback/← 每次被纠正的反馈（Agent 自动写）
-├── 02-Sources/       ← Web 资料自动归档
-├── 03-Maps/          ← 图表
-└── 04-Feedback/
-    └── graduation-queue.md ← 跨项目原则候审队列`}</Flow>
+    <P>针对小红书+抖音创作者的日常选题需求，搭了一条全自动数据管线：凌晨自动采集四平台热点（小红书 OpenCLI + 抖音 CDP + B站 bili-cli + 百度热搜）→ 按细分赛道分类筛选 → 生成可执行的选题建议 → 微信服务号推送。<HL>创作者早上醒来，当日选题已在手机里。</HL></P>
 
-    <P><HL>自主循环层（Loop）</HL> — 基于 Loop Engineer 方法论，在此之上搭了后台记忆循环。会话结束 → Stop hook 自动把完整 transcript 发给 Letta 后台 Agent → Agent 独立分析对话、提取关键偏好和教训 → 存入 8 个结构化 memory blocks → 下次会话自动 whisper 回来。<HL>不再依赖人"写 feedback"——Agent 从完整对话中自主判断什么值得记住。</HL>双层记忆分流：Vault 管人类主动管理的结构化规则，Letta 管 Agent 被动学到的隐形知识（偏好/语气/坑点），两条路互补不打架。</P>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap', padding: '12px 0 8px', overflowX: 'auto' }}>
+      <PipelineNode label="0:03 自动触发" active />
+      <PipeArrow />
+      <PipelineNode label="四平台采集" active />
+      <PipeArrow />
+      <PipelineNode label="赛道分类" active />
+      <PipeArrow />
+      <PipelineNode label="微信推送" active />
+    </div>
 
-    <P><HL>执行闭环（构建中）</HL> — 正在从"只记不动"走向"自动执行"：graduation-queue 跨项目重复模式积累 → 达到阈值 → 触发对应修复 Agent → 自动提交 PR → 交叉验证 → 写回信号文件 → 其他循环读取信号接力。从"AI 帮你记"到"AI 帮你做"。</P>
+    <P style={{ fontSize: '12px', color: 'rgba(222,219,200,0.4)', textAlign: 'center' }}>
+      每日 0:03 自动运行 → 选题直达手机
+    </P>
 
-    <P><HL>应用案例：自媒体选题日报</HL> — 已实际跑通了一个完整业务循环：每日凌晨自动采集小红书(OpenCLI)+抖音(CDP)+B站(bili-cli)+百度热搜数据 → 生成结构化日报 → 微信服务号推送给自媒体创作者。验证了 Loop Engineering 从个人基础设施到具体业务场景的可迁移性。</P>
+    <P>关键词搜索代替死链接、视频原生平台代替纯新闻源、可拍性优先代替数据堆砌。同样架构可迁移至舆情监测、竞品动态追踪等场景。</P>
 
-    <Flow>{`记忆闭环（已有）                        执行闭环（构建中）
-─────────────                          ─────────────
-会话结束 → Stop hook                   graduation-queue 模式重复
-    ↓                                      ↓
-transcript → Letta Agent 分析          触发修复 Agent → PR
-    ↓                                      ↓
-更新 8 个 memory blocks               交叉验证 → 写回信号
-    ↓                                      ↓
-下次 whisper 唤醒                      其他循环读信号 → 接力`}</Flow>
+    <div style={{ margin: '24px 0', borderTop: '0.5px solid rgba(255,255,255,0.06)' }} />
+
+    <H3>基础设施层：Agent 自主循环系统</H3>
+
+    <P>上面这套跑在一个跨项目共享的 Agent 循环引擎上——未来任何项目都能接入同样的记忆+执行能力。</P>
+
+    <P><HL>记忆系统（Vault + Letta 双层分流）</HL> — Claude Code 每次新对话从零开始。会话结束 → Stop hook 自动把完整 transcript 发给 Letta 后台 Agent → 独立分析、提取偏好 → 存入 8 个 memory blocks → 下次会话自动唤醒。不再依赖人写 feedback，Agent 自主判断什么值得记住。</P>
+
+    <Flow>{`Vault（人类主动管理的规则）              Letta（Agent 被动学到的知识）
+───────────────────────────────    ───────────────────────────
+00-Rules/    全局规则+红线          偏好 / 语气 / 坑点
+01-Projects/ 项目状态+决策+反馈     跨会话行为模式
+04-Feedback/ graduation-queue      8 个 memory blocks`}</Flow>
+
+    <P><HL>执行系统</HL> — 两层自动执行：</P>
+    <P style={{ marginLeft: '16px' }}><HL>知识晋升</HL> — 跨项目重复踩坑 → graduation-queue 积累 → 确认后 Agent 自动晋升到全局规则。已晋升 3 条（部署 GFW 优先 / Python 版本门禁 / 图标名校验），5 条候审中。</P>
+    <P style={{ marginLeft: '16px' }}><HL>代码修复</HL> — 项目 feedback 同类模式 ≥2 次 → 每 2 天自动扫描 → 触发修复 → 微信通知结果。</P>
+
+    <Flow>{`会话结束 → Stop hook              feedback 同类 ×2
+    ↓                               ↓
+transcript → Letta 分析         触发修复 Agent
+    ↓                               ↓
+更新 memory blocks               graduation-queue → 晋升
+    ↓                               ↓
+下次自动 whisper 唤醒            微信通知`}</Flow>
 
     <H3>核心能力</H3>
-    <P><HL>自动记忆积累</HL> — 会话结束自动触发，Agent 从完整 transcript 自主判断什么值得记住，零人工介入</P>
-    <P><HL>双层记忆分流</HL> — Vault 管结构化知识（规则/反馈/决策），Letta 管隐形记忆（偏好/语气/坑点），不打架</P>
-    <P><HL>跨会话唤醒</HL> — 下次会话启动时自动 whisper 上次学到的关键提醒</P>
-    <P><HL>分级权限</HL> — 项目 _feedback/ Agent 直接写（写错改起来成本低）；全局 _principles/ Agent 决不能写（错了影响所有项目）</P>
-    <P><HL>闭环执行设计</HL> — 观察 → 记录 → 识别 → 执行 → 验证。信号达阈值自动触发修复，跨循环接力</P>
+    <P><HL>多平台自动采集</HL> — 小红书(OpenCLI) + 抖音(CDP，零配置) + B站(bili-cli) + 百度热搜，四平台无人值守</P>
+    <P><HL>自动记忆积累</HL> — 会话结束自动触发，Agent 从完整 transcript 自主判断什么值得记住</P>
+    <P><HL>双层记忆分流</HL> — Vault 管结构化规则，Letta 管隐形知识，互不污染</P>
+    <P><HL>分级权限</HL> — 项目 _feedback/ Agent 直接写；全局 _principles/ Agent 不能写</P>
+    <P><HL>自主修复链</HL> — 观察 → 记录 → 重复识别 → 自动修复 → 通知验证</P>
+    <P><HL>跨项目复用</HL> — 引擎层与业务层解耦，新项目接入同一套记忆+执行能力</P>
 
     <H3>技术栈</H3>
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-      <Tag>Obsidian</Tag><Tag>Claude Code Agent SDK</Tag><Tag>Letta Agent SDK</Tag><Tag>Subconscious</Tag><Tag>Loop Engineer</Tag><Tag>AGENTS.md</Tag><Tag>GitHub</Tag><Tag>Obsidian Git</Tag>
+      <Tag>Claude Code Cron</Tag><Tag>Letta Agent SDK</Tag><Tag>Subconscious</Tag><Tag>OpenCLI</Tag><Tag>CDP</Tag><Tag>bili-cli</Tag><Tag>PushPlus</Tag><Tag>Obsidian</Tag><Tag>Loop Engineer</Tag><Tag>GitHub</Tag>
     </div>
   </>
 }
@@ -379,9 +396,9 @@ export const aiProjects: AIProject[] = [
     slug: 'agent-loop',
     title: 'Agent Loop · 自主迭代',
     tagline: '',
-    problem: 'Claude Code 会话结束即失忆。Vault 存了主动写的规则，但 Agent 真正学到的隐形偏好只存在对话里，下次全忘。',
-    solution: 'Loop Engineer 范式：Subconscious 后台自动分析 transcript，双层记忆分流，从"只记不动"走向执行闭环。',
-    tags: ['Loop Engineer', 'Subconscious', 'Letta', '自动化'],
+    problem: 'Claude Code 会话结束即失忆。Agent 学到的东西只存在对话里，下次全忘。光记不够，得让它自己修。',
+    solution: '应用层：内容平台选题自动推送。基础设施层：Vault + Letta 双层记忆 + graduation-queue 知识晋升 + 重复模式自动修复。',
+    tags: ['Loop Engineer', 'Subconscious', 'Creator Daily', '自动化'],
     detail: <AgentLoopDetail />,
   },
   {
