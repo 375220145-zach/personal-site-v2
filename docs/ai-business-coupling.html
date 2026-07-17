@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模块化思维 × AI 业务耦合</title>
+<style>
+  :root {
+    --bg: #fafaf7; --surface: #fff; --surface2: #f5f4f1;
+    --border: #e4e3de; --border2: #d4d3ce;
+    --text: #1a1a17; --text2: #6b6a63; --text3: #999890;
+    --accent: #1a3a5c; --accent-light: #e8edf2;
+    --p0: #2c5f8a; --p0-bg: #ecf2f7;
+    --p1: #6b5b8a; --p1-bg: #f3f0f7;
+    --p2: #2d7d5d; --p2-bg: #ecf5f0;
+    --gate: #b8860b; --gate-bg: #faf5e8;
+    --red: #c0392b; --red-bg: #fdf2f2;
+    --radius: 4px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .section-title h2, .hero h1, .vpipe-phase-divider .phase-label {
+    font-family: Georgia, "Noto Serif SC", "Songti SC", "STSong", serif;
+    font-weight: 700; letter-spacing: -.02em;
+  }
+
+  /* ── Hero ── */
+  .hero { max-width: 900px; margin: 0 auto; padding: 80px 40px 56px; text-align: center; }
+  .hero h1 { font-size: 34px; color: var(--text); line-height: 1.3; }
+  .hero .sub { margin-top: 12px; color: var(--text2); font-size: 16px; line-height: 1.6; }
+  .hero .rule { width: 40px; height: 1px; background: var(--border2); margin: 28px auto; }
+  .hero .badge-row { margin-top: 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .hero .badge { padding: 5px 14px; border-radius: 100px; font-size: 12px; color: var(--text2); background: var(--surface); border: 1px solid var(--border); }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* ── Section Title ── */
+  .section-title { display: flex; align-items: center; gap: 12px; margin: 56px 0 20px; }
+  .section-title .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .section-title .dot.p0 { background: var(--p0); }
+  .section-title .dot.p1 { background: var(--p1); }
+  .section-title .dot.p2 { background: var(--p2); }
+  .section-title h2 { font-size: 22px; color: var(--text); }
+  .section-title .tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; background: var(--surface2); color: var(--text3); border: 1px solid var(--border); }
+
+  /* ── Vertical Pipeline ── */
+  .vpipe { position: relative; padding: 0; margin-bottom: 64px; }
+  .vpipe-start { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; text-align: center; margin-bottom: 0; position: relative; }
+  .vpipe-start .start-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .vpipe-start .start-title { font-size: 17px; color: var(--text); font-weight: 700; }
+  .vpipe-start .start-io { font-size: 13px; color: var(--text2); margin-top: 6px; line-height: 1.6; }
+  .vpipe-connector { display: flex; justify-content: center; padding: 0; height: 24px; position: relative; }
+  .vpipe-connector::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 1px; height: 100%; background: var(--border2); }
+  .vpipe-connector .arrow-head { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid var(--border2); }
+  .vpipe-phase-divider { display: flex; align-items: center; gap: 12px; padding: 8px 0; margin: 4px 0; position: relative; }
+  .vpipe-phase-divider::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 1px; top: 0; bottom: 0; background: var(--border2); }
+  .vpipe-phase-divider .phase-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-left: calc(50% - 4px); z-index: 1; }
+  .vpipe-phase-divider .phase-dot.p0 { background: var(--p0); }
+  .vpipe-phase-divider .phase-dot.p1 { background: var(--p1); }
+  .vpipe-phase-divider .phase-dot.p2 { background: var(--p2); }
+  .vpipe-phase-divider .phase-label { font-size: 11px; font-weight: 700; letter-spacing: .5px; z-index: 1; padding: 4px 10px; border-radius: 100px; background: var(--surface); border: 1px solid var(--border); }
+  .vpipe-phase-divider .phase-label.p0 { color: var(--p0); }
+  .vpipe-phase-divider .phase-label.p1 { color: var(--p1); }
+  .vpipe-phase-divider .phase-label.p2 { color: var(--p2); }
+  .vpipe-phase-divider .phase-sub { font-size: 11px; color: var(--text3); z-index: 1; }
+  .vpipe-node-wrap { display: flex; justify-content: center; position: relative; }
+  .vpipe-node-wrap::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 1px; top: 0; bottom: 0; background: var(--border2); z-index: 0; }
+  .vpipe-node { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; width: 100%; max-width: 620px; position: relative; z-index: 1; margin: 6px 0; transition: border-color .15s; }
+  .vpipe-node:hover { border-color: var(--border2); }
+  .vpipe-node.p0 { border-left: 2px solid var(--p0); }
+  .vpipe-node.p1 { border-left: 2px solid var(--p1); }
+  .vpipe-node.p2 { border-left: 2px solid var(--p2); }
+  .vpipe-node .vn-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .vpipe-node .vn-num { font-size: 11px; font-weight: 700; color: #fff; width: 22px; height: 22px; border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .vpipe-node.p0 .vn-num { background: var(--p0); }
+  .vpipe-node.p1 .vn-num { background: var(--p1); }
+  .vpipe-node.p2 .vn-num { background: var(--p2); }
+  .vpipe-node .vn-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .vpipe-node .vn-badges { display: flex; gap: 5px; margin-left: auto; flex-shrink: 0; }
+  .vn-badge { font-size: 9px; padding: 2px 7px; border-radius: 100px; font-weight: 600; white-space: nowrap; letter-spacing: .3px; }
+  .vn-badge.trust-high { background: var(--p2-bg); color: var(--p2); }
+  .vn-badge.trust-mid { background: var(--gate-bg); color: var(--gate); }
+  .vn-badge.trust-low { background: var(--red-bg); color: var(--red); }
+  .vn-badge.type-tag { background: var(--surface2); color: var(--text3); border: 1px solid var(--border); }
+  .vn-badge.risk-tag { background: var(--red-bg); color: var(--red); border: 1px solid rgba(192,57,43,.2); }
+  .vpipe-node .vn-desc { font-size: 13px; color: var(--text2); margin-bottom: 8px; line-height: 1.6; }
+  .vpipe-node .vn-tech { font-size: 11px; color: var(--text3); display: flex; gap: 14px; flex-wrap: wrap; }
+  .vn-tech span { white-space: nowrap; }
+  .vn-tech .tech-label { color: var(--text3); }
+  .vn-tech .tech-val { color: var(--text2); font-weight: 600; font-family: "SF Mono", "Fira Code", "Consolas", monospace; font-size: 10px; }
+  .vn-tech .tech-fallback { color: var(--text3); }
+  .vn-tech .tech-fallback .tech-val { color: var(--text3); font-weight: 400; }
+  .vpipe-gate-wrap { display: flex; justify-content: center; position: relative; }
+  .vpipe-gate-wrap::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 1px; top: 0; bottom: 0; background: var(--border2); z-index: 0; }
+  .vpipe-gate { background: var(--gate-bg); border: 1px solid rgba(184,134,11,.2); border-radius: var(--radius); padding: 14px 20px; width: 100%; max-width: 620px; position: relative; z-index: 1; margin: 6px 0; display: flex; align-items: flex-start; gap: 12px; }
+  .vpipe-gate .gate-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .vpipe-gate .gate-title { font-size: 13px; font-weight: 700; color: var(--gate); margin-bottom: 2px; }
+  .vpipe-gate .gate-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .vpipe-gate .gate-metric { display: inline-block; margin-top: 4px; font-size: 11px; font-weight: 600; color: var(--gate); background: rgba(184,134,11,.1); padding: 2px 8px; border-radius: 100px; }
+  .vpipe-fork { display: flex; justify-content: center; position: relative; padding: 8px 0; }
+  .vpipe-fork::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 1px; top: 0; height: 50%; background: var(--border2); z-index: 0; }
+  .vpipe-fork-label { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--text3); background: var(--bg); padding: 2px 8px; z-index: 1; white-space: nowrap; }
+  .vpipe-parallel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 620px; position: relative; z-index: 1; margin: 12px 0; }
+  .vpipe-parallel-grid .vpipe-node { margin: 0; max-width: none; }
+  .vpipe-merge { display: flex; justify-content: center; position: relative; height: 20px; }
+  .vpipe-merge::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 1px; height: 100%; background: var(--border2); }
+  .vpipe-merge-label { position: relative; z-index: 1; font-size: 10px; color: var(--text3); padding: 2px 10px; background: var(--bg); }
+  .vpipe-end { display: flex; justify-content: center; position: relative; }
+  .vpipe-end::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 1px; top: 0; height: 100%; background: var(--border2); z-index: 0; }
+  .vpipe-end-box { background: var(--p2-bg); border: 1px solid rgba(45,125,93,.25); border-radius: var(--radius); padding: 18px 32px; text-align: center; position: relative; z-index: 1; margin: 6px 0; }
+  .vpipe-end-box .end-title { font-size: 17px; color: var(--p2); font-weight: 700; }
+  .vpipe-end-box .end-sub { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* ── Detail Cards ── */
+  .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-bottom: 32px; }
+  .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: border-color .15s; }
+  .module-card:hover { border-color: var(--border2); }
+  .module-card.expanded { border-color: var(--border2); grid-column: 1 / -1; }
+  .module-card .mc-num { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
+  .module-card .mc-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .module-card .mc-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .mc-tags { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; }
+  .mc-tag { font-size: 9px; padding: 2px 7px; border-radius: 100px; font-weight: 600; letter-spacing: .3px; }
+  .mc-tag.trust-high { background: var(--p2-bg); color: var(--p2); }
+  .mc-tag.trust-mid { background: var(--gate-bg); color: var(--gate); }
+  .mc-tag.trust-low { background: var(--red-bg); color: var(--red); }
+  .mc-tag.type { background: var(--surface2); color: var(--text3); border: 1px solid var(--border); }
+  .mc-tag.access-local { background: var(--p2-bg); color: var(--p2); border: 1px solid rgba(45,125,93,.2); }
+  .mc-tag.access-api { background: var(--p1-bg); color: var(--p1); border: 1px solid rgba(107,91,138,.2); }
+  .mc-tag.access-self { background: var(--gate-bg); color: var(--gate); border: 1px solid rgba(184,134,11,.2); }
+  .module-card .mc-detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .module-card.expanded .mc-detail { display: block; }
+  .mc-detail-row { display: grid; grid-template-columns: 80px 1fr; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+  .mc-detail-row .label { color: var(--text3); font-weight: 600; }
+  .mc-detail-row .value { color: var(--text); line-height: 1.6; }
+  .mc-detail-plain { background: var(--accent-light); padding: 10px 14px; border-radius: var(--radius); margin-bottom: 14px; font-size: 13px; color: var(--text); line-height: 1.7; border-left: 2px solid var(--accent); }
+  .mc-expand-hint { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  /* ── Scheduling ── */
+  .parallel-viz { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; overflow-x: auto; }
+  .parallel-viz h4 { font-size: 14px; color: var(--text); margin-bottom: 14px; font-weight: 700; }
+  .lane-grid { min-width: 640px; }
+  .lane-row { display: flex; align-items: center; gap: 0; margin-bottom: 5px; height: 24px; }
+  .lane-label { width: 56px; font-size: 10px; color: var(--text3); flex-shrink: 0; text-align: right; padding-right: 8px; }
+  .lane-bar-wrap { flex: 1; display: flex; height: 100%; }
+  .lane-seg { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; letter-spacing: .3px; }
+  .lane-seg.p1 { background: var(--p1); }
+  .lane-seg.p2-img { background: #5c8ab8; }
+  .lane-seg.p2-vid { background: #7b6ba0; }
+  .lane-seg.p2-audio { background: #8b6b9a; }
+  .lane-seg.p2-comp { background: var(--p2); }
+  .lane-seg.idle { background: var(--surface2); color: var(--text3); }
+
+  /* ── Bottleneck ── */
+  .bottleneck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 32px; }
+  .bn-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .bn-card h4 { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .bn-card p { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .bn-card .bn-num { font-size: 28px; font-weight: 800; color: var(--accent); margin-bottom: 2px; }
+  .bn-card .bn-num.warn { color: var(--gate); }
+
+  /* ── Footer ── */
+  .footer-note { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--text3); }
+
+  /* ── Modal ── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(250,250,247,.96); z-index:999; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .modal-overlay.open { display:block; }
+  .modal-content { max-width:960px; margin:40px auto; padding:40px 40px 60px; position:relative; }
+  .modal-close { position:sticky; top:16px; float:right; z-index:10; font-size:13px; color:var(--text2); cursor:pointer; padding:7px 16px; border:1px solid var(--border); border-radius:100px; background:var(--surface); transition:all .15s; font-family:inherit; }
+  .modal-close:hover { color:var(--text); border-color:var(--border2); background:var(--surface2); }
+
+  @keyframes pulse { 0%,100% { opacity: .3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } }
+
+  /* ── P1 Step Cards ── */
+  .step-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 48px; }
+  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; border-top: 2px solid transparent; }
+  .step-card.s1 { border-top-color: var(--p0); } .step-card.s2 { border-top-color: var(--p1); }
+  .step-card.s3 { border-top-color: var(--gate); } .step-card.s4 { border-top-color: var(--p2); }
+  .step-card .step-num { font-size: 22px; font-weight: 800; color: var(--text3); margin-bottom: 6px; }
+  .step-card .step-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .step-card .step-desc { font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .step-card .step-q { margin-top: 10px; font-size: 11px; color: var(--text3); font-style: italic; }
+
+  /* ── Domain Cards ── */
+  .domain-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 52px; }
+  .domain-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .domain-card.active { border-color: rgba(45,125,93,.3); background: var(--p2-bg); }
+  .domain-card .domain-tag { font-size: 11px; font-weight: 700; margin-bottom: 8px; display: inline-block; padding: 2px 8px; border-radius: 100px; }
+  .domain-card .domain-tag.d0 { color: var(--p0); background: var(--p0-bg); }
+  .domain-card .domain-tag.d1 { color: var(--p1); background: var(--p1-bg); }
+  .domain-card .domain-tag.d2 { color: var(--p2); background: var(--p2-bg); }
+  .domain-card .domain-badge { position: absolute; top: -8px; right: 14px; background: var(--p2); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 10px; border-radius: 100px; letter-spacing: .3px; }
+  .domain-card .domain-text { font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .domain-card .domain-text b { color: var(--text); font-weight: 600; }
+
+  /* ── Bridge ── */
+  .bridge-card { background: linear-gradient(135deg, var(--p2-bg), var(--accent-light)); border: 2px solid rgba(45,125,93,.2); border-radius: 8px; padding: 32px 24px; text-align: center; margin-bottom: 24px; cursor: pointer; transition: all .2s; }
+  .bridge-card:hover { border-color: rgba(45,125,93,.4); background: linear-gradient(135deg, #e0f0e8, #dce6f0); }
+  .bridge-card .bridge-label { font-size: 11px; color: var(--p2); font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase; }
+  .bridge-card .bridge-title { font-size: 20px; color: var(--text); font-weight: 700; margin-bottom: 4px; }
+  .bridge-card .bridge-sub { font-size: 13px; color: var(--text2); }
+  .bridge-card .bridge-arrow { margin-top: 14px; font-size: 24px; color: var(--p2); animation: pulse 2s infinite; }
+
+  @media (max-width: 768px) {
+    .hero { padding: 48px 20px 36px; } .hero h1 { font-size: 24px; }
+    .container { padding: 0 20px 60px; }
+    .step-grid { grid-template-columns: 1fr 1fr; }
+    .domain-grid { grid-template-columns: 1fr; }
+    .vpipe-node { max-width: 100%; } .vpipe-parallel-grid { grid-template-columns: 1fr; }
+    .vn-badges { flex-wrap: wrap; }
+    .module-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <h1>模块化思维 × AI 业务耦合</h1>
+  <p class="sub">如何用同一套方法论进入任何陌生领域<br>从化妆品 OEM 到 TVC 自动化——方法不变，领域可变</p>
+  <div class="rule"></div>
+  <div class="badge-row">
+    <span class="badge">4 步方法论</span><span class="badge">3 个领域验证</span><span class="badge">14 个功能模块</span><span class="badge">目标：100 条 TVC/天</span><span class="badge">人力：≤1 小时/天</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═════════════════ P1: METHODOLOGY ═════════════════ -->
+<div class="section-title" style="margin-top:0;">
+  <div class="dot" style="background:var(--text);"></div>
+  <h2>Part 1 · 方法论框架</h2>
+  <span class="tag">领域无关 · 可迁移</span>
+</div>
+<p style="color:var(--text2);font-size:13px;margin-bottom:28px;">进入任何陌生领域，不需要先成为专家。四步拆解——从测绘到落地。</p>
+
+<!-- 4 Step Cards -->
+<div class="step-grid">
+  <div class="step-card s1">
+    <div class="step-num">01</div>
+    <div class="step-title">价值链切片</div>
+    <div class="step-desc">不做判断，先做测绘。从输入到输出画全每个业务节点——<b>输入什么 → 做什么转换 → 输出给谁</b>。画完即得到该领域的完整地图。</div>
+    <div class="step-q">核心问题：这条链有几站？</div>
+  </div>
+  <div class="step-card s2">
+    <div class="step-num">02</div>
+    <div class="step-title">四象限分类</div>
+    <div class="step-desc">每个节点归入四类之一：<b>规则型</b>（全自动）<b>判断型</b>（AI 辅助+人确认）<b>生成型</b>（AI 初稿+人审）<b>执行型</b>（人做+AI 记录）。</div>
+    <div class="step-q">核心问题：AI 能碰哪些？</div>
+  </div>
+  <div class="step-card s3">
+    <div class="step-num">03</div>
+    <div class="step-title">依赖拓扑排序</div>
+    <div class="step-desc">L0 数据底座 → L1 业务数字化 → L2 AI 增强 → L3 智能联动。<b>L0 是必要前置条件</b>，未完成前不可推进上层 AI 模块。</div>
+    <div class="step-q">核心问题：先建什么后建什么？</div>
+  </div>
+  <div class="step-card s4">
+    <div class="step-num">04</div>
+    <div class="step-title">MVP 选点 + 自迭代</div>
+    <div class="step-desc">选 2–3 个<b>高频 × 高痛点 × 高可信度</b>的规则型模块作为切入点。跑通后数据反哺模型，形成自迭代循环。</div>
+    <div class="step-q">核心问题：从哪开始？</div>
+  </div>
+</div>
+
+<!-- Domain Examples -->
+<div class="section-title"><div class="dot" style="background:var(--text2);"></div><h2>同一套方法论，三个完全不同的领域</h2></div>
+<div class="domain-grid">
+  <div class="domain-card">
+    <span class="domain-tag d0">化妆品 OEM</span>
+    <div class="domain-text">
+      <b>价值链：</b>需求→打样→配方→备案→采购→生产→质检→出货<br>
+      <b>规则型：</b>备案文档生成、质检报告、FIFO 效期<br>
+      <b>判断型：</b>配方匹配、供应商评估<br>
+      <b>MVP：</b>备案自动化 + 质检报告 AI
+    </div>
+  </div>
+  <div class="domain-card">
+    <span class="domain-tag d1">电商运营</span>
+    <div class="domain-text">
+      <b>价值链：</b>选品→上架→定价→投放→客服→售后→复盘<br>
+      <b>规则型：</b>详情页生成、投放报表、售后 FAQ<br>
+      <b>判断型：</b>定价策略、投放优化<br>
+      <b>MVP：</b>详情页 AI + 客服 RAG
+    </div>
+  </div>
+  <div class="domain-card active" style="position:relative;">
+    <span class="domain-badge">▼ 下文展开</span>
+    <span class="domain-tag d2">设计 & TVC 自动化</span>
+    <div class="domain-text">
+      <b>价值链：</b>Brief→创意→脚本→分镜→素材→合成→导出<br>
+      <b>规则型：</b>合成、后期、导出<br>
+      <b>生成型：</b>脚本、分镜、素材<br>
+      <b>MVP：</b>脚本+分镜先行 → 全链路跑通
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════ BRIDGE ═════════════════ -->
+<div class="bridge-card" onclick="document.getElementById('p2-modal').classList.add('open');document.body.style.overflow='hidden';">
+  <div class="bridge-label">方法论落地验证</div>
+  <div class="bridge-title">TVC 自动化管线完整拆解</div>
+  <div class="bridge-sub">看这个方法怎么把"帮我做 100 条 TVC"从一句话拆成 14 个模块、2 道评分门、1 个自主决策 Agent</div>
+  <div class="bridge-arrow">↓ 点击展开 ↓</div>
+</div>
+
+<!-- ═════════════════ P2 MODAL ═════════════════ -->
+<div id="p2-modal" class="modal-overlay" onclick="if(event.target===this){this.classList.remove('open');document.body.style.overflow='';}">
+<div class="modal-content">
+<div class="modal-close" onclick="document.getElementById('p2-modal').classList.remove('open');document.body.style.overflow='';">✕ 关闭</div>
+
+<div style="text-align:center;padding:8px 0 20px;">
+  <div style="font-size:10px;color:var(--text3);letter-spacing:3px;margin-bottom:6px;">PART 2 · 案例落地</div>
+  <div style="font-size:19px;font-weight:700;color:var(--text);">AI TVC 自动化管线 · 模块化架构</div>
+  <div style="font-size:13px;color:var(--text2);margin-top:2px;">从一张产品图到 100 条 TVC——AI 如何全链路自动化</div>
+</div>
+
+<!-- ═════════════════ VERTICAL PIPELINE ═════════════════ -->
+<div class="vpipe">
+
+  <div class="vpipe-start">
+    <div class="start-label">输入</div>
+    <div class="start-title">产品原始图 + 自然语言 Brief</div>
+    <div class="start-io">「帮这款产品做 15 秒抖音带货短视频，目标年轻女性，强调性价比和颜值」</div>
+  </div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- Knowledge Layer -->
+  <div class="vpipe-phase-divider">
+    <div class="phase-dot" style="background:var(--text2);"></div>
+    <span class="phase-label" style="color:var(--text2);">知识底座 · Knowledge Layer</span>
+    <span class="phase-sub">所有模块的共享数据来源 · 一次性建设</span>
+  </div>
+  <div style="display:flex;justify-content:center;position:relative;z-index:1;">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:100%;max-width:620px;margin:6px 0;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 10px;text-align:center;font-size:10px;color:var(--text2);"><b style="color:var(--text);font-size:11px;display:block;margin-bottom:2px;">Prompt 模板库</b>分镜/脚本/画面</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 10px;text-align:center;font-size:10px;color:var(--text2);"><b style="color:var(--text);font-size:11px;display:block;margin-bottom:2px;">品牌规则库</b>VI/合规词/色板</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 10px;text-align:center;font-size:10px;color:var(--text2);"><b style="color:var(--text);font-size:11px;display:block;margin-bottom:2px;">商用曲库</b>BPM/情绪/时长</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 10px;text-align:center;font-size:10px;color:var(--text2);"><b style="color:var(--text);font-size:11px;display:block;margin-bottom:2px;">LUT 调色库</b>风格预设/品牌色调</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 10px;text-align:center;font-size:10px;color:var(--text2);"><b style="color:var(--text);font-size:11px;display:block;margin-bottom:2px;">产品素材库</b>Phase 0 标准化产出</div>
+    </div>
+  </div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- PHASE 0 -->
+  <div class="vpipe-phase-divider">
+    <div class="phase-dot p0"></div><span class="phase-label p0">Phase 0 · 数字资产工厂</span><span class="phase-sub">单次运行 / 产品 · 全自动</span>
+  </div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p0">
+    <div class="vn-head"><span class="vn-num">1</span><span class="vn-name">智能去背景</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span><span class="vn-badge type-tag">规则型</span></span></div>
+    <div class="vn-desc">原始产品图（任意背景）→ 透明底 PNG。不依赖专业拍摄条件。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">rembg</span></span><span><span class="tech-label">备：</span><span class="tech-fallback"><span class="tech-val">RMBG-2.0 API</span></span></span><span><span class="tech-label">部署：</span><span class="tech-val">本地 CPU</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p0">
+    <div class="vn-head"><span class="vn-num">2</span><span class="vn-name">角度分类</span><span class="vn-badges"><span class="vn-badge trust-mid">可信：中</span><span class="vn-badge type-tag">判断型</span></span></div>
+    <div class="vn-desc">自动判断每张图是正面/侧面/背面/45°，打标。特殊角度可能误判。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">CLIP ViT-B 零样本分类</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p0">
+    <div class="vn-head"><span class="vn-num">3</span><span class="vn-name">自动标签提取</span><span class="vn-badges"><span class="vn-badge trust-mid">可信：中</span><span class="vn-badge type-tag">判断型</span><span class="vn-badge risk-tag">⚠ 材质弱</span></span></div>
+    <div class="vn-desc">视觉模型提取颜色/材质/品类/特征。材质准确率约 75%，其余 ≥ 90%。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">GPT-4V / GLM-4V</span></span><span><span class="tech-label">约束：</span><span class="tech-val">预定义标签词典</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p0">
+    <div class="vn-head"><span class="vn-num">4</span><span class="vn-name">缺失角度补全</span><span class="vn-badges"><span class="vn-badge trust-low">可信：中低</span><span class="vn-badge type-tag">生成型</span><span class="vn-badge risk-tag">⚠ 复杂造型</span></span></div>
+    <div class="vn-desc">基于已有角度图推理生成缺失视角。IP-Adapter 锁定产品特征，镂空/镜面/透明产品有失真风险，自动标记「需补拍」。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">IP-Adapter + ControlNet</span></span><span><span class="tech-label">辅：</span><span class="tech-val">产品 LoRA</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p0">
+    <div class="vn-head"><span class="vn-num">5</span><span class="vn-name">标准化输出</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span><span class="vn-badge type-tag">规则型</span></span></div>
+    <div class="vn-desc">统一尺寸、SKU 目录结构、标签写入元数据——全管线唯一完全确定的模块。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">Pillow 批量处理</span></span><span><span class="tech-label">输出：</span><span class="tech-val">标准化素材库</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- PHASE 1 -->
+  <div class="vpipe-phase-divider">
+    <div class="phase-dot p1"></div><span class="phase-label p1">Phase 1 · 创意引擎</span><span class="phase-sub">单次运行 / TVC · LLM 驱动</span>
+  </div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p1">
+    <div class="vn-head"><span class="vn-num">6</span><span class="vn-name">需求解析</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span><span class="vn-badge type-tag">判断型</span></span></div>
+    <div class="vn-desc">自然语言 Brief → 结构化需求 spec（平台/尺寸/时长/风格/卖点/CTA）。JSON schema 约束输出。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">LLM + schema 约束</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p1">
+    <div class="vn-head"><span class="vn-num">7</span><span class="vn-name">脚本 + 节拍版</span><span class="vn-badges"><span class="vn-badge trust-mid">可信：中</span><span class="vn-badge type-tag">生成型</span></span></div>
+    <div class="vn-desc"><b>二遍剧本法：</b>第一遍生成叙事脚本，第二遍标注节拍时间线（时间戳/场景/景别/BPM/时长）。拆分叙事与节奏，避免单次生成导致输出不一致。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">LLM 二遍法</span></span><span><span class="tech-label">输出：</span><span class="tech-val">脚本 + 节拍时间线 JSON</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p1">
+    <div class="vn-head"><span class="vn-num">8</span><span class="vn-name">分镜生成</span><span class="vn-badges"><span class="vn-badge trust-mid">可信：中</span><span class="vn-badge type-tag">生成型</span></span></div>
+    <div class="vn-desc">脚本 → 逐镜头分镜表。产品镜头指素材库路径（精确），场景镜头靠 prompt（允许变化）。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">LLM 结构化生成</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- ORCHESTRATOR -->
+  <div class="vpipe-phase-divider">
+    <div class="phase-dot p1"></div><span class="phase-label p1">决策层 · Master Orchestrator</span><span class="phase-sub">业务决策 Agent · 非固定流程</span>
+  </div>
+  <div class="vpipe-node-wrap"><div class="vpipe-node p1">
+    <div class="vn-head"><span class="vn-num" style="background:var(--p1);">◎</span><span class="vn-name">编排 Agent</span><span class="vn-badges"><span class="vn-badge trust-mid">可信：中</span><span class="vn-badge type-tag">判断型</span></span></div>
+    <div class="vn-desc">读取需求 spec + 产品素材 → <b>自主决策</b>：风格选择、模板匹配、镜数与时长分配、产品镜头与场景镜头比例。同一 Brief 对不同产品可能走完全不同的创意路线。</div>
+    <div class="vn-tech"><span><span class="tech-label">决策维度：</span><span class="tech-val">风格/模板/镜数/时长/素材策略</span></span><span><span class="tech-label">输出：</span><span class="tech-val">分镜表 + Task Graph → Scheduler</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- GATE 1 -->
+  <div class="vpipe-gate-wrap"><div class="vpipe-gate">
+    <div class="gate-icon">◇</div>
+    <div><div class="gate-title">评分门 #1 · 内容质量</div>
+    <div class="gate-desc">Evaluation Agent 8 维加权：<b>卖点覆盖 20% / 品牌合规 15% / 脚本质量 15% / 分镜逻辑 15% / 时长匹配 10% / Schema 完整性 10% / 素材引用 10% / 字幕质量 5%</b>。≥90 自动通过 · 70–89 回 Orchestrator 重决策 · &lt;70 人工审核。</div>
+    <span class="gate-metric">预计：≥90 约70% · 重试约20% · 人工审核约10%（约10条/天）</span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- SCHEDULER -->
+  <div class="vpipe-phase-divider">
+    <div class="phase-dot" style="background:var(--gate);"></div>
+    <span class="phase-label" style="color:var(--gate);">调度层 · Scheduler Agent</span>
+    <span class="phase-sub">Agent 自主调度 · 无人干预</span>
+  </div>
+  <div class="vpipe-node-wrap"><div class="vpipe-node" style="border-left:2px solid var(--gate);">
+    <div class="vn-head"><span class="vn-num" style="background:var(--gate);">⚙</span><span class="vn-name">调度 Agent</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span><span class="vn-badge type-tag">规则型</span></span></div>
+    <div class="vn-desc">接收分镜表 → 分配 GPU/API/CPU 资源 → 管理并行队列 → 监控任务状态 → 失败自动重试或切换备选方案。</div>
+    <div class="vn-tech"><span><span class="tech-label">队列：</span><span class="tech-val">VIP / 实时 / 批处理 三级</span></span><span><span class="tech-label">资源池：</span><span class="tech-val">GPU×4 · API×20 · CPU×16</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- PHASE 2 -->
+  <div class="vpipe-phase-divider">
+    <div class="phase-dot p2"></div><span class="phase-label p2">Phase 2 · 生产引擎</span><span class="phase-sub">并行 / TVC · 调度层自动管理</span>
+  </div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-fork"><div class="vpipe-fork-label">并行分支</div></div>
+  <div style="display:flex;justify-content:center;position:relative;z-index:1;">
+    <div class="vpipe-parallel-grid">
+      <div class="vpipe-node p2"><div class="vn-head"><span class="vn-num">9</span><span class="vn-name">AI 生图</span><span class="vn-badges"><span class="vn-badge trust-mid">可信：中</span></span></div><div class="vn-desc">分镜 prompt + 产品参考图 → 场景图。IP-Adapter 锁定产品区域。</div><div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">ComfyUI + IP-Adapter</span></span></div></div>
+      <div class="vpipe-node p2"><div class="vn-head"><span class="vn-num">10</span><span class="vn-name">AI 生视频</span><span class="vn-badges"><span class="vn-badge trust-low">可信：中低</span></span></div><div class="vn-desc">场景图 + 运动描述 → 视频片段。产品特写走 Ken Burns 效果，AI 只做场景/过渡。</div><div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">Kling / Runway API</span></span></div></div>
+      <div class="vpipe-node p2"><div class="vn-head"><span class="vn-num">11</span><span class="vn-name">TTS 配音</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span></span></div><div class="vn-desc">脚本 → 多语言语音 + 逐词时间戳 JSON，下游卡点锚点。</div><div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">ElevenLabs API</span></span><span><span class="tech-label">备：</span><span class="tech-fallback"><span class="tech-val">Edge TTS</span></span></span></div></div>
+      <div class="vpipe-node p2"><div class="vn-head"><span class="vn-num">12</span><span class="vn-name">BGM 匹配</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span></span></div><div class="vn-desc">节拍版需求 → 版权曲库匹配。不用 AI 音乐（无 API）。</div><div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">预标签曲库 + librosa</span></span></div></div>
+    </div>
+  </div>
+
+  <div class="vpipe-merge"><span class="vpipe-merge-label">▼ 汇聚 ▼</span></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p2">
+    <div class="vn-head"><span class="vn-num">13</span><span class="vn-name">音视频合成</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span><span class="vn-badge type-tag">规则型</span></span></div>
+    <div class="vn-desc">所有素材汇聚，按时间轴缝合。TTS 逐词时间戳 + BPM 节拍 = 双锚对齐，帧级卡点。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">MoviePy + FFmpeg</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-node-wrap"><div class="vpipe-node p2">
+    <div class="vn-head"><span class="vn-num">14</span><span class="vn-name">后期 + 多格式导出</span><span class="vn-badges"><span class="vn-badge trust-high">可信：高</span><span class="vn-badge type-tag">规则型</span></span></div>
+    <div class="vn-desc">调色 LUT + 字幕烧录 + 品牌尾帧 + 多平台尺寸。100% 规则化，无 AI 随机性。</div>
+    <div class="vn-tech"><span><span class="tech-label">主：</span><span class="tech-val">FFmpeg 滤镜链</span></span><span><span class="tech-label">覆盖：</span><span class="tech-val">抖音/小红书/淘宝/YouTube/B站</span></span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <!-- GATE 2 -->
+  <div class="vpipe-gate-wrap"><div class="vpipe-gate">
+    <div class="gate-icon">◇</div>
+    <div><div class="gate-title">评分门 #2 · 成片质量</div>
+    <div class="gate-desc">Evaluation Agent 8 维加权：<b>画面崩坏 20% / 产品一致性 20% / 音画同步 15% / 字幕完整 10% / 品牌尾帧 10% / 构图质量 10% / 转场流畅 10% / 整体美学 5%</b>。≥90 自动导出 · 70–89 回 Scheduler 重试 · &lt;70 人工抽检。</div>
+    <span class="gate-metric">预计：≥90 约65% · 重试约20% · 人工抽检约15%（约15条/天）</span></div>
+  </div></div>
+  <div class="vpipe-connector"><div class="arrow-head"></div></div>
+
+  <div class="vpipe-end"><div class="vpipe-end-box">
+    <div class="end-title">导出：100 条 TVC / 天</div>
+    <div class="end-sub">多平台多格式 · 单人日审核 ≤ 1 小时 · 其余全自动</div>
+  </div></div>
+</div>
+
+
+<!-- ═══════════════ PHASE 0 DETAILS ═══════════════ -->
+<div class="section-title"><div class="dot p0"></div><h2>Phase 0 详情 · 数字资产工厂</h2><span class="tag">点击卡片查看详情</span></div>
+<p style="color:var(--text2);font-size:13px;margin-bottom:20px;">原始产品图（非标准拍摄条件）→ 全自动标准化素材库。单次运行，供下游 TVC 管线复用。</p>
+
+<div class="module-grid">
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 1</div><div class="mc-name">智能去背景</div>
+    <div class="mc-desc">原始产品图自动抠图，输出透明底 PNG</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">规则型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">自动去除产品背景，输出透明底 PNG。普通拍摄条件即可，不要求专业影棚环境。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">任意背景产品图（JPG/PNG/HEIC）</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">透明底 PNG，保留产品边缘细节</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">rembg 开源模型本地部署，Agent 通过 Python 直接调用，不依赖外部 API</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">边缘完整率 ≥ 98%，毛发/半透明材质可用</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">几乎免费（本地 CPU 运行，无需 GPU）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 1 秒/张</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 2</div><div class="mc-name">角度分类</div>
+    <div class="mc-desc">AI 自动判断每张产品图的拍摄角度并打标</div>
+    <div class="mc-tags"><span class="mc-tag trust-mid">可信：中</span><span class="mc-tag type">判断型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">自动识别并标注每张产品图的角度：正面、侧面、背面、45°、俯视或仰视。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">去背景后的产品图（多张）</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">角度标签：正面/侧面/背面/45°/俯视/仰视</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">CLIP 模型本地推理，Agent 直接调用。零样本分类，不需要提前训练</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">分类准确率 ≥ 90%，特殊角度可能误判，支持人工纠偏</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">几乎免费（本地推理，无需 API）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 0.5 秒/张</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 3</div><div class="mc-name">自动标签提取</div>
+    <div class="mc-desc">AI 看图提取产品属性：颜色、材质、品类</div>
+    <div class="mc-tags"><span class="mc-tag trust-mid">可信：中</span><span class="mc-tag type">判断型</span><span class="mc-tag access-api">API 调用</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">通过多模态模型自动提取产品视觉属性：颜色、材质、品类及关键外观特征，输出结构化标签。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">去背景产品图 + 角度标签</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">颜色/材质/品类/特征的结构化标签 JSON</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">Agent 通过 API Key 调用多模态模型（GPT-4V / GLM-4V），以预定义标签词典约束输出范围</span></div>
+      <div class="mc-detail-row"><span class="label">已知局限</span><span class="value">材质识别约 75%（哑光/磨砂/亮面/金属拉丝易混淆），颜色和品类 ≥ 90%</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（约 0.01 元/张）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 2 秒/张</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 4</div><div class="mc-name">缺失角度补全</div>
+    <div class="mc-desc">基于已有角度让 AI 生成缺失视角的产品图</div>
+    <div class="mc-tags"><span class="mc-tag trust-low">可信：中低</span><span class="mc-tag type">生成型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">基于已有角度图推理生成缺失视角。以 IP-Adapter 锁定产品核心特征作为条件约束，确保生成结果中产品主体不变，仅视角变化。镂空、镜面、透明材质有失真风险，自动标记「需人工补拍」。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">已有角度产品图 + 角度标签 + 属性标签</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">补充缺失角度的产品图（产品一致性受 IP-Adapter 约束）</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">ComfyUI + IP-Adapter + ControlNet 本地 GPU 推理，Agent 通过 ComfyUI API 调用</span></div>
+      <div class="mc-detail-row"><span class="label">风险</span><span class="value">镂空/镜面/透明产品可能失真，管线自动标记「需人工补拍」，不做强制补全</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">需 GPU 投入（本地 GPU 服务器一次性成本）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 10 秒/张（GPU 推理）</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 5</div><div class="mc-name">标准化输出</div>
+    <div class="mc-desc">统一格式、尺寸、命名，写入素材库</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">规则型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">将所有处理完成的图片按统一规范归档：标准化尺寸、SKU 目录结构、元数据 JSON。纯工程操作，无 AI 不确定性。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">去背景图 + 补全图 + 标签 JSON</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">统一 2000×2000 PNG，按 SKU 目录组织，标签写入元数据</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">Python Pillow 批量处理脚本，Agent 直接执行——全管线唯一完全确定的模块</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">100% 规范性，格式/尺寸/命名无误</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">几乎免费</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 0.5 秒/张</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHASE 1 DETAILS ══ -->
+<div class="section-title"><div class="dot p1"></div><h2>Phase 1 详情 · 创意引擎</h2><span class="tag">点击卡片查看详情</span></div>
+<p style="color:var(--text2);font-size:13px;margin-bottom:20px;">产品素材 + Brief → 脚本 + 分镜。LLM 驱动，决定 TVC 叙事质量。产出后经评分门审核。</p>
+
+<div class="module-grid">
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 6</div><div class="mc-name">需求解析</div><div class="mc-desc">自然语言 Brief → 结构化需求规格</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">判断型</span><span class="mc-tag access-api">API 调用</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">将自然语言需求描述（"帮这款产品做15秒抖音带货视频，目标年轻女性"）解析为结构化的可执行任务规格——平台、尺寸、时长、风格、卖点优先级、CTA。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">自然语言 Brief（目标人群/平台/时长/风格/卖点优先级）</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">结构化 spec JSON：{平台, 尺寸, 时长, 风格, 卖点列表, 品牌规范, CTA}</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">LLM API（GPT-4/DeepSeek/GLM 均可），Agent 通过 API Key 调用，输出用 schema 约束确保格式统一</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">schema 字段完整率 100%，卖点无遗漏</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（约 0.005 元/条）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 3 秒/条</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 7</div><div class="mc-name">脚本 + 节拍版</div><div class="mc-desc">二遍剧本法：先写叙事脚本，再标注节奏</div>
+    <div class="mc-tags"><span class="mc-tag trust-mid">可信：中</span><span class="mc-tag type">生成型</span><span class="mc-tag access-self">自建 Agent</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">AI 先生成视频叙事脚本，再对脚本进行节奏标注——"前3秒展示痛点→产品出场→促销信息"，标注每个段落的时长、景别和 BPM 需求。分两步执行以避免单次生成导致内容与节奏不一致。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">结构化需求 spec + 产品标签 + 产品素材路径</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">① 叙事脚本 ② 节拍时间线：[时间戳, 场景, 景别, BPM需求, 时长]</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">底层用 LLM API 生成文本，二遍法的编排调度逻辑需自建 Agent（无现成平台支持此特定流程）</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">卖点覆盖率 100%，时长偏差 ≤ 2s，节奏变化点 ≥ 3 个</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（约 0.02 元/条）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 15 秒/条</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 8</div><div class="mc-name">分镜生成</div><div class="mc-desc">脚本 → 逐镜头的视觉化分镜表</div>
+    <div class="mc-tags"><span class="mc-tag trust-mid">可信：中</span><span class="mc-tag type">生成型</span><span class="mc-tag access-self">自建 Agent</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">AI 将剧本拆解为逐镜头的执行清单——第1镜2秒、产品特写从左侧滑入、使用素材库第3张正面图——每个镜头明确素材来源（素材库引用或 AI 生成）和过渡方式。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">脚本 + 节拍时间线 + 产品素材库</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">分镜表：[镜号, 时长, 景别, 画面描述prompt, 素材引用路径, 过渡方式]</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">LLM API 生成分镜文本 + 自建 Agent 做素材匹配（需编程实现素材库检索与分配逻辑）</span></div>
+      <div class="mc-detail-row"><span class="label">关键设计</span><span class="value">产品镜头引用素材库路径（精确取用），场景氛围镜头靠 prompt 生成（允许变化）</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（约 0.01 元/条）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 10 秒/条</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHASE 2 DETAILS ══ -->
+<div class="section-title"><div class="dot p2"></div><h2>Phase 2 详情 · 生产引擎</h2><span class="tag">点击卡片查看详情</span></div>
+<p style="color:var(--text2);font-size:13px;margin-bottom:20px;">分镜表 → 四模块并行生成 → 合成 → 导出。不做中途人工审核，跑完在成片门统一检查。</p>
+
+<div class="module-grid">
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 9</div><div class="mc-name">AI 生图</div><div class="mc-desc">基于分镜描述 + 产品参考图生成场景图</div>
+    <div class="mc-tags"><span class="mc-tag trust-mid">可信：中</span><span class="mc-tag type">生成型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">AI 根据分镜描述生成场景图，同时参考产品素材库中的原图作为条件输入——产品区域受 IP-Adapter 锁定保持不变，背景和氛围由 prompt 控制。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">分镜画面 prompt + 产品参考图（素材库路径）+ 风格参数</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">2000×2000 场景图，产品区域受 IP-Adapter 锁定不变</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">ComfyUI 本地部署（有完整 API，Agent 可编程调度）。备选：通义万相 API、文心一格 API。Midjourney 无公开 API，不可靠，不进入管线</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">IP-Adapter 权重 ≥ 0.8，产品主体一致，背景允许变化</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">需 GPU 投入（本地 ComfyUI 服务器）；备选方案按量付费</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 30 秒/张（GPU 推理）</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 10</div><div class="mc-name">AI 生视频</div><div class="mc-desc">静态场景图 → 动态视频片段</div>
+    <div class="mc-tags"><span class="mc-tag trust-low">可信：中低</span><span class="mc-tag type">生成型</span><span class="mc-tag access-api">API 调用</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">将静态场景图转换为动态视频（推拉摇移等运动方式）。产品特写镜头不使用 AI 生成（视频一致性尚不可靠），改用 Ken Burns 效果——画面不动，镜头运动。AI 视频仅用于场景氛围和过渡镜头。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">场景图 + 运动描述（推/拉/摇/跟/静止）+ 目标时长</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">1080p+ 视频片段</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">Kling / Runway / Seedance 商业 API——目前视频生成无成熟开源方案，必须依赖商业 API。多 API 择优 + 失败重试策略</span></div>
+      <div class="mc-detail-row"><span class="label">降级策略</span><span class="value">产品特写走素材库静态图 + Ken Burns 效果。AI 视频仅生成场景/氛围/过渡镜头</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（视频 API 成本最高，约 0.5–2 元/条）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 60 秒/条（API 排队+生成）</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 11</div><div class="mc-name">TTS 配音</div><div class="mc-desc">脚本 → 多语言语音合成，返回逐词时间戳</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">生成型</span><span class="mc-tag access-api">API 调用</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">AI 将脚本文案合成为语音，同时输出每个词的时间戳——"第一个词 0.0–0.5 秒，第二个词 0.5–0.8 秒"。这个时间戳数据是下游画面卡点对齐的关键依据。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">脚本文案 + 语言 + 音色选择 + 语速参数</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">音频文件 + 逐词时间戳 JSON（用于下游卡点对齐）</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">ElevenLabs API（目前唯一提供可靠逐词时间戳的服务）。降级方案：Edge TTS（微软免费 TTS，但时间戳精度略低）</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">发音准确率 ≥ 98%，时间戳偏差 ≤ 50ms</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（ElevenLabs 约 0.01 元/条）或免费（Edge TTS 降级）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 5 秒/条</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 12</div><div class="mc-name">BGM 匹配</div><div class="mc-desc">根据节拍需求从版权曲库自动匹配背景音乐</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">规则型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">根据脚本标注的节奏需求（BPM、情绪、时长），从预购版权曲库中自动检索最匹配的背景音乐。不使用 AI 音乐生成工具（Suno/Udio 无 API、质量不可控、版权归属不明确）。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">节拍时间线（BPM/情绪/时长需求）</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">匹配的 BGM 文件 + 节拍位置标记</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">Python librosa 分析节拍 + 本地曲库检索，Agent 直接执行</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">BPM 偏差 ≤ 5，情绪匹配，预购曲库确保版权安全</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">几乎免费（曲库一次性采购，单次匹配无额外成本）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 2 秒/条</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 13</div><div class="mc-name">音视频合成</div><div class="mc-desc">所有素材汇聚，按时间轴自动缝合</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">规则型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">将所有素材——视频片段、场景图、配音、背景音乐——按分镜时间轴拼接为完整视频。采用双锚对齐：配音逐词时间戳 + 音乐 BPM 节拍，确保画面切换与音频节奏同步，精度控制在 1 帧以内。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">视频片段 + 场景图 + TTS 音频 + 逐词时间戳 + BGM + 分镜时间线</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">粗剪版视频（1080p，所有元素就位）</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">MoviePy（编排层）+ FFmpeg（渲染层），Agent 通过 Python 脚本调用</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">音画同步偏差 ≤ 1 帧，转场流畅，总时长匹配脚本</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">几乎免费（本地 CPU 渲染）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 15 秒/条（CPU 渲染，与视频时长相关）</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">模块 14</div><div class="mc-name">后期 + 多格式导出</div><div class="mc-desc">自动调色、字幕、品牌尾帧、多平台尺寸适配</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">规则型</span><span class="mc-tag access-local">本地部署</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">最后一步全自动处理：统一色彩风格（LUT 调色）、叠加字幕、嵌入品牌尾帧，同时导出多平台尺寸——抖音竖版（9:16）、淘宝方版（1:1）、B 站/YouTube 横版（16:9）。纯规则驱动，100% 确定性输出。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">粗剪版视频 + 脚本字幕 + 平台规格要求</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">多格式成品：16:9 / 9:16 / 1:1，含字幕、品牌尾帧</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">FFmpeg 滤镜链（调色 LUT + 缩放 + 字幕烧录），Agent 命令行调用</span></div>
+      <div class="mc-detail-row"><span class="label">质量指标</span><span class="value">100% 格式规范，字幕无溢出，品牌尾帧无误</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">几乎免费（本地 CPU 渲染）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 15 秒/条（多格式并行导出）</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ORCHESTRATOR + EVALUATION DETAILS ══ -->
+<div class="section-title"><div class="dot p1"></div><h2>决策层 · Master Orchestrator</h2><span class="tag">Agent 自主决策</span></div>
+<p style="color:var(--text2);font-size:13px;margin-bottom:20px;">Orchestrator 是管线的决策中枢——不依赖固定流程模板，根据每个 Brief 独立做出创意决策。同一产品、不同目标人群，可能走完全不同的分镜策略。</p>
+
+<div class="module-grid">
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">决策引擎</div><div class="mc-name">Master Orchestrator</div>
+    <div class="mc-desc">读取 Brief + 素材 → 自主决策风格/模板/镜数 → 输出调度任务图</div>
+    <div class="mc-tags"><span class="mc-tag trust-mid">可信：中</span><span class="mc-tag type">判断型</span><span class="mc-tag access-self">自建 Agent</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">根据 Brief 和产品属性自主决策创意方向：风格选择（温情/科技/种草/搞笑）、模板匹配、镜数与时长的最优分配、产品镜头与场景镜头的比例配置。每次决策独立，不依赖固定模板。</div>
+      <div class="mc-detail-row"><span class="label">输入</span><span class="value">需求 spec + 产品标签 + 品牌规则 + Prompt 模板库（从知识底座读取）</span></div>
+      <div class="mc-detail-row"><span class="label">决策维度</span><span class="value">① 创意风格 ② Prompt 模板选择 ③ 分镜数 & 时长分配 ④ 产品镜头 vs 场景镜头比例 ⑤ 音乐风格倾向</span></div>
+      <div class="mc-detail-row"><span class="label">输出</span><span class="value">分镜表 + Task Graph（每个 Worker Agent 的任务节点和依赖关系）→ 交给 Scheduler 执行</span></div>
+      <div class="mc-detail-row"><span class="label">接入方式</span><span class="value">LLM API + 自建决策逻辑——需自己编写"创意策略→任务图转换"的编排代码，无现成平台</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（LLM API 约 0.01 元/条）</span></div>
+      <div class="mc-detail-row"><span class="label">耗时</span><span class="value">约 10 秒/条</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-title"><div class="dot" style="background:var(--gate);"></div><h2>评估层 · Evaluation Agent</h2><span class="tag">8 维度加权评分</span></div>
+<p style="color:var(--text2);font-size:13px;margin-bottom:20px;">两道评分门共用同一评估框架，各自针对不同阶段选择不同维度和权重。0–100 分制，中间档自动重试，减少人工介入。</p>
+
+<div class="module-grid">
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">评分门 #1</div><div class="mc-name">内容质量评估</div><div class="mc-desc">脚本+分镜产出后，8 维度加权打分（0–100）</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">规则型+AI</span><span class="mc-tag access-self">自建 Agent</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">对脚本质量和分镜逻辑进行多维度评估。规则模块负责客观检查（字段完整性、品牌合规词、素材路径有效性），AI 模块负责主观判断（叙事逻辑、分镜衔接合理性）。</div>
+      <div class="mc-detail-row"><span class="label">8 维权重</span><span class="value"><b>卖点覆盖 20%</b>（NLP 关键词匹配 + LLM 语义判断）<br><b>品牌合规 15%</b>（违禁词库扫描）<br><b>脚本质量 15%</b>（LLM 评估叙事逻辑）<br><b>分镜逻辑 15%</b>（镜头衔接合理性检查）<br><b>时长匹配 10%</b>（总时长 vs 目标偏差）<br><b>Schema 完整性 10%</b>（JSON 字段必填检查）<br><b>素材引用 10%</b>（路径是否指向真实素材库文件）<br><b>字幕质量 5%</b>（文案语法/长度检查）</span></div>
+      <div class="mc-detail-row"><span class="label">三档分流</span><span class="value">≥90 → 自动通过。70–89 → 回 Orchestrator 重新决策并重试。&lt;70 → 人工审核（约 10 条/天）</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（LLM API 约 0.005 元/条，其余本地规则检查）</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+
+  <div class="module-card" onclick="this.classList.toggle('expanded')">
+    <div class="mc-num">评分门 #2</div><div class="mc-name">成片质量评估</div><div class="mc-desc">最终导出前，8 维度加权打分（0–100）</div>
+    <div class="mc-tags"><span class="mc-tag trust-high">可信：高</span><span class="mc-tag type">规则型+AI</span><span class="mc-tag access-self">自建 Agent</span></div>
+    <div class="mc-detail">
+      <div class="mc-detail-plain">规则模块检测客观质量问题（画面崩坏、字幕缺失、品牌尾帧规范），AI 模块评估主观质量（视觉观感、产品一致性、构图水平）。二者协同替代人工完成基础质检，仅将低分项送交人工判断。</div>
+      <div class="mc-detail-row"><span class="label">8 维权重</span><span class="value"><b>画面崩坏 20%</b>（帧采样 + 异常像素检测）<br><b>产品一致性 20%</b>（CLIP 相似度 vs 素材库原图，核心指标）<br><b>音画同步 15%</b>（音频时间戳 vs 画面切换偏差）<br><b>字幕完整 10%</b>（OCR 提取字幕 vs 原始脚本比对）<br><b>品牌尾帧 10%</b>（Logo 位置/时长/颜色匹配）<br><b>构图质量 10%</b>（多模态 LLM 评估每镜构图）<br><b>转场流畅 10%</b>（帧间差异分析）<br><b>整体美学 5%</b>（多模态 LLM 主观评分）</span></div>
+      <div class="mc-detail-row"><span class="label">三档分流</span><span class="value">≥90 → 自动导出。70–89 → 回 Scheduler 重试失败节点。&lt;70 → 人工抽检（约 15 条/天）</span></div>
+      <div class="mc-detail-row"><span class="label">成本</span><span class="value">按量付费（多模态 LLM 约 0.03 元/条，其余本地规则检查）</span></div>
+      <p class="mc-expand-hint">收起详情</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCHEDULING ══ -->
+<div class="section-title"><div class="dot p2"></div><h2>并行调度 · 100 条/天怎么跑</h2></div>
+
+<div class="parallel-viz">
+  <h4>10 管线并行时序图（每条管线独立运行 1 条 TVC）</h4>
+  <div class="lane-grid">
+    <div class="lane-row"><span class="lane-label">Lane 1</span><div class="lane-bar-wrap"><span class="lane-seg p1" style="width:8%">创意</span><span class="lane-seg p2-img" style="width:14%">生图</span><span class="lane-seg p2-vid" style="width:28%">生视频</span><span class="lane-seg p2-audio" style="width:10%">音频</span><span class="lane-seg p2-comp" style="width:20%">合成+后期</span><span class="lane-seg idle" style="width:20%">等待</span></div></div>
+    <div class="lane-row"><span class="lane-label">Lane 2</span><div class="lane-bar-wrap"><span class="lane-seg p1" style="width:8%">创意</span><span class="lane-seg p2-img" style="width:14%">生图</span><span class="lane-seg p2-vid" style="width:28%">生视频</span><span class="lane-seg p2-audio" style="width:10%">音频</span><span class="lane-seg p2-comp" style="width:20%">合成+后期</span><span class="lane-seg idle" style="width:20%">等待</span></div></div>
+    <div class="lane-row"><span class="lane-label">Lane 3</span><div class="lane-bar-wrap"><span class="lane-seg p1" style="width:8%">创意</span><span class="lane-seg p2-img" style="width:14%">生图</span><span class="lane-seg p2-vid" style="width:28%">生视频</span><span class="lane-seg p2-audio" style="width:10%">音频</span><span class="lane-seg p2-comp" style="width:20%">合成+后期</span><span class="lane-seg idle" style="width:20%">等待</span></div></div>
+    <div class="lane-row"><span class="lane-label">Lane 4</span><div class="lane-bar-wrap"><span class="lane-seg p1" style="width:8%">创意</span><span class="lane-seg p2-img" style="width:14%">生图</span><span class="lane-seg p2-vid" style="width:28%">生视频</span><span class="lane-seg p2-audio" style="width:10%">音频</span><span class="lane-seg p2-comp" style="width:20%">合成+后期</span><span class="lane-seg idle" style="width:20%">等待</span></div></div>
+    <div class="lane-row"><span class="lane-label">Lane 5</span><div class="lane-bar-wrap"><span class="lane-seg p1" style="width:8%">创意</span><span class="lane-seg p2-img" style="width:14%">生图</span><span class="lane-seg p2-vid" style="width:28%">生视频</span><span class="lane-seg p2-audio" style="width:10%">音频</span><span class="lane-seg p2-comp" style="width:20%">合成+后期</span><span class="lane-seg idle" style="width:20%">等待</span></div></div>
+  </div>
+  <p style="font-size:11px;color:var(--text3);margin-top:12px;">创意引擎串行约 30s/条 → 生产引擎四模块并行约 90s/条 → 单条全流程约 2min → 10 管线同时运行 → 理论 300 条/h，含 API 延迟实际约 150–200 条/h</p>
+</div>
+
+<!-- ══ BOTTLENECK ══ -->
+<div class="section-title"><div class="dot p2"></div><h2>瓶颈分析与人工投入</h2></div>
+<div class="bottleneck-grid">
+  <div class="bn-card"><div class="bn-num">2 min</div><h4>单条 TVC 全流程</h4><p>创意生成 30s + 生图 30s + 生视频 60s + TTS 10s + 合成 15s + 后期 15s。瓶颈在视频 API。</p></div>
+  <div class="bn-card"><div class="bn-num">70%</div><h4>内容评分门 ≥90 档</h4><p>100 条中约 70 条自动通过。约 20 条自动重试（70–89 档），约 10 条进入人工审核（&lt;70 档），每条约 20 秒。</p></div>
+  <div class="bn-card"><div class="bn-num">65%</div><h4>成片评分门 ≥90 档</h4><p>100 条中约 65 条自动通过。约 20 条自动重试失败节点，约 15 条人工抽检（&lt;70 档），每条约 1 分钟。</p></div>
+  <div class="bn-card"><div class="bn-num">≤ 40 min</div><h4>日总人力（评分制后）</h4><p>内容评分门约 10 条×20s ≈ 3min + 成片评分门约 15 条×1min ≈ 15min + 调度异常处理约 20min。总计约 38min，较此前减少 28%。</p></div>
+</div>
+
+<!-- ══ CAPABILITY ══ -->
+<div class="section-title"><div class="dot p2"></div><h2>能力边界</h2></div>
+<div class="bottleneck-grid">
+  <div class="bn-card"><h4 style="color:var(--red)">⚠ 视频一致性不可靠</h4><p>AI 视频对同一产品两次生成结果差异较大。降级：产品特写走 Ken Burns 静态动画，AI 仅生成背景、氛围和过渡镜头。</p></div>
+  <div class="bn-card"><h4 style="color:var(--gate)">⚠ 材质识别约 75%</h4><p>哑光、磨砂、亮面、金属拉丝等材质类别易混淆。降级：标注低置信度，建议人工复核或使用产品资料补全。</p></div>
+  <div class="bn-card"><h4 style="color:var(--gate)">⚠ 角度补全有失真风险</h4><p>镂空、镜面、透明材质产品补全角度时可能产生结构错误。降级：自动标记「需人工补拍」，不做强制补全。</p></div>
+  <div class="bn-card"><h4 style="color:var(--accent)">✓ 11/14 模块技术可行</h4><p>其中 7 个规则型模块具有 100% 确定性，4 个生成/判断型可靠，仅 3 个需降级策略。整体管线具备可运行条件。</p></div>
+</div>
+
+<div class="footer-note">模块化思维 × AI 业务耦合 · 白皮书 v4.0 · Part 1 方法论 + Part 2 TVC 管线落地验证</div>
+
+</div><!-- /modal-content -->
+</div><!-- /modal-overlay -->
+
+</div><!-- /container -->
+</body>
+</html>
