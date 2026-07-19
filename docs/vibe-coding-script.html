@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>当你的朋友沉迷于 vibe coding · 拍摄执行单</title>
+<style>
+  :root {
+    --bg:#fafaf8; --surface:#fff; --border:#e8e6e0;
+    --text:#1a1a18; --text2:#6b6a63; --text3:#999890;
+    --accent:#1a1a18; --red:#e04a3a; --blue:#4a7eb5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:15px;-webkit-font-smoothing:antialiased;
+  }
+
+  /* Tab Nav */
+  .tab-nav{
+    position:sticky;top:0;z-index:100;
+    display:flex;gap:0;justify-content:center;
+    background:rgba(250,250,248,.92);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  .tab-btn{
+    padding:14px 28px;font-size:14px;font-weight:600;
+    border:none;background:none;color:var(--text3);cursor:pointer;
+    border-bottom:2px solid transparent;transition:all .15s;
+    font-family:inherit;letter-spacing:.5px;
+  }
+  .tab-btn:hover{color:var(--text)}
+  .tab-btn.active{color:var(--text);border-bottom-color:var(--accent)}
+
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+
+  .container{max-width:720px;margin:0 auto;padding:32px 20px 80px}
+
+  /* ── Script ── */
+  .script-hero{text-align:center;padding:48px 0 40px}
+  .script-hero .tag{font-size:11px;color:var(--text3);letter-spacing:3px;margin-bottom:12px}
+  .script-hero h1{font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1.3}
+
+  .opening-frame{
+    background:var(--accent);color:#fff;text-align:center;
+    padding:28px 20px;border-radius:8px;margin-bottom:40px;
+    font-size:18px;font-weight:700;letter-spacing:1px;
+  }
+
+  .scene-block{margin-bottom:36px}
+  .scene-label{
+    font-size:11px;font-weight:700;color:var(--text3);
+    letter-spacing:2px;margin-bottom:12px;padding-bottom:6px;
+    border-bottom:1px solid var(--border);
+  }
+  .line{display:flex;gap:14px;margin-bottom:10px;align-items:flex-start}
+  .line .speaker{
+    font-size:11px;font-weight:700;min-width:24px;padding-top:3px;flex-shrink:0;
+  }
+  .line .speaker.a{color:var(--red)}
+  .line .speaker.b{color:var(--blue)}
+  .line .text{font-size:15px;line-height:1.7}
+  .line .action{font-size:13px;color:var(--text3);font-style:italic;margin-top:2px}
+
+  /* ── Production ── */
+  .section{margin-bottom:40px}
+  .section h2{font-size:18px;font-weight:700;margin-bottom:4px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section .intro{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7}
+
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .info-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px}
+  .info-card h4{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+  .info-card p,.info-card li{font-size:13px;color:var(--text2);line-height:1.6}
+  .checklist{list-style:none}
+  .checklist li{padding:4px 0 4px 18px;position:relative}
+  .checklist li::before{content:'—';position:absolute;left:0;color:var(--text3)}
+
+  .reason-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:10px}
+  .reason-card h4{font-size:13px;font-weight:700;margin-bottom:6px}
+  .reason-card p{font-size:13px;color:var(--text2);line-height:1.7}
+
+  /* ── Shot List (single column) ── */
+  .shot-group-label{
+    font-size:12px;font-weight:700;color:var(--text3);
+    letter-spacing:1px;padding:24px 0 6px;border-bottom:1px solid var(--border);
+    margin-bottom:12px;
+  }
+  .shot-group-label:first-child{padding-top:0}
+
+  .shot-row{display:flex;gap:16px;align-items:flex-start;margin-bottom:12px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:6px}
+  .shot-frame{
+    width:100px;height:178px;flex-shrink:0;
+    border:1px solid var(--border);border-radius:4px;
+    background:#fcfcf9;position:relative;overflow:hidden;
+  }
+  .shot-body{flex:1;min-width:0}
+  .shot-body .shot-id{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1px;margin-bottom:4px}
+  .shot-body .shot-line{font-size:13px;color:var(--text);font-weight:600;line-height:1.5;margin-bottom:4px}
+  .shot-body .shot-desc{font-size:12px;color:var(--text2);line-height:1.6}
+
+  /* ── SVG shared ── */
+  .svga .head{fill:none;stroke:#333;stroke-width:2.5}
+  .svga .body{fill:none;stroke:#333;stroke-width:2.5}
+  .svga .limb{fill:none;stroke:#333;stroke-width:2.5;stroke-linecap:round}
+  .svga .phone{fill:none;stroke:var(--red);stroke-width:2}
+  .svga .screen{fill:none;stroke:var(--blue);stroke-width:2}
+  .svga .desk{fill:#eee;stroke:#ddd;stroke-width:1}
+
+  @media(max-width:600px){
+    .script-hero h1{font-size:22px}
+    .tab-btn{padding:12px 18px;font-size:13px}
+    .info-grid{grid-template-columns:1fr}
+    .shot-row{flex-direction:column;align-items:center}
+    .shot-frame{width:140px;height:249px}
+    .shot-body{width:100%}
+  }
+</style>
+</head>
+<body>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('script')">剧本</button>
+  <button class="tab-btn" onclick="switchTab('production')">拍摄执行单</button>
+</nav>
+
+<!-- ═══════════ TAB 1: SCRIPT ═══════════ -->
+<div id="tab-script" class="tab-content active">
+<div class="container">
+
+  <div class="script-hero">
+    <div class="tag">短视频脚本</div>
+    <h1>当你的朋友沉迷于<br>vibe coding</h1>
+  </div>
+
+  <div class="opening-frame">⬛ 当你的朋友沉迷于 vibe coding……</div>
+
+  <div class="scene-block">
+    <div class="scene-label">第一段</div>
+
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text">诶，你觉得这个旅行计划怎么样，微信发你文件了</div><div class="action">A 从画面外走到沙发边，拿手机，抬头看向 B 方向。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker b">B</span>
+      <div><div class="text">直接帮我打开看看</div><div class="action">盯着屏幕，不转头。语气平淡——不是不耐烦，是"理所当然"。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text">你看，目前计划了两个方案，方案一是 xxxx，方案二是 xxxx，你更倾向于哪个？</div><div class="action">手机屏幕朝向镜头展示。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker b">B</span>
+      <div><div class="text">你帮我决定，确保最终是好玩的就可以了</div><div class="action">全程不看 A。手上可以轻敲键盘。</div></div>
+    </div>
+  </div>
+
+  <div class="scene-block">
+    <div class="scene-label">第二段</div>
+
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text">方案一便宜，那我选这个</div><div class="action">俏皮语气，参考周小闹点刘文祥的感觉。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text">但方案一预算好像也超了</div><div class="action">说完立刻发现预算问题，停顿 0.5 秒。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker b">B</span>
+      <div><div class="text">可以不动原来的游玩项目，只把价格降下来吗？</div><div class="action">"只把价格降下来"说得很轻，好像很简单的事。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text">那我只能再优化下看看</div><div class="action">挠头／为难。低头在手机上打字，打了又删。全程不抬头。</div></div>
+    </div>
+  </div>
+
+  <div class="scene-block">
+    <div class="scene-label">第三段</div>
+
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text">这个是优化后的预算，合理了</div><div class="action">抬头，略带自豪。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker b">B</span>
+      <div><div class="text">优化了哪里列出来给我看看，然后你要看看优化完之后玩的细节会不会出问题啊</div><div class="action">略微皱眉看屏幕。语气认真负责——这是笑点来源。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text">砍掉了一个项目，便宜了不少</div><div class="action">自信降低，底气不足。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker b">B</span>
+      <div><div class="text">为什么要砍掉项目，需要保证在项目完整的情况下降低预算，所有项目都不能改。</div><div class="action">第一次有明显表情变化——困惑。终于抬头看 A。字字清晰，不是命令，是"这不是很合理的需求吗"。</div></div>
+    </div>
+  </div>
+
+  <div class="scene-block">
+    <div class="scene-label">收尾</div>
+
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text" style="color:var(--text3)">—— 沉默 ——</div><div class="action">低头看着 B，沉默 2 秒。表情从困惑 → 无语 → 崩溃。全片核心转折点。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker b">B</span>
+      <div><div class="text" style="color:var(--text3)">—— 抬头，对视 ——</div><div class="action">抬头看 A，对视 2 秒。表情纯真／困惑——完全不觉得自己说的话有问题。</div></div>
+    </div>
+    <div class="line">
+      <span class="speaker a">A</span>
+      <div><div class="text" style="color:var(--red)">—— 爆发 ——</div><div class="action">把手机扔掉，身体向前扑，双手伸向屏幕做掐人状。和前面的沉默形成反差。</div></div>
+    </div>
+  </div>
+
+  <div class="opening-frame" style="background:var(--accent)">⬛</div>
+
+</div>
+</div>
+
+<!-- ═══════════ TAB 2: PRODUCTION ═══════════ -->
+<div id="tab-production" class="tab-content">
+<div class="container">
+
+  <div class="section">
+    <h2>拍摄原因</h2>
+    <div class="reason-card">
+      <h4>什么是 vibe coding</h4>
+      <p>Vibe coding 是一种"许愿式编程"——用户不懂编程，通过自然语言描述意图，AI 全权负责实现。用户只关心结果对不对，不关心技术过程。常见模式：让 AI 自己做决策、改需求时要求不破坏已有部分、只验收不追问。</p>
+    </div>
+    <div class="reason-card">
+      <h4>这个短片的笑点</h4>
+      <p>A 在认真规划旅行，B 把 vibe coding 的思维模式无意识代入日常对话——B 不是故意不帮忙，是已经习惯了"许愿式交流"。懂 vibe coding 的人会心一笑，不懂的也会觉得"这个朋友怎么这么离谱"。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>前期准备</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>道具</h4>
+        <ul class="checklist">
+          <li>样板手机（卡纸制作即可）</li>
+          <li>手绘苹果标签：白纸+马克笔画苹果，胶带贴在屏幕背面</li>
+          <li>电脑 + 显示器（真实或道具均可）</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>场景</h4>
+        <ul class="checklist">
+          <li>A 区域：自然光，居家/沙发背景。无额外道具</li>
+          <li>B 区域：电脑桌，屏幕朝向镜头</li>
+          <li>两个区域的视线方向要能对上</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>角色 & 声音</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>出镜</h4>
+        <p>A 和 B 均由 Mira 一人分饰，全部通过后期对切完成。先拍完 A 的所有镜头，换造型/位置后再拍 B。</p>
+      </div>
+      <div class="info-card">
+        <h4>声音后期</h4>
+        <p>A 女声 = Mira 原声（或变调处理成女声）<br>B 男声 = Mira 压低配男声 / 录音后降调</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>拍摄顺序</h2>
+    <div class="info-grid">
+      <div class="info-card"><h4>组一 · A 机位</h4><p>居家场景。A1–A8 按顺序拍。每段台词之间留 2–3 秒静默余量，方便后期对切。</p></div>
+      <div class="info-card"><h4>组二 · B 机位</h4><p>电脑桌场景。B1–B7 按顺序拍。B1–B4 全程不抬头看镜头方向；B5 第一次抬头；B6 对视。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>分镜表</h2>
+    <div class="intro">一行一个分镜。画面示意使用方块人抽象表达，9:16 竖屏比例。</div>
+
+    <!-- ══ GROUP A ══ -->
+    <div class="shot-group-label">组一 · A 机位（居家／沙发）</div>
+
+    <!-- A1 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <!-- background hint: sofa -->
+          <rect x="15" y="155" width="70" height="10" rx="4" fill="#f0ede6"/>
+          <!-- half body -->
+          <rect x="38" y="28" width="24" height="22" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="50" width="30" height="55" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arm with phone -->
+          <line x1="35" y1="65" x2="20" y2="55" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="20" y1="55" x2="20" y2="48" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <rect x="14" y="36" width="12" height="18" rx="2" fill="none" stroke="#e04a3a" stroke-width="2"/>
+          <!-- other arm -->
+          <line x1="65" y1="65" x2="78" y2="80" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- look direction -->
+          <line x1="58" y1="35" x2="72" y2="28" stroke="#999" stroke-width="1" stroke-dasharray="3,2"/>
+          <polygon points="72,28 68,32 74,32" fill="#999"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A1</div>
+        <div class="shot-line">"诶，你觉得这个旅行计划怎么样，微信发你文件了"</div>
+        <div class="shot-desc">从画面外走到沙发边，拿手机，抬头看向 B 方向。语气自然。</div>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <!-- half body, closer -->
+          <rect x="32" y="20" width="36" height="28" rx="4" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="28" y="48" width="44" height="60" rx="4" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms holding phone forward -->
+          <line x1="35" y1="68" x2="28" y2="50" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="65" y1="68" x2="72" y2="50" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- phone big, toward camera -->
+          <rect x="24" y="20" width="52" height="70" rx="4" fill="none" stroke="#e04a3a" stroke-width="3"/>
+          <rect x="30" y="30" width="40" height="48" rx="2" fill="#faf8f4"/>
+          <line x1="38" y1="40" x2="62" y2="40" stroke="#ddd" stroke-width="2"/>
+          <line x1="38" y1="48" x2="58" y2="48" stroke="#ddd" stroke-width="2"/>
+          <line x1="38" y1="56" x2="54" y2="56" stroke="#ddd" stroke-width="2"/>
+          <line x1="38" y1="64" x2="60" y2="64" stroke="#ddd" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A2</div>
+        <div class="shot-line">"你看，目前计划了两个方案，方案一是xxxx，方案二是xxxx"</div>
+        <div class="shot-desc">手机屏幕朝向镜头展示。靠近镜头效果。</div>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="38" y="32" width="24" height="22" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="54" width="30" height="55" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms looking at phone -->
+          <line x1="38" y1="70" x2="28" y2="58" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="70" x2="72" y2="58" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <rect x="26" y="44" width="20" height="28" rx="2" fill="none" stroke="#e04a3a" stroke-width="2"/>
+          <!-- ? above head -->
+          <text x="42" y="24" font-size="14" fill="#999" font-weight="700">?</text>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A3</div>
+        <div class="shot-line">"方案一便宜，那我选这个。但方案一预算好像也超了"</div>
+        <div class="shot-desc">先俏皮得意，然后立刻发现预算问题。停顿 0.5s。</div>
+      </div>
+    </div>
+
+    <!-- A4 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="15" y="155" width="70" height="10" rx="4" fill="#f0ede6"/>
+          <rect x="38" y="40" width="24" height="22" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="62" width="30" height="50" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms down typing -->
+          <line x1="38" y1="78" x2="30" y2="66" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="78" x2="70" y2="66" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <rect x="28" y="50" width="18" height="26" rx="2" fill="none" stroke="#e04a3a" stroke-width="2"/>
+          <!-- delete -->
+          <text x="48" y="72" font-size="9" fill="#999">⌫</text>
+          <!-- sweat -->
+          <text x="50" y="36" font-size="8" fill="#999">💧</text>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A4</div>
+        <div class="shot-line">"那我只能再优化下看看"</div>
+        <div class="shot-desc">挠头／为难。低头在手机上打字，打了又删。全程不抬头。</div>
+      </div>
+    </div>
+
+    <!-- A5 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="38" y="28" width="24" height="22" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="50" width="30" height="55" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms relaxed with phone -->
+          <line x1="40" y1="65" x2="28" y2="55" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="60" y1="65" x2="75" y2="80" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <rect x="22" y="42" width="14" height="20" rx="2" fill="none" stroke="#e04a3a" stroke-width="2"/>
+          <!-- proud sparkle -->
+          <text x="30" y="20" font-size="11" fill="#4a7eb5">✦</text>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A5</div>
+        <div class="shot-line">"这个是优化后的预算，合理了"</div>
+        <div class="shot-desc">抬头，略带自豪地报告。</div>
+      </div>
+    </div>
+
+    <!-- A6 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="38" y="38" width="24" height="22" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="60" width="30" height="50" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms low, phone hanging -->
+          <line x1="38" y1="75" x2="28" y2="90" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="75" x2="75" y2="90" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <rect x="26" y="78" width="14" height="20" rx="2" fill="none" stroke="#e04a3a" stroke-width="2"/>
+          <!-- nervous -->
+          <text x="44" y="32" font-size="12" fill="#999">…</text>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A6</div>
+        <div class="shot-line">"砍掉了一个项目，便宜了不少"</div>
+        <div class="shot-desc">自信降低，底气不足。预感不好。</div>
+      </div>
+    </div>
+
+    <!-- A7 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="15" y="155" width="70" height="10" rx="4" fill="#f0ede6"/>
+          <rect x="38" y="34" width="24" height="22" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="56" width="30" height="55" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms hanging down -->
+          <line x1="38" y1="72" x2="22" y2="100" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="72" x2="78" y2="100" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- silence -->
+          <text x="38" y="26" font-size="16" fill="#999">…</text>
+          <line x1="42" y1="32" x2="58" y2="32" stroke="#999" stroke-width="1.5"/>
+          <line x1="44" y1="36" x2="56" y2="36" stroke="#999" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A7</div>
+        <div class="shot-line">—— 沉默 2 秒 ——</div>
+        <div class="shot-desc">低头看着 B 方向。表情变化：困惑 → 无语 → 崩溃。全片核心转折点。</div>
+      </div>
+    </div>
+
+    <!-- A8 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="30" y="18" width="40" height="28" rx="4" fill="none" stroke="#e04a3a" stroke-width="3"/>
+          <rect x="26" y="46" width="48" height="55" rx="4" fill="none" stroke="#e04a3a" stroke-width="3"/>
+          <!-- arms reaching forward -->
+          <line x1="26" y1="62" x2="10" y2="38" stroke="#e04a3a" stroke-width="4" stroke-linecap="round"/>
+          <line x1="74" y1="62" x2="90" y2="38" stroke="#e04a3a" stroke-width="4" stroke-linecap="round"/>
+          <!-- action lines -->
+          <line x1="10" y1="52" x2="16" y2="46" stroke="#e04a3a" stroke-width="2"/>
+          <line x1="12" y1="62" x2="18" y2="58" stroke="#e04a3a" stroke-width="2"/>
+          <line x1="84" y1="52" x2="90" y2="46" stroke="#e04a3a" stroke-width="2"/>
+          <line x1="82" y1="62" x2="88" y2="58" stroke="#e04a3a" stroke-width="2"/>
+          <!-- flying phone -->
+          <rect x="86" y="74" width="10" height="16" rx="2" fill="none" stroke="#e04a3a" stroke-width="2" transform="rotate(25,91,82)"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">A8</div>
+        <div class="shot-line">—— 爆发！——</div>
+        <div class="shot-desc">把手机扔掉，身体向前扑，双手伸向屏幕做掐人状。动作突然，和沉默形成反差。</div>
+      </div>
+    </div>
+
+    <!-- ══ GROUP B ══ -->
+    <div class="shot-group-label">组二 · B 机位（电脑桌）</div>
+
+    <!-- B1 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <!-- desk at 2/5 (71px) -->
+          <rect x="0" y="71" width="100" height="6" fill="#e8e5dd" stroke="#ddd" stroke-width="1"/>
+          <rect x="0" y="71" width="100" height="2" fill="#f0ede6"/>
+          <!-- computer on desk -->
+          <rect x="52" y="52" width="22" height="16" rx="1" fill="none" stroke="#4a7eb5" stroke-width="2"/>
+          <rect x="55" y="55" width="16" height="10" rx="0.5" fill="#eef3f8"/>
+          <rect x="48" y="68" width="30" height="3" rx="1" fill="#ddd"/>
+          <!-- apple sticker -->
+          <text x="72" y="66" font-size="7" fill="#e04a3a">🍎</text>
+          <!-- B body (sitting behind desk) -->
+          <rect x="38" y="20" width="24" height="20" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="40" width="30" height="32" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms toward keyboard -->
+          <line x1="38" y1="52" x2="48" y2="62" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="52" x2="52" y2="62" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- looking at screen -->
+          <line x1="56" y1="26" x2="62" y2="36" stroke="#999" stroke-width="1" stroke-dasharray="2,2"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">B1</div>
+        <div class="shot-line">"直接帮我打开看看"</div>
+        <div class="shot-desc">盯着屏幕，不转头。语气平淡——不是不耐烦，是"理所当然"。</div>
+      </div>
+    </div>
+
+    <!-- B2 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="0" y="71" width="100" height="6" fill="#e8e5dd" stroke="#ddd" stroke-width="1"/>
+          <rect x="0" y="71" width="100" height="2" fill="#f0ede6"/>
+          <rect x="52" y="52" width="22" height="16" rx="1" fill="none" stroke="#4a7eb5" stroke-width="2"/>
+          <rect x="55" y="55" width="16" height="10" rx="0.5" fill="#eef3f8"/>
+          <rect x="48" y="68" width="30" height="3" rx="1" fill="#ddd"/>
+          <text x="72" y="66" font-size="7" fill="#e04a3a">🍎</text>
+          <rect x="38" y="20" width="24" height="20" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="40" width="30" height="32" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- typing -->
+          <line x1="38" y1="52" x2="47" y2="60" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="52" x2="53" y2="60" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- typing lines -->
+          <text x="44" y="38" font-size="7" fill="#999">tap</text>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">B2</div>
+        <div class="shot-line">"你帮我决定，确保最终是好玩的就可以了"</div>
+        <div class="shot-desc">全程不看 A。手上可以轻敲键盘。</div>
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="0" y="71" width="100" height="6" fill="#e8e5dd" stroke="#ddd" stroke-width="1"/>
+          <rect x="0" y="71" width="100" height="2" fill="#f0ede6"/>
+          <rect x="52" y="52" width="22" height="16" rx="1" fill="none" stroke="#4a7eb5" stroke-width="2"/>
+          <rect x="55" y="55" width="16" height="10" rx="0.5" fill="#eef3f8"/>
+          <rect x="48" y="68" width="30" height="3" rx="1" fill="#ddd"/>
+          <text x="72" y="66" font-size="7" fill="#e04a3a">🍎</text>
+          <!-- head slightly tilted -->
+          <rect x="36" y="18" width="24" height="20" rx="3" fill="none" stroke="#333" stroke-width="2.5" transform="rotate(-5,48,28)"/>
+          <rect x="35" y="40" width="30" height="32" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <line x1="38" y1="52" x2="48" y2="62" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="52" x2="52" y2="62" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- tilt -->
+          <text x="28" y="20" font-size="8" fill="#999">~</text>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">B3</div>
+        <div class="shot-line">"可以不动原来的游玩项目，只把价格降下来吗？"</div>
+        <div class="shot-desc">"只把价格降下来"说得很轻，好像很简单的事。</div>
+      </div>
+    </div>
+
+    <!-- B4 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="0" y="71" width="100" height="6" fill="#e8e5dd" stroke="#ddd" stroke-width="1"/>
+          <rect x="0" y="71" width="100" height="2" fill="#f0ede6"/>
+          <rect x="52" y="52" width="22" height="16" rx="1" fill="none" stroke="#4a7eb5" stroke-width="2"/>
+          <rect x="55" y="55" width="16" height="10" rx="0.5" fill="#eef3f8"/>
+          <rect x="48" y="68" width="30" height="3" rx="1" fill="#ddd"/>
+          <text x="72" y="66" font-size="7" fill="#e04a3a">🍎</text>
+          <rect x="38" y="20" width="24" height="20" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="40" width="30" height="32" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <line x1="38" y1="52" x2="48" y2="62" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="52" x2="52" y2="62" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- frown -->
+          <line x1="42" y1="14" x2="46" y2="16" stroke="#333" stroke-width="1.5"/>
+          <line x1="58" y1="14" x2="54" y2="16" stroke="#333" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">B4</div>
+        <div class="shot-line">"优化了哪里列出来给我看看，然后你要看看优化完之后玩的细节会不会出问题啊"</div>
+        <div class="shot-desc">略微皱眉看屏幕。语气认真负责——这是笑点来源。</div>
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="0" y="71" width="100" height="6" fill="#e8e5dd" stroke="#ddd" stroke-width="1"/>
+          <rect x="0" y="71" width="100" height="2" fill="#f0ede6"/>
+          <rect x="52" y="52" width="22" height="16" rx="1" fill="none" stroke="#4a7eb5" stroke-width="2"/>
+          <rect x="55" y="55" width="16" height="10" rx="0.5" fill="#eef3f8"/>
+          <rect x="48" y="68" width="30" height="3" rx="1" fill="#ddd"/>
+          <text x="72" y="66" font-size="7" fill="#e04a3a">🍎</text>
+          <rect x="38" y="18" width="24" height="20" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="38" width="30" height="34" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms slightly raised -->
+          <line x1="38" y1="50" x2="44" y2="60" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="50" x2="56" y2="60" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- first time looking toward A -->
+          <line x1="38" y1="24" x2="24" y2="16" stroke="#999" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <polygon points="24,16 28,20 22,20" fill="#999"/>
+          <!-- confused brows -->
+          <line x1="41" y1="13" x2="46" y2="15" stroke="#333" stroke-width="1.5"/>
+          <line x1="58" y1="15" x2="54" y2="13" stroke="#333" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">B5</div>
+        <div class="shot-line">"为什么要砍掉项目，需要保证在项目完整的情况下降低预算，所有项目都不能改。"</div>
+        <div class="shot-desc">第一次有明显表情变化——困惑。终于抬头看 A。字字清晰。</div>
+      </div>
+    </div>
+
+    <!-- B6 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="0" y="71" width="100" height="6" fill="#e8e5dd" stroke="#ddd" stroke-width="1"/>
+          <rect x="0" y="71" width="100" height="2" fill="#f0ede6"/>
+          <rect x="52" y="52" width="22" height="16" rx="1" fill="none" stroke="#4a7eb5" stroke-width="2"/>
+          <rect x="55" y="55" width="16" height="10" rx="0.5" fill="#eef3f8"/>
+          <rect x="48" y="68" width="30" height="3" rx="1" fill="#ddd"/>
+          <text x="72" y="66" font-size="7" fill="#e04a3a">🍎</text>
+          <rect x="38" y="18" width="24" height="20" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="35" y="38" width="30" height="34" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <line x1="38" y1="52" x2="30" y2="64" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62" y1="52" x2="70" y2="64" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- innocent eyes -->
+          <circle cx="44" cy="26" r="3" fill="#333"/>
+          <circle cx="56" cy="26" r="3" fill="#333"/>
+          <!-- slightly open mouth -->
+          <ellipse cx="50" cy="34" rx="5" ry="3" fill="none" stroke="#333" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">B6</div>
+        <div class="shot-line">—— 对视 2 秒 ——</div>
+        <div class="shot-desc">表情纯真／困惑——不觉得自己说的话有问题。好像在等 A 回答"好"。</div>
+      </div>
+    </div>
+
+    <!-- B7 -->
+    <div class="shot-row">
+      <div class="shot-frame">
+        <svg viewBox="0 0 100 178" width="100%" height="100%">
+          <rect x="0" y="71" width="100" height="6" fill="#e8e5dd" stroke="#ddd" stroke-width="1"/>
+          <rect x="0" y="71" width="100" height="2" fill="#f0ede6"/>
+          <rect x="52" y="52" width="22" height="16" rx="1" fill="none" stroke="#4a7eb5" stroke-width="2"/>
+          <rect x="55" y="55" width="16" height="10" rx="0.5" fill="#eef3f8"/>
+          <rect x="48" y="68" width="30" height="3" rx="1" fill="#ddd"/>
+          <text x="72" y="66" font-size="7" fill="#e04a3a">🍎</text>
+          <!-- body leaning back -->
+          <rect x="36" y="16" width="24" height="20" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <rect x="33" y="36" width="30" height="34" rx="3" fill="none" stroke="#333" stroke-width="2.5"/>
+          <!-- arms up -->
+          <line x1="36" y1="48" x2="24" y2="36" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="64" y1="48" x2="76" y2="36" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- wide eyes -->
+          <circle cx="44" cy="24" r="3.5" fill="#333"/>
+          <circle cx="56" cy="24" r="3.5" fill="#333"/>
+          <!-- surprise -->
+          <text x="40" y="12" font-size="14" fill="#e04a3a" font-weight="700">!</text>
+        </svg>
+      </div>
+      <div class="shot-body">
+        <div class="shot-id">B7</div>
+        <div class="shot-line">—— 惊恐 ——</div>
+        <div class="shot-desc">看到 A 扑过来，身体后靠。反应不需要大——A 的动作会说明一切。黑屏。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <h2>剪辑顺序</h2>
+    <div class="intro" style="font-family:'SF Mono','Fira Code',monospace;font-size:13px;color:var(--text);background:var(--surface);padding:16px;border-radius:6px;border:1px solid var(--border);">
+      片头 → A1 → B1 → A2 → B2 → A3 → B3 → A4 → A5 → B4 → A6 → B5 → A7 → B6 → A8 → B7 → 黑屏<br>
+      <span style="color:var(--text3)">额外素材：补拍 2 个 B 盯屏幕的空镜，用于调整对话节奏。</span>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.querySelector('[onclick="switchTab(\''+name+'\')"]').classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+</script>
+</body>
+</html>
